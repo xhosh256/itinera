@@ -18,9 +18,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "profile_id", nullable = false, unique = true)
-    private Integer profileId;
-
     @Column(nullable = false, unique = true)
     private String username;
 
