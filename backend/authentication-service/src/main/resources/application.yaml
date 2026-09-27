@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: account-service
+  datasource:
+    url: ${AUTH_DB_URL}
+    username: ${AUTH_DB_USERNAME}
+    password: ${AUTH_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+server:
+  port: 8082
+jwt:
+  secret: ${SECRET_KEY}
+  expiration: 3600000
