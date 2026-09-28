@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class AuthenticationService {
         // сохраняем профиль
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", List.of(user.getRole()));
+        claims.put("role", user.getRole().getAuthority());
 
         return new RegisterResponse(jwtService.generateToken(claims, user.getUsername()));
     }
@@ -62,7 +63,10 @@ public class AuthenticationService {
         UserDetails ud = (UserDetails) auth.getPrincipal();
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", ud.getAuthorities());
+        claims.put("role", ud.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse(null));
 
         return new LoginResponse(jwtService.generateToken(claims, ud.getUsername()));
     }

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: account-service
+    name: authentication-service
   datasource:
     url: ${AUTH_DB_URL}
     username: ${AUTH_DB_USERNAME}

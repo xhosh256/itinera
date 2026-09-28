@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "events")
 @NoArgsConstructor
@@ -26,4 +29,13 @@ public class Event {
 
     @Column(nullable = false)
     private Integer capacity;
+
+    @ElementCollection
+    @Builder.Default
+    @CollectionTable(
+            name = "event_participants",
+            joinColumns = @JoinColumn(name = "event_id")
+    )
+    @Column(name = "user_id")
+    private Set<Integer> participantIds = new HashSet<>();
 }
