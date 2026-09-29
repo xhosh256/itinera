@@ -30,6 +30,10 @@ public class Event {
     @Column(nullable = false)
     private Integer capacity;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Visibility visibility;
+
     @ElementCollection
     @Builder.Default
     @CollectionTable(
@@ -38,4 +42,12 @@ public class Event {
     )
     @Column(name = "user_id")
     private Set<Integer> participantIds = new HashSet<>();
+
+    public boolean isPublic() {
+        return visibility.equals(Visibility.PUBLIC);
+    }
+
+    public boolean containsParticipant(Integer userId) {
+        return participantIds.contains(userId);
+    }
 }

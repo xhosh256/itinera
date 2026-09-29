@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/sql/001-create-event.sql
   - include:
       file: db/changelog/sql/002-create-event-participants.sql
+  - include:
+      file: db/changelog/sql/003-create-invitations.sql
