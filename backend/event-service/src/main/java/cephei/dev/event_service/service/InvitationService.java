@@ -30,7 +30,12 @@ public class InvitationService {
     public Page<InvitationReadDto> findAll(String username, Pageable pageable) {
         UserResponse user = userClient.findByUsername(username);
         return invitationRepository.findByInvitedUserId(user.id(), pageable)
-                .map(invitationMapper::toReadDto);
+                .map(invitation -> new InvitationReadDto(
+                        invitation.getId(),
+                        invitation.getEvent().getName(),
+                        invitation.getEvent().getVisibility(),
+                        invitation.getStatus()
+                ));
 
     }
 
