@@ -1,7 +1,10 @@
 package cephei.dev.event_service.controller.api.v1;
 
+import cephei.dev.event_service.dto.EventComponentCreateDto;
+import cephei.dev.event_service.dto.EventComponentReadDto;
 import cephei.dev.event_service.dto.EventCreateRequest;
 import cephei.dev.event_service.dto.EventReadDto;
+import cephei.dev.event_service.entity.EventComponent;
 import cephei.dev.event_service.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,5 +54,16 @@ public class EventRestController {
     ) {
         eventService.invite(username, eventId, invitedUserId);
         return ResponseEntity.ok().build();
+    }
+
+    // Event Components
+
+    @PostMapping("/{eventId}")
+    public EventComponentReadDto addComponent(
+            @PathVariable("eventId") Long eventId,
+            @AuthenticationPrincipal String username,
+            EventComponentCreateDto eventComponentCreateDto
+    ) {
+        return eventService.addComponent(eventId, username, eventComponentCreateDto);
     }
 }

@@ -1,16 +1,16 @@
 package cephei.dev.event_service.service;
 
 import cephei.dev.event_service.client.UserClient;
-import cephei.dev.event_service.dto.EventCreateRequest;
-import cephei.dev.event_service.dto.EventReadDto;
-import cephei.dev.event_service.dto.UserResponse;
+import cephei.dev.event_service.dto.*;
 import cephei.dev.event_service.entity.Event;
+import cephei.dev.event_service.entity.EventComponent;
 import cephei.dev.event_service.entity.Invitation;
 import cephei.dev.event_service.entity.InvitationStatus;
 import cephei.dev.event_service.exception.AlreadyTakingPartException;
 import cephei.dev.event_service.exception.EventAccessDeniedException;
 import cephei.dev.event_service.exception.EventCapacityExceededException;
 import cephei.dev.event_service.exception.EventNotFound;
+import cephei.dev.event_service.mapper.EventComponentMapper;
 import cephei.dev.event_service.mapper.EventMapper;
 import cephei.dev.event_service.repository.EventRepository;
 import cephei.dev.event_service.repository.InvitationRepository;
@@ -29,6 +29,7 @@ public class EventService {
     private final EventMapper eventMapper;
     private final EventRepository eventRepository;
     private final InvitationRepository invitationRepository;
+    private final EventComponentMapper eventComponentMapper;
 
     @Transactional
     public EventReadDto create(String username, EventCreateRequest eventCreateRequest) {
@@ -85,5 +86,19 @@ public class EventService {
                 .status(InvitationStatus.PENDING)
                 .build();
         invitationRepository.save(invitation);
+    }
+
+    @Transactional
+    public EventComponentReadDto addComponent(Long eventId, String username, EventComponentCreateDto eventComponentCreateDto) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFound("Event not found"));
+        UserResponse host = userClient.findByUsername(username);
+
+        if(!(Objects.equals(event.getHostId(), host.id())))
+            throw new EventAccessDeniedException("Event access denied");
+
+        EventComponent component = eventComponentMapper.toEntity(eventComponentCreateDto);
+        event.addComponent(component);
+        return eventComponentMapper.toReadDto(component);
     }
 }

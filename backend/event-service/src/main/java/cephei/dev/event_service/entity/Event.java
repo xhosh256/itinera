@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,6 +25,10 @@ public class Event {
 
     @Column(name = "host_id", nullable = false)
     private Integer hostId;
+
+    @OneToMany(mappedBy = "event", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<EventComponent> components = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
@@ -42,6 +48,11 @@ public class Event {
     )
     @Column(name = "user_id")
     private Set<Integer> participantIds = new HashSet<>();
+
+    public void addComponent(EventComponent component) {
+        this.components.add(component);
+        component.setEvent(this);
+    }
 
     public boolean isPublic() {
         return visibility.equals(Visibility.PUBLIC);
