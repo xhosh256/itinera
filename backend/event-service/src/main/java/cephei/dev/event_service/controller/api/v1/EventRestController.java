@@ -62,7 +62,7 @@ public class EventRestController {
     public EventComponentReadDto addComponent(
             @PathVariable("eventId") Long eventId,
             @AuthenticationPrincipal String username,
-            EventComponentCreateDto eventComponentCreateDto
+            @RequestBody EventComponentCreateDto eventComponentCreateDto
     ) {
         return eventService.addComponent(eventId, username, eventComponentCreateDto);
     }

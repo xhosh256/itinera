@@ -101,4 +101,8 @@ public class EventService {
         event.addComponent(component);
         return eventComponentMapper.toReadDto(component);
     }
+
+    public String healthCheck() {
+        return userClient.healthCheck();
+    }
 }

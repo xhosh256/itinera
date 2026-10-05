@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(
-        name = "authentication-service",
-        url = "http://localhost:8082/api/v1/users"
+        name = "authentication-service"
 )
 public interface UserClient {
 
-    @GetMapping("/{username}")
+    @GetMapping("api/v1/users/{username}")
     UserResponse findByUsername(@PathVariable String username);
 }
