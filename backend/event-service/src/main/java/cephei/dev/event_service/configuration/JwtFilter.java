@@ -2,6 +2,7 @@ package cephei.dev.event_service.configuration;
 
 import cephei.dev.event_service.service.JwtService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,23 +34,27 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String token = header.substring(7);
-        String username = jwtService.extractUsername(token);
+        try {
+            String username = jwtService.extractUsername(token);
 
-        if(username != null
-                && jwtService.isTokenValid(token, username)
-                && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (username != null
+                    && jwtService.isTokenValid(token, username)
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            Claims claims = jwtService.extractAllClaims(token);
+                Claims claims = jwtService.extractAllClaims(token);
 
-            String role = claims.get("role", String.class);
+                String role = claims.get("role", String.class);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    username, null, List.of(new SimpleGrantedAuthority(role))
-            );
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        username, null, List.of(new SimpleGrantedAuthority(role))
+                );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (JwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
-
-        filterChain.doFilter(request, response);
     }
 }

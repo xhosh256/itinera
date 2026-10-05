@@ -1,5 +1,6 @@
 package cephei.dev.event_service.configuration;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +25,11 @@ public class SecurityConfiguration {
                 .sessionManagement(sessionManagementConfigurer ->
                         sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request.anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        })));
 
         return http.build();
     }
