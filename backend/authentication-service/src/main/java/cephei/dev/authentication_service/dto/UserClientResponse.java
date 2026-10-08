@@ -1,6 +1,6 @@
 package cephei.dev.authentication_service.dto;
 
-public record UserReadDto (
+public record UserClientResponse (
         Integer id
 ) {
 }

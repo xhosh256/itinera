@@ -1,7 +1,8 @@
 package cephei.dev.authentication_service.service;
 
+import cephei.dev.authentication_service.dto.AuthMe;
+import cephei.dev.authentication_service.dto.UserClientResponse;
 import cephei.dev.authentication_service.dto.UserDetailsImpl;
-import cephei.dev.authentication_service.dto.UserReadDto;
 import cephei.dev.authentication_service.entity.User;
 import cephei.dev.authentication_service.mapper.UserMapper;
 import cephei.dev.authentication_service.repository.UserRepository;
@@ -28,10 +29,20 @@ public class UserService implements UserDetailsService {
         return new UserDetailsImpl(user);
     }
 
-    public UserReadDto findByUsername(String username) {
+    public UserClientResponse findByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 
-        return userMapper.toReadDto(user);
+        return userMapper.toClientResponse(user);
+    }
+
+    public AuthMe authMe(String username) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        System.out.println(user);
+
+        return userMapper.toAuthMe(user);
     }
 }

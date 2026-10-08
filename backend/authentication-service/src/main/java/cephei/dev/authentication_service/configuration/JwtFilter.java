@@ -1,6 +1,7 @@
-package cephei.dev.event_service.configuration;
+package cephei.dev.authentication_service.configuration;
 
-import cephei.dev.event_service.service.JwtService;
+
+import cephei.dev.authentication_service.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -72,3 +73,4 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 }
+

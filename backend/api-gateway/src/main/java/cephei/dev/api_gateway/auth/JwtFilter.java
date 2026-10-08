@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -35,14 +36,14 @@ public class JwtFilter implements GlobalFilter {
             return chain.filter(exchange);
         }
 
-        String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+        HttpCookie cookie = exchange.getRequest().getCookies().getFirst("jwt");
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        if (cookie == null) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
-        String token = header.substring(7);
+        String token = cookie.getValue();
         try {
             String username = jwtService.extractUsername(token);
             if (!jwtService.isTokenValid(token, username)) {

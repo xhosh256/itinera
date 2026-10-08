@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,14 +33,13 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public RegisterResponse register(RegisterRequest registerDto) {
+    public String register(RegisterRequest registerDto) {
 
         User user = userMapper.toEntity(registerDto);
         // создание профиля
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
-        System.out.print(user);
 
         userRepository.save(user);
         // сохраняем профиль
@@ -47,10 +47,10 @@ public class AuthenticationService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole().getAuthority());
 
-        return new RegisterResponse(jwtService.generateToken(claims, user.getUsername()));
+        return jwtService.generateToken(claims, user.getUsername());
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public String login(LoginRequest loginRequest) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.username(),
                 loginRequest.password()
@@ -68,6 +68,6 @@ public class AuthenticationService {
                 .map(GrantedAuthority::getAuthority)
                 .orElse(null));
 
-        return new LoginResponse(jwtService.generateToken(claims, ud.getUsername()));
+        return jwtService.generateToken(claims, ud.getUsername());
     }
 }
