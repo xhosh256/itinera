@@ -9,6 +9,6 @@ public class InvitationExceptionHandler {
 
     @ExceptionHandler(InvitationAccessDeniedException.class)
     public ResponseEntity<String> invitationAccessDenied(InvitationAccessDeniedException e) {
-        return ResponseEntity.status(403).body("Access Denied");
+        return ResponseEntity.status(403).body("Access Denied!");
     }
 }

@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: authentication-service-auth
+              uri: lb://authentication-service
+              predicates:
+                - Path=/api/v1/auth/**
+            - id: authentication-service-users
+              uri: lb://authentication-service
+              predicates:
+                - Path=/api/v1/users/**
+            - id: event-service-events
+              uri: lb://event-service
+              predicates:
+                - Path=/api/v1/events/**
+            - id: event-service-invitations
+              uri: lb://event-service
+              predicates:
+                - Path=/api/v1/invitations/**
+jwt:
+  secret: ${SECRET_KEY}
+  expiration: 3600000
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6767/eureka/
+

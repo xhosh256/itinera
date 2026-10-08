@@ -9,6 +9,6 @@ public class EventExceptionHandler {
 
     @ExceptionHandler(EventAccessDeniedException.class)
     public ResponseEntity<String> eventAccessDenied(EventAccessDeniedException e) {
-        return ResponseEntity.status(403).body("Access Denied");
+        return ResponseEntity.status(403).body("Access Denied!");
     }
 }
