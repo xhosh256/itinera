@@ -27,19 +27,17 @@ public class InvitationRestController {
 
     @PostMapping("/{invitationId}/accept")
     public ResponseEntity<Void> accept(
-            @AuthenticationPrincipal String username,
             @PathVariable Long invitationId
     ) {
-        invitationService.accept(username, invitationId);
+        invitationService.accept(invitationId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{invitationId}/decline")
     public ResponseEntity<Void> decline(
-            @AuthenticationPrincipal String username,
             @PathVariable Long invitationId
     ) {
-        invitationService.decline(username, invitationId);
+        invitationService.decline(invitationId);
         return ResponseEntity.ok().build();
     }
 }

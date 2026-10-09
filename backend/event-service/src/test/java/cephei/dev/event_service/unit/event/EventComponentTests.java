@@ -87,7 +87,7 @@ public class EventComponentTests {
         when(eventComponentMapper.toReadDto(component)).thenReturn(readDto);
 
         // Act
-        EventComponentReadDto result = eventService.addComponent(eventId, username, componentCreateDto);
+        EventComponentReadDto result = eventService.addComponent(eventId, componentCreateDto);
 
         // Assert
         assertEquals(1L, result.id());
@@ -136,7 +136,7 @@ public class EventComponentTests {
 
         // Act
         assertThrows(EventAccessDeniedException.class,
-                () -> eventService.addComponent(eventId, username, componentCreateDto));
+                () -> eventService.addComponent(eventId, componentCreateDto));
 
         // Assert
         verify(eventRepository).findById(eventId);

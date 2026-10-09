@@ -57,7 +57,7 @@ class EventServiceApplicationTests {
 				.thenReturn(host);
 
 		// Act
-		eventService.invite(hostUsername, eventId, invitedUserId);
+		eventService.invite(eventId, invitedUserId);
 
 		// Assert
 		verify(eventRepository).findById(eventId);

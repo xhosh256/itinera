@@ -13,6 +13,7 @@ import cephei.dev.event_service.repository.InvitationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,14 +41,12 @@ public class InvitationService {
     }
 
     @Transactional
-    public void accept(String username, Long invitationId) {
-        UserResponse user = userClient.findByUsername(username);
+    @PreAuthorize(
+            "@invitationAuthorization.isInvited(#invitationId, authentication.name)"
+    )
+    public void accept(Long invitationId) {
         Invitation invitation = invitationRepository.findById(invitationId)
                 .orElseThrow(() -> new InvitationNotFoundException("Invitation not found"));
-
-        if(!Objects.equals(invitation.getInvitedUserId(), user.id())) {
-            throw new InvitationAccessDeniedException("Invitation access denied");
-        }
 
         if(!invitation.getStatus().equals(InvitationStatus.PENDING)) {
             return;
@@ -58,18 +57,16 @@ public class InvitationService {
         }
 
         invitation.setStatus(InvitationStatus.ACCEPTED);
-        invitation.getEvent().getParticipantIds().add(user.id());
+        invitation.getEvent().getParticipantIds().add(invitation.getInvitedUserId());
     }
 
     @Transactional
-    public void decline(String username, Long invitationId) {
-        UserResponse user = userClient.findByUsername(username);
+    @PreAuthorize(
+            "@invitationAuthorization.isInvited(#invitationId, authentication.name)"
+    )
+    public void decline(Long invitationId) {
         Invitation invitation = invitationRepository.findById(invitationId)
                 .orElseThrow(() -> new InvitationNotFoundException("Invitation not found"));
-
-        if(!Objects.equals(invitation.getInvitedUserId(), user.id())) {
-            throw new InvitationAccessDeniedException("Invitation access denied");
-        }
 
         if(!invitation.getStatus().equals(InvitationStatus.PENDING)) {
             return;

@@ -15,6 +15,7 @@ import cephei.dev.event_service.mapper.EventMapper;
 import cephei.dev.event_service.repository.EventRepository;
 import cephei.dev.event_service.repository.InvitationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,15 +67,14 @@ public class EventService {
     }
 
     @Transactional
-    public void invite(String username, Long eventId, Integer invitedUserId) {
+    @PreAuthorize(
+            "@eventAuthorization.isHost(#eventId, authentication.name)"
+    )
+    public void invite(Long eventId, Integer invitedUserId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFound("Event not found"));
-        UserResponse host = userClient.findByUsername(username);
         if(event.containsParticipant(invitedUserId))
             throw new AlreadyTakingPartException("User is already taking a part of this event");
-
-        if(!(Objects.equals(event.getHostId(), host.id())))
-            throw new EventAccessDeniedException("Event access denied");
 
         if(event.getCapacity() < event.getParticipantIds().size() + 1) {
             throw new EventCapacityExceededException("Event capacity exceeded");
@@ -89,13 +89,12 @@ public class EventService {
     }
 
     @Transactional
-    public EventComponentReadDto addComponent(Long eventId, String username, EventComponentCreateDto eventComponentCreateDto) {
+    @PreAuthorize(
+            "@eventAuthorization.isHost(#eventId, authentication.name)"
+    )
+    public EventComponentReadDto addComponent(Long eventId, EventComponentCreateDto eventComponentCreateDto) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFound("Event not found"));
-        UserResponse host = userClient.findByUsername(username);
-
-        if(!(Objects.equals(event.getHostId(), host.id())))
-            throw new EventAccessDeniedException("Event access denied");
 
         EventComponent component = eventComponentMapper.toEntity(eventComponentCreateDto);
         event.addComponent(component);

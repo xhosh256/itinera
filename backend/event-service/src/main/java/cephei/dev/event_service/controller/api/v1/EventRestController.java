@@ -48,11 +48,10 @@ public class EventRestController {
 
     @PostMapping("/{eventId}/invitations/{invitedUserId}")
     public ResponseEntity<Void> invite(
-            @AuthenticationPrincipal String username,
             @PathVariable("eventId") Long eventId,
             @PathVariable("invitedUserId") Integer invitedUserId
     ) {
-        eventService.invite(username, eventId, invitedUserId);
+        eventService.invite(eventId, invitedUserId);
         return ResponseEntity.ok().build();
     }
 
@@ -61,9 +60,8 @@ public class EventRestController {
     @PostMapping("/{eventId}")
     public EventComponentReadDto addComponent(
             @PathVariable("eventId") Long eventId,
-            @AuthenticationPrincipal String username,
             @RequestBody EventComponentCreateDto eventComponentCreateDto
     ) {
-        return eventService.addComponent(eventId, username, eventComponentCreateDto);
+        return eventService.addComponent(eventId, eventComponentCreateDto);
     }
 }
