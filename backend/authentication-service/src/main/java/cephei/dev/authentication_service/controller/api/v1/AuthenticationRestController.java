@@ -54,4 +54,19 @@ public class AuthenticationRestController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .sameSite("Lax")
+                .secure(false)
+                .maxAge(Duration.ofMillis(0))
+                .path("/")
+                .build();
+
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok().build();
+    }
 }
