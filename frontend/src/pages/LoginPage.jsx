@@ -24,15 +24,7 @@ const LoginPage = () => {
             }
         )
 
-        console.log(response.status);
-        const meResponse = await fetch(
-            "http://localhost:8080/api/v1/users/me",
-            {
-                credentials: "include"
-            }
-        );
-
-        const user = await meResponse.json();
+        const user = await response.json();
         setUser(user);
         navigate("/");
     }
@@ -44,20 +36,18 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit}>
                     <Input
                         id="username"
-                        label="Username"
                         type="text"
                         onChange={(e) => setUsername(e.target.value)}
-                    />
+                    >Username</Input>
 
                     <Input
                         id="password"
-                        label="Password"
                         type="password"
                         onChange={(e) => setPassword(e.target.value)}
-                    />
+                    > Password </Input>
                     <button type="submit">Войти</button>
                 </form>
-                <p>Don't have an account? <Link to="/auth/register">Register now</Link> </p>
+                <p>Ещё нет аккаунта? <Link to="/auth/register">Регистрация</Link> </p>
             </div>
 
         </div>

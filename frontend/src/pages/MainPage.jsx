@@ -12,7 +12,6 @@ const MainPage = () => {
 
     return (
         <div>
-            <Header />
             {!isAuthenticated ?
                 <WelcomePage /> :
                 <ExplorePage />

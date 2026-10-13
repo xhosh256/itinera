@@ -11,4 +11,9 @@ public class EventExceptionHandler {
     public ResponseEntity<String> eventAccessDenied(EventAccessDeniedException e) {
         return ResponseEntity.status(403).body("Access Denied!");
     }
+
+    @ExceptionHandler(EventNotFound.class)
+    public ResponseEntity<String> eventNotFound(EventNotFound e) {
+        return ResponseEntity.status(404).body(e.getMessage());
+    }
 }

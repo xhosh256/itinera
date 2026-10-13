@@ -6,6 +6,8 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import ExplorePage from "./pages/ExplorePage.jsx";
 import MyEventsPage from "./pages/MyEventsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import CreateEventPage from "./pages/CreateEventPage.jsx";
+import ManageEventPage from "./pages/ManageEventPage.jsx";
 
 function App() {
       return (
@@ -21,6 +23,8 @@ function App() {
                 <Route path="/auth/register" element={<RegisterPage />} />
 
                 <Route path="/events" element={<MyEventsPage />} />
+                <Route path="/events/:id" element={<ManageEventPage />} />
+                <Route path="/events/create" element={<CreateEventPage />} />
             </Routes>
           </>
 

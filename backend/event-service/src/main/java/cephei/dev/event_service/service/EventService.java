@@ -15,6 +15,8 @@ import cephei.dev.event_service.mapper.EventMapper;
 import cephei.dev.event_service.repository.EventRepository;
 import cephei.dev.event_service.repository.InvitationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,5 +101,31 @@ public class EventService {
         EventComponent component = eventComponentMapper.toEntity(eventComponentCreateDto);
         event.addComponent(component);
         return eventComponentMapper.toReadDto(component);
+    }
+
+    public Page<EventPreviewReadDto> findMy(String username, Pageable pageable) {
+
+        UserResponse host = userClient.findByUsername(username);
+        return eventRepository.findAllByHostId(host.id(), pageable)
+                .map(e -> new EventPreviewReadDto(
+                        e.getId(),
+                        e.getName(),
+                        e.getCapacity(),
+                        e.getJoined(),
+                        e.getVisibility()
+                ));
+    }
+
+    public Page<EventPreviewReadDto> findJoined(String username, Pageable pageable) {
+
+        UserResponse participant = userClient.findByUsername(username);
+        return eventRepository.findAllByParticipantIdsContaining(participant.id(), pageable)
+                .map(e -> new EventPreviewReadDto(
+                        e.getId(),
+                        e.getName(),
+                        e.getCapacity(),
+                        e.getJoined(),
+                        e.getVisibility()
+                ));
     }
 }

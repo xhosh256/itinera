@@ -12,6 +12,7 @@ const ExplorePage = () => {
 
     return (
         <>
+            <Header />
             <div>
                 <h1>Upcoming Events</h1>
                 {upcomingEvents.map(({id, name, capacity, participantIds}) => (

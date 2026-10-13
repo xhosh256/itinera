@@ -61,4 +61,8 @@ public class Event {
     public boolean containsParticipant(Integer userId) {
         return participantIds.contains(userId);
     }
+
+    public Integer getJoined() {
+        return participantIds.size();
+    }
 }

@@ -2,6 +2,7 @@ package cephei.dev.authentication_service.controller.api.v1;
 
 import cephei.dev.authentication_service.dto.*;
 import cephei.dev.authentication_service.service.AuthenticationService;
+import cephei.dev.authentication_service.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +21,14 @@ import java.time.Duration;
 public class AuthenticationRestController {
 
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @Value("${jwt.expiration}")
     private Long expiration;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest registerDto, HttpServletResponse response) {
+    public ResponseEntity<AuthMe> register(@RequestBody RegisterRequest registerDto, HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("jwt", authenticationService.register(registerDto))
                 .httpOnly(true)
                 .secure(false)
@@ -36,12 +38,12 @@ public class AuthenticationRestController {
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userService.authMe(registerDto.username()));
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<AuthMe> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", authenticationService.login(loginRequest))
                 .httpOnly(true)
@@ -52,7 +54,7 @@ public class AuthenticationRestController {
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userService.authMe(loginRequest.username()));
     }
 
     @PostMapping("/logout")

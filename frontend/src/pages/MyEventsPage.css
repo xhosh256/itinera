@@ -1,0 +1,10 @@
+.events__block {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.my__events__grid {
+    display: flex;
+}

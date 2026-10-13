@@ -1,14 +1,14 @@
 const Input = (props) => {
     const {
         id,
-        label,
+        children,
         type='text',
         onChange,
     } = props
 
     return (
         <>
-            <label htmlFor={id}> {label} </label>
+            <label htmlFor={id}> {children} </label>
             <input type={type} id={id} onChange={onChange}/>
         </>
     )

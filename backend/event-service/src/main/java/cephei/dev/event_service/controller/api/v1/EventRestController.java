@@ -1,12 +1,12 @@
 package cephei.dev.event_service.controller.api.v1;
 
-import cephei.dev.event_service.dto.EventComponentCreateDto;
-import cephei.dev.event_service.dto.EventComponentReadDto;
-import cephei.dev.event_service.dto.EventCreateRequest;
-import cephei.dev.event_service.dto.EventReadDto;
+import cephei.dev.event_service.dto.*;
 import cephei.dev.event_service.entity.EventComponent;
 import cephei.dev.event_service.service.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +19,22 @@ import org.springframework.web.bind.annotation.*;
 public class EventRestController {
 
     private final EventService eventService;
+
+    @GetMapping("/my")
+    public Page<EventPreviewReadDto> findMy(
+            @AuthenticationPrincipal String username,
+            @PageableDefault(size = 5, page = 0) Pageable pageable
+            ) {
+        return eventService.findMy(username, pageable);
+    }
+
+    @GetMapping("/joined")
+    public Page<EventPreviewReadDto> findJoined(
+            @AuthenticationPrincipal String username,
+            @PageableDefault(size = 5, page = 0) Pageable pageable
+    ) {
+        return eventService.findJoined(username, pageable);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,0 +1,9 @@
+p {
+    margin: 0;
+}
+
+.event__preview {
+    padding: 10px;
+    border: 1px solid #000;
+    width: 300px;
+}

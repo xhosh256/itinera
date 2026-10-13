@@ -1,8 +1,10 @@
 import {Link} from "react-router-dom";
+import Header from "../components/Header.jsx";
 
 const WelcomePage = () => {
     return (
         <div>
+            <Header />
             <p>
                 Присоединяйтесь к событиям, вечиринкам или поездкам.
                 Проводите время в веселой компании, отдыхайте и планируйте события

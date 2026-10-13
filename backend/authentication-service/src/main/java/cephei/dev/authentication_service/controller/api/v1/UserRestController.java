@@ -27,7 +27,6 @@ public class UserRestController {
     public AuthMe authMe(
             @AuthenticationPrincipal String username
     ) {
-        System.out.println(username);
         return userService.authMe(username);
     }
 }
