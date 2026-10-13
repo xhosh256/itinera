@@ -8,6 +8,7 @@ import java.util.Set;
 
 public record EventReadDto (
         Long id,
+        Integer hostId,
         String name,
         Integer capacity,
         Visibility visibility,

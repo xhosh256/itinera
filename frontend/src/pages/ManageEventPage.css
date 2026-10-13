@@ -1,0 +1,30 @@
+.manage__event__page {
+    display: flex;
+    gap: 20px;
+    padding-top: 20px;
+    min-height: 90vh;
+    box-sizing: border-box;
+}
+
+.manage__event__sidebar {
+    padding-left: 20px;
+    flex: 1;
+    min-width: 0;
+    box-shadow: 0 0 7px black;
+    border-radius: 40px;
+}
+
+.manage__event__components {
+    flex: 2.5;
+    min-width: 0;
+    box-shadow: 0 0 7px black;
+    border-radius: 40px;
+}
+
+.manage__event__chat {
+    flex: 1;
+    min-width: 0;
+    box-shadow: 0 0 7px black;
+    border-radius: 40px;
+    padding: 20px;
+}

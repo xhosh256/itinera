@@ -29,24 +29,21 @@ const MyEventsPage = () => {
                     return <LoginPage />
                 }
 
-                setEvents((await response.json()).content);
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                const data = await response.json();
+                setEvents(data.content);
             } catch (error) {
                 console.error(error);
             }
         }
 
         fetchEvents();
-    }, [activeTab]);
+    }, [activeTab, setUser]);
 
     if (user === null) return <LoginPage />;
-
-    if(events.length === 0) return (
-        <div>
-            <Header />
-            <h1>Создайте свое первое событие прямо сейчас!</h1>
-            <Link to="/events/create">Создать Событие</Link>
-        </div>
-    );
 
     return (
         <div>
@@ -62,18 +59,21 @@ const MyEventsPage = () => {
                             onClick={() => {setActiveTab("joined")}}
                         >Принимаю участие</button>
                     </div>
-
                     <div className="events__block">
-                        {events.map(({id, name, capacity, joined, visibility}) => (
-                            <EventPreview
-                                key={id}
-                                id={id}
-                                name={name}
-                                capacity={capacity}
-                                joined={joined}
-                                visibility={visibility}
-                            />
-                        ))}
+                        {events.length > 0 ?
+                            events.map(({id, name, capacity, joined, visibility}) => (
+                                <EventPreview
+                                    key={id}
+                                    id={id}
+                                    name={name}
+                                    capacity={capacity}
+                                    joined={joined}
+                                    visibility={visibility}
+                                />
+                            )) :
+                            (<><h1>Создайте свое первое событие прямо сейчас!</h1>
+                            <Link to="/events/create">Создать Событие</Link></>)
+                        }
                     </div>
                 </div>
 
