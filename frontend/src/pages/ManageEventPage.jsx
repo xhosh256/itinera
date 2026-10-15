@@ -31,7 +31,6 @@ const ManageEventPage = () => {
 
                 const data = await response.json();
                 setEvent(data);
-                console.log(data);
             } catch (error) {
                 console.error(error);
                 setEvent(null);
@@ -100,7 +99,7 @@ const ManageEventPage = () => {
                     <p>Список участников</p>
                     <div>
                         {event.participantIds.map((id) => (
-                            <p>Пользователь {id}</p>
+                            <p key={id}>Пользователь {id}</p>
                         ))}
                     </div>
 
@@ -116,13 +115,16 @@ const ManageEventPage = () => {
                             description={description}
                             address={address}
                         />
-                    )) : event.hostId === user.id ? (
+                    )) : (<h1>У этого события нет компонент</h1>)}
+
+                    {event.hostId === user.id ? (
                         <>
                             <h1>Создайте первый компонент события!</h1>
                             <Link to={`/events/${event.id}/components/create`}>Создать компонент</Link>
                         </>
-                    ) : (<h1>У этого события нет компонент</h1>)}
+                    ) : (<></>)}
                 </div>
+
 
                 <div className="manage__event__chat">
                     Here will be user chat ;)
