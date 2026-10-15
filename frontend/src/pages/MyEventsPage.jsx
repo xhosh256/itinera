@@ -60,20 +60,26 @@ const MyEventsPage = () => {
                         >Принимаю участие</button>
                     </div>
                     <div className="events__block">
-                        {events.length > 0 ?
-                            events.map(({id, name, capacity, joined, visibility}) => (
-                                <EventPreview
-                                    key={id}
-                                    id={id}
-                                    name={name}
-                                    capacity={capacity}
-                                    joined={joined}
-                                    visibility={visibility}
-                                />
-                            )) :
-                            (<><h1>Создайте свое первое событие прямо сейчас!</h1>
-                            <Link to="/events/create">Создать Событие</Link></>)
-                        }
+                        {events.length > 0 ? (
+                            <>
+                                {events.map(({id, name, capacity, joined, visibility}) => (
+                                    <EventPreview
+                                        key={id}
+                                        id={id}
+                                        name={name}
+                                        capacity={capacity}
+                                        joined={joined}
+                                        visibility={visibility}
+                                    />))}
+
+                                <Link to="/events/create">Создать новое Событие</Link>
+                            </>
+                        ) : (
+                            <>
+                                <h1>Создайте свое первое событие прямо сейчас!</h1>
+                                <Link to="/events/create">Создать Событие</Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
