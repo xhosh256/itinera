@@ -128,4 +128,15 @@ public class EventService {
                         e.getVisibility()
                 ));
     }
+
+    @Transactional
+    @PreAuthorize(
+            "@eventAuthorization.isHost(#eventId, authentication.name)"
+    )
+    public void deleteEvent(Long eventId) {
+        eventRepository.delete(
+                eventRepository.findById(eventId)
+                        .orElseThrow(() -> new EventNotFound("Event not found"))
+        );
+    }
 }

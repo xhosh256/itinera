@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
@@ -12,6 +12,8 @@ const ManageEventPage = () => {
     const {user, setUser} = useContext(AuthContext);
 
     const [event, setEvent] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -67,6 +69,29 @@ const ManageEventPage = () => {
 
     }
 
+    const handleDeleteEvent = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch(`http://localhost:8080/api/v1/events/${event.id}`, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        navigate("/events");
+    }
+
     if(user===null) return <LoginPage />
 
     if(event===null) return (
@@ -103,7 +128,9 @@ const ManageEventPage = () => {
                         ))}
                     </div>
 
-                    {}
+                    {event.hostId === user.id && (
+                        <button onClick={handleDeleteEvent}>Удалить Событие</button>
+                    )}
                 </div>
 
                 <div className="manage__event__components">
