@@ -2,10 +2,7 @@ package cephei.dev.event_service.service;
 
 import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.*;
-import cephei.dev.event_service.entity.Event;
-import cephei.dev.event_service.entity.EventComponent;
-import cephei.dev.event_service.entity.Invitation;
-import cephei.dev.event_service.entity.InvitationStatus;
+import cephei.dev.event_service.entity.*;
 import cephei.dev.event_service.exception.AlreadyTakingPartException;
 import cephei.dev.event_service.exception.EventAccessDeniedException;
 import cephei.dev.event_service.exception.EventCapacityExceededException;
@@ -43,10 +40,14 @@ public class EventService {
         return eventMapper.toReadDto(eventRepository.save(event));
     }
 
-    public EventReadDto findById(String username, Long id) {
-        UserResponse user = userClient.findByUsername(username);
+    @PreAuthorize(
+            "@eventAuthorization.hasAccess(#id, authentication.name)"
+    )
+    public EventReadDto findById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFound("Event not found"));
+
+
 
         return eventMapper.toReadDto(event);
     }
@@ -138,5 +139,18 @@ public class EventService {
                 eventRepository.findById(eventId)
                         .orElseThrow(() -> new EventNotFound("Event not found"))
         );
+    }
+
+    @Transactional
+    @PreAuthorize(
+            "@eventAuthorization.isHost(#eventId, authentication.name)"
+    )
+    public void editEvent(Long eventId, EditEventDto editEventDto) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFound("Event not found"));
+
+        event.setName(editEventDto.name());
+        event.setCapacity(editEventDto.capacity());
+        event.setVisibility(editEventDto.visibility());
     }
 }

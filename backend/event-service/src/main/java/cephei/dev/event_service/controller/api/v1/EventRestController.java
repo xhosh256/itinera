@@ -48,10 +48,9 @@ public class EventRestController {
 
     @GetMapping("/{eventId}")
     public EventReadDto findById(
-            @AuthenticationPrincipal String username,
             @PathVariable("eventId") Long id
     ) {
-        return eventService.findById(username, id);
+        return eventService.findById(id);
     }
 
     @PostMapping("/{eventId}/joins")
@@ -77,6 +76,15 @@ public class EventRestController {
             @PathVariable Long eventId
     ) {
         eventService.deleteEvent(eventId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{eventId}")
+    public ResponseEntity<Void> editEvent(
+            @PathVariable("eventId") Long eventId,
+            @RequestBody EditEventDto editEventDto
+    ) {
+        eventService.editEvent(eventId, editEventDto);
         return ResponseEntity.ok().build();
     }
 

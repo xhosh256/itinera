@@ -53,11 +53,13 @@ const CreateEventPage = () => {
                 <Input
                     id="event-name"
                     type="text"
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                 >Название ивента</Input>
                 <Input
                     id="event-capacity"
                     type='number'
+                    value={capacity}
                     onChange={(e) => setCapacity(Number(e.target.value))}
                 >Максимальное количетво человек</Input>
                 <Select

@@ -37,12 +37,14 @@ const LoginPage = () => {
                     <Input
                         id="username"
                         type="text"
+                        value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     >Username</Input>
 
                     <Input
                         id="password"
                         type="password"
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     > Password </Input>
                     <button type="submit">Войти</button>

@@ -50,22 +50,26 @@ const CreateComponentPage = () => {
                 <Input
                     id="startTime"
                     type="datetime-local"
+                    value={startTime}
                     onChange={(e) => setStartTime(e.target.value)}
                 >Время начала</Input>
 
                 <Input
                     id="endTime"
                     type="datetime-local"
+                    value={endTime}
                     onChange={(e) => setEndTime(e.target.value)}
                 >Время конца</Input>
 
                 <Input
                     id="description"
+                    value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 >Описание компонента</Input>
 
                 <Input
                     id="address"
+                    value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 >Адрес</Input>
 

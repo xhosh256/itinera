@@ -4,12 +4,13 @@ const Input = (props) => {
         children,
         type='text',
         onChange,
+        value = '',
     } = props
 
     return (
         <>
             <label htmlFor={id}> {children} </label>
-            <input type={type} id={id} onChange={onChange}/>
+            <input value={value} type={type} id={id} onChange={onChange}/>
         </>
     )
 }

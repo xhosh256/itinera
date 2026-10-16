@@ -3,6 +3,7 @@ package cephei.dev.event_service.auth;
 import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.UserResponse;
 import cephei.dev.event_service.entity.Event;
+import cephei.dev.event_service.entity.Visibility;
 import cephei.dev.event_service.exception.EventNotFound;
 import cephei.dev.event_service.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,16 @@ public class EventAuthorization {
         UserResponse host = userClient.findByUsername(hostUsername);
 
         return event.getHostId().equals(host.id());
+    }
+
+    public boolean hasAccess(Long eventId, String participantUsername) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFound("Event not found"));
+
+        if(event.getVisibility() == Visibility.PUBLIC) return true;
+
+        UserResponse participant = userClient.findByUsername(participantUsername);
+
+        return event.getParticipantIds().contains(participant.id());
     }
 }

@@ -5,7 +5,6 @@ import AuthContext from "../context/AuthContext.jsx";
 import LoginPage from "./LoginPage.jsx";
 import './ManageEventPage.css'
 import EventComponent from "../components/EventComponent.jsx";
-import Input from "../components/Input.jsx";
 
 const ManageEventPage = () => {
     const { id } = useParams();
@@ -129,7 +128,10 @@ const ManageEventPage = () => {
                     </div>
 
                     {event.hostId === user.id && (
-                        <button onClick={handleDeleteEvent}>Удалить Событие</button>
+                        <>
+                            <Link to={`/events/${event.id}/edit`}>Редактировать событие</Link>
+                            <button onClick={handleDeleteEvent}>Удалить Событие</button>
+                        </>
                     )}
                 </div>
 

@@ -37,18 +37,21 @@ const RegisterPage = () => {
                     <Input
                         id="username"
                         type="text"
+                        value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     >Имя пользователя</Input>
 
                     <Input
                         id="password"
                         type="password"
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     >Пароль</Input>
 
                     <Input
                         id="email"
                         type="email"
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     >Элекронная почта</Input>
 
