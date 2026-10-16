@@ -3,11 +3,7 @@ package cephei.dev.event_service.service;
 import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.*;
 import cephei.dev.event_service.entity.*;
-import cephei.dev.event_service.exception.AlreadyTakingPartException;
-import cephei.dev.event_service.exception.EventAccessDeniedException;
-import cephei.dev.event_service.exception.EventCapacityExceededException;
-import cephei.dev.event_service.exception.EventNotFound;
-import cephei.dev.event_service.mapper.EventComponentMapper;
+import cephei.dev.event_service.exception.*;
 import cephei.dev.event_service.mapper.EventMapper;
 import cephei.dev.event_service.repository.EventRepository;
 import cephei.dev.event_service.repository.InvitationRepository;
@@ -18,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,7 +24,6 @@ public class EventService {
     private final EventMapper eventMapper;
     private final EventRepository eventRepository;
     private final InvitationRepository invitationRepository;
-    private final EventComponentMapper eventComponentMapper;
 
     @Transactional
     public EventReadDto create(String username, EventCreateRequest eventCreateRequest) {
@@ -46,8 +40,6 @@ public class EventService {
     public EventReadDto findById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFound("Event not found"));
-
-
 
         return eventMapper.toReadDto(event);
     }
@@ -89,19 +81,6 @@ public class EventService {
                 .status(InvitationStatus.PENDING)
                 .build();
         invitationRepository.save(invitation);
-    }
-
-    @Transactional
-    @PreAuthorize(
-            "@eventAuthorization.isHost(#eventId, authentication.name)"
-    )
-    public EventComponentReadDto addComponent(Long eventId, EventComponentCreateDto eventComponentCreateDto) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new EventNotFound("Event not found"));
-
-        EventComponent component = eventComponentMapper.toEntity(eventComponentCreateDto);
-        event.addComponent(component);
-        return eventComponentMapper.toReadDto(component);
     }
 
     public Page<EventPreviewReadDto> findMy(String username, Pageable pageable) {

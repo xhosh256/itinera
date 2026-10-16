@@ -91,6 +91,13 @@ const ManageEventPage = () => {
         navigate("/events");
     }
 
+    const handleComponentDeleted = (componentId) => {
+        setEvent(prev => ({
+            ...prev,
+            components: prev.components.filter(c => c.id !== componentId)
+        }))
+    }
+
     if(user===null) return <LoginPage />
 
     if(event===null) return (
@@ -139,10 +146,13 @@ const ManageEventPage = () => {
                     {event.components.length !== 0 ? event.components.map(({id, startTime, endTime, description, address}) => (
                         <EventComponent
                             key={id}
+                            componentId={id}
+                            event={event}
                             startTime={startTime}
                             endTime={endTime}
                             description={description}
                             address={address}
+                            onDeleted={handleComponentDeleted}
                         />
                     )) : (<h1>У этого события нет компонент</h1>)}
 

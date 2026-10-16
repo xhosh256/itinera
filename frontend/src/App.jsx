@@ -10,6 +10,7 @@ import CreateEventPage from "./pages/CreateEventPage.jsx";
 import ManageEventPage from "./pages/ManageEventPage.jsx";
 import CreateComponentPage from "./pages/CreateComponentPage.jsx";
 import EditEventPage from "./pages/EditEventPage.jsx";
+import EditComponentPage from "./pages/EditComponentPage.jsx";
 
 function App() {
       return (
@@ -26,9 +27,11 @@ function App() {
 
                 <Route path="/events" element={<MyEventsPage />} />
                 <Route path="/events/:id" element={<ManageEventPage />} />
-                <Route path="/events/:id/components/create" element={<CreateComponentPage />} />
                 <Route path="/events/create" element={<CreateEventPage />} />
                 <Route path="/events/:id/edit" element={<EditEventPage />} />
+
+                <Route path="/events/:id/components/create" element={<CreateComponentPage />} />
+                <Route path="/events/:eventId/components/:componentId/edit" element={<EditComponentPage />} />
             </Routes>
           </>
 

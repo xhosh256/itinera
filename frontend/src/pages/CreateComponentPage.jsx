@@ -10,15 +10,15 @@ const CreateComponentPage = () => {
     const {setUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [startTime, setStartTime] = useState(null);
-    const [endTime, setEndTime] = useState(null);
+    const [startTime, setStartTime] = useState(new Date());
+    const [endTime, setEndTime] = useState(new Date());
     const [description, setDescription] = useState("");
     const [address, setAddress] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:8080/api/v1/events/${id}`, {
+        const response = await fetch(`http://localhost:8080/api/v1/events/${id}/components`, {
             credentials: "include",
             method: "POST",
             headers: {
@@ -36,7 +36,6 @@ const CreateComponentPage = () => {
             throw new Error(response.statusText);
         }
 
-        console.log(await response.json());
 
         navigate(`/events/${id}`);
     }

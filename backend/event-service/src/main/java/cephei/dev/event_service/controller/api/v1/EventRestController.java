@@ -87,14 +87,4 @@ public class EventRestController {
         eventService.editEvent(eventId, editEventDto);
         return ResponseEntity.ok().build();
     }
-
-    // Event Components
-
-    @PostMapping("/{eventId}")
-    public EventComponentReadDto addComponent(
-            @PathVariable("eventId") Long eventId,
-            @RequestBody EventComponentCreateDto eventComponentCreateDto
-    ) {
-        return eventService.addComponent(eventId, eventComponentCreateDto);
-    }
 }
