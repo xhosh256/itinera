@@ -4,6 +4,7 @@ import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.UserResponse;
 import cephei.dev.event_service.entity.Event;
 import cephei.dev.event_service.entity.Visibility;
+import cephei.dev.event_service.exception.EventAccessDeniedException;
 import cephei.dev.event_service.exception.EventNotFound;
 import cephei.dev.event_service.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,8 @@ public class EventAuthorization {
 
         UserResponse participant = userClient.findByUsername(participantUsername);
 
-        return event.getParticipantIds().contains(participant.id());
+        if (event.getParticipantIds().contains(participant.id())) return true;
+
+        throw new EventAccessDeniedException("Event access denied");
     }
 }

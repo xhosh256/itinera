@@ -26,6 +26,15 @@ const ManageEventPage = () => {
                     return;
                 }
 
+                if (response.status === 403) {
+                    setEvent({
+                        visibility: "PRIVATE",
+                        participantIds: []
+                    });
+
+                    return;
+                }
+
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }

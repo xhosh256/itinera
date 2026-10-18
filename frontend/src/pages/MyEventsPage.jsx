@@ -5,11 +5,15 @@ import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
 import EventPreview from "../components/EventPreview.jsx";
 import './MyEventsPage.css';
+import Pagination from "../components/Pagination.jsx";
 
 const MyEventsPage = () => {
     const { user, setUser } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState( "created");
     const [events, setEvents] = useState([]);
+
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -19,7 +23,7 @@ const MyEventsPage = () => {
                     "/api/v1/events/joined";
 
                 const response = await fetch(
-                    `http://localhost:8080${url}`, {
+                    `http://localhost:8080${url}?page=${page-1}`, {
                         credentials: "include"
                     }
                 );
@@ -35,13 +39,13 @@ const MyEventsPage = () => {
 
                 const data = await response.json();
                 setEvents(data.content);
+                setTotalPages(data.totalPages);
             } catch (error) {
                 console.error(error);
             }
         }
-
         fetchEvents();
-    }, [activeTab, setUser]);
+    }, [activeTab, page, setUser]);
 
     if (user === null) return <LoginPage />;
 
@@ -53,10 +57,18 @@ const MyEventsPage = () => {
                 <div>
                     <div>
                         <button
-                            onClick={() => {setActiveTab("created")}}
+                            onClick={() => {
+                                setActiveTab("created")
+                                setPage(1)
+                            }}
+                            className={activeTab === "created" ? "active" : ""}
                         >Созданные мной</button>
                         <button
-                            onClick={() => {setActiveTab("joined")}}
+                            onClick={() => {
+                                setActiveTab("joined")
+                                setPage(1)
+                            }}
+                            className={activeTab === "joined" ? "active" : ""}
                         >Принимаю участие</button>
                     </div>
                     <div className="events__block">
@@ -80,6 +92,12 @@ const MyEventsPage = () => {
                                 <Link to="/events/create">Создать Событие</Link>
                             </>
                         )}
+
+                        <Pagination
+                            page={page}
+                            totalPages={totalPages}
+                            onPageChange={setPage}
+                        />
                     </div>
                 </div>
 
