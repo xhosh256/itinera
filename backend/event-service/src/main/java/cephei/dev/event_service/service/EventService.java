@@ -132,4 +132,15 @@ public class EventService {
         event.setCapacity(editEventDto.capacity());
         event.setVisibility(editEventDto.visibility());
     }
+
+    public Page<EventPreviewReadDto> findByName(String name, Pageable pageable) {
+        return eventRepository.findByNameContainingIgnoreCase(name, pageable)
+                .map(e -> new EventPreviewReadDto(
+                        e.getId(),
+                        e.getName(),
+                        e.getCapacity(),
+                        e.getJoined(),
+                        e.getVisibility()
+                ));
+    }
 }

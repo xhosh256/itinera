@@ -11,6 +11,7 @@ import ManageEventPage from "./pages/ManageEventPage.jsx";
 import CreateComponentPage from "./pages/CreateComponentPage.jsx";
 import EditEventPage from "./pages/EditEventPage.jsx";
 import EditComponentPage from "./pages/EditComponentPage.jsx";
+import SearchEventsPage from "./pages/SearchEventsPage.jsx";
 
 function App() {
       return (
@@ -32,6 +33,8 @@ function App() {
 
                 <Route path="/events/:id/components/create" element={<CreateComponentPage />} />
                 <Route path="/events/:eventId/components/:componentId/edit" element={<EditComponentPage />} />
+
+                <Route path="/events/search" element={<SearchEventsPage/>}/>
             </Routes>
           </>
 

@@ -53,6 +53,14 @@ public class EventRestController {
         return eventService.findById(id);
     }
 
+    @GetMapping("/search")
+    public Page<EventPreviewReadDto> findByName(
+        @RequestParam("name") String name,
+        @PageableDefault(size=5, page=0) Pageable pageable
+    ) {
+        return eventService.findByName(name, pageable);
+    }
+
     @PostMapping("/{eventId}/joins")
     public ResponseEntity<Void> join(
             @AuthenticationPrincipal String username,

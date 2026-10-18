@@ -2,6 +2,8 @@ import {Link} from "react-router-dom";
 import './Header.css'
 import {useContext} from "react";
 import AuthContext from "../context/AuthContext.jsx";
+import Input from "./Input.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 const Header = () => {
 
@@ -13,6 +15,12 @@ const Header = () => {
         <header>
             <div>
                 <Link to="/">Itinera</Link>
+            </div>
+
+            <div>
+                <SearchBar>
+                    Найти Событие
+                </SearchBar>
             </div>
 
             <div>
