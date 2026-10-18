@@ -42,16 +42,20 @@ const SearchEventsPage = () => {
         <div>
             <Header />
 
-            {events.map((event) => (
-                <EventPreview
-                    key={event.id}
-                    id={event.id}
-                    name={event.name}
-                    capacity={event.capacity}
-                    joined={event.joined}
-                    visibility={event.visibility}
-                />
-            ))}
+            <div>
+                <h1>Результаты поиска «{name}»</h1>
+                {events.map((event) => (
+                    <EventPreview
+                        key={event.id}
+                        id={event.id}
+                        name={event.name}
+                        capacity={event.capacity}
+                        joined={event.joined}
+                        visibility={event.visibility}
+                    />
+                ))}
+            </div>
+
         </div>
     )
 }
