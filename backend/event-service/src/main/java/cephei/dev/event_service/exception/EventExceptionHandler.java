@@ -58,6 +58,16 @@ public class EventExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
     }
 
+    @ExceptionHandler(HostSelfRemoveFromEventException.class)
+    public ResponseEntity<ErrorBody> hostSelfRemove(HostSelfRemoveFromEventException e) {
+        ErrorBody errorBody = new ErrorBody(
+                HttpStatus.FORBIDDEN,
+                e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
+    }
+
     @ExceptionHandler(EventComponentNotFoundException.class)
     public ResponseEntity<ErrorBody> eventComponentNotFound(EventComponentNotFoundException e) {
         ErrorBody errorBody = new ErrorBody(
@@ -68,4 +78,13 @@ public class EventExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
     }
 
+    @ExceptionHandler(UserNotInEvent.class)
+    public ResponseEntity<ErrorBody> userNotInEvent(UserNotInEvent e) {
+        ErrorBody errorBody = new ErrorBody(
+                HttpStatus.BAD_REQUEST,
+                e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 }

@@ -95,4 +95,22 @@ public class EventRestController {
         eventService.editEvent(eventId, editEventDto);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{eventId}/kicks/{userId}")
+    public ResponseEntity<Void> kickFromEvent(
+            @PathVariable Long eventId,
+            @PathVariable Integer userId
+    ) {
+        eventService.kick(eventId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{eventId}/leaves")
+    public ResponseEntity<Void> leaveFromEvent(
+            @PathVariable Long eventId,
+            @AuthenticationPrincipal String username
+    ) {
+        eventService.leave(username, eventId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -143,4 +143,41 @@ public class EventService {
                         e.getVisibility()
                 ));
     }
+
+    @Transactional
+    @PreAuthorize(
+            "@eventAuthorization.isHost(#eventId, authentication.name)"
+    )
+    public void kick(Long eventId, Integer userId) {
+
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFound("Event not found"));
+
+        if (!event.getParticipantIds().contains(userId)) {
+            throw new UserNotInEvent("User is not taking a part of your event");
+        }
+
+        if (event.getHostId().equals(userId)) {
+            throw new HostSelfRemoveFromEventException("Host cant kick himself");
+        }
+
+        event.getParticipantIds().remove(userId);
+    }
+
+    @Transactional
+    public void leave(String username, Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventNotFound("Event not found"));
+
+        UserResponse user = userClient.findByUsername(username);
+        if (!event.getParticipantIds().contains(user.id())) {
+            throw new UserNotInEvent("User is not taking a part of your event");
+        }
+
+        if(event.getHostId().equals(user.id())) {
+            throw new HostSelfRemoveFromEventException("Host cant leave from event");
+        }
+
+        event.getParticipantIds().remove(user.id());
+    }
 }
