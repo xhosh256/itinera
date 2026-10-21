@@ -107,6 +107,54 @@ const ManageEventPage = () => {
         }))
     }
 
+    const handleKick = async (deleteId) => {
+        const response = await fetch(`http://localhost:8080/api/v1/events/${event.id}/kicks/${deleteId}`, {
+            credentials: "include",
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        setEvent(prev => ({
+            ...prev,
+            participantIds: prev.participantIds.filter(participantId => participantId !== deleteId),
+        }));
+    }
+
+    const handleLeave = async () => {
+        const response = await fetch(`http://localhost:8080/api/v1/events/${event.id}/leaves`, {
+            credentials: "include",
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        setEvent(prev => ({
+            ...prev,
+            participantIds: prev.participantIds.filter(participantId => participantId !== user.id),
+        }));
+    }
+
     if(user===null) return <LoginPage />
 
     if(event===null) return (
@@ -139,7 +187,12 @@ const ManageEventPage = () => {
                     <p>Список участников</p>
                     <div>
                         {event.participantIds.map((id) => (
-                            <p key={id}>Пользователь {id}</p>
+                            <div>
+                                <p key={id}>Пользователь {id} {id === event.hostId && <span>- ХОСТ</span>}</p>
+                                {user.id === event.hostId
+                                    && id !== event.hostId
+                                    && <button onClick={() => handleKick(id)}>Выгнать</button>}
+                            </div>
                         ))}
                     </div>
 
@@ -148,6 +201,10 @@ const ManageEventPage = () => {
                             <Link to={`/events/${event.id}/edit`}>Редактировать событие</Link>
                             <button onClick={handleDeleteEvent}>Удалить Событие</button>
                         </>
+                    )}
+
+                    {event.hostId !== user.id && event.participantIds.includes(user.id) && (
+                        <button onClick={handleLeave}>Покинуть событие</button>
                     )}
                 </div>
 
