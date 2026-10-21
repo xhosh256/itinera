@@ -32,7 +32,7 @@ public class JwtFilter implements GlobalFilter {
 
         String path = exchange.getRequest().getPath().value();
 
-        if (path.startsWith("/api/v1/auth/")) {
+        if (path.startsWith("/api/v1/auth/") || path.equals("/api/v1/events/search")) {
             return chain.filter(exchange);
         }
 
