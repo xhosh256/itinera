@@ -32,9 +32,16 @@ public class JwtFilter implements GlobalFilter {
 
         String path = exchange.getRequest().getPath().value();
 
-        if (path.startsWith("/api/v1/auth/") || path.equals("/api/v1/events/search")) {
+        if (
+                path.startsWith("/api/v1/auth/")
+                || path.equals("/api/v1/events/search")
+                || path.equals("/api/v1/events/upcoming")
+        ) {
+            System.out.println("Skipping auth gateway");
             return chain.filter(exchange);
         }
+
+        System.out.println("Auth didnt skipped gateway");
 
         HttpCookie cookie = exchange.getRequest().getCookies().getFirst("jwt");
 

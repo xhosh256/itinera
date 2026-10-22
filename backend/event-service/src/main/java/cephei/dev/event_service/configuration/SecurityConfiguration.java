@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                         sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.GET, "/api/v1/events/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/events/upcoming").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception

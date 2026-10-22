@@ -28,6 +28,7 @@ public class Event {
 
     @OneToMany(mappedBy = "event", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
+    @OrderBy("startTime ASC")
     private List<EventComponent> components = new ArrayList<>();
 
     @Column(nullable = false)

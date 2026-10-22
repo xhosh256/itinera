@@ -4,15 +4,21 @@ import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.*;
 import cephei.dev.event_service.entity.*;
 import cephei.dev.event_service.exception.*;
+import cephei.dev.event_service.mapper.EventComponentMapper;
 import cephei.dev.event_service.mapper.EventMapper;
+import cephei.dev.event_service.repository.EventComponentRepository;
 import cephei.dev.event_service.repository.EventRepository;
 import cephei.dev.event_service.repository.InvitationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -86,27 +92,33 @@ public class EventService {
     public Page<EventPreviewReadDto> findMy(String username, Pageable pageable) {
 
         UserResponse host = userClient.findByUsername(username);
+//        return eventRepository.findAllByHostId(host.id(), pageable)
+//                .map(e -> new EventPreviewReadDto(
+//                        e.getId(),
+//                        e.getName(),
+//                        e.getCapacity(),
+//                        e.getJoined(),
+//                        e.getVisibility()
+//                ));
+
         return eventRepository.findAllByHostId(host.id(), pageable)
-                .map(e -> new EventPreviewReadDto(
-                        e.getId(),
-                        e.getName(),
-                        e.getCapacity(),
-                        e.getJoined(),
-                        e.getVisibility()
-                ));
+                .map(eventMapper::toPreviewReadDto);
     }
 
     public Page<EventPreviewReadDto> findJoined(String username, Pageable pageable) {
 
         UserResponse participant = userClient.findByUsername(username);
+//        return eventRepository.findAllByParticipantIdsContaining(participant.id(), pageable)
+//                .map(e -> new EventPreviewReadDto(
+//                        e.getId(),
+//                        e.getName(),
+//                        e.getCapacity(),
+//                        e.getJoined(),
+//                        e.getVisibility()
+//                ));
+
         return eventRepository.findAllByParticipantIdsContaining(participant.id(), pageable)
-                .map(e -> new EventPreviewReadDto(
-                        e.getId(),
-                        e.getName(),
-                        e.getCapacity(),
-                        e.getJoined(),
-                        e.getVisibility()
-                ));
+                .map(eventMapper::toPreviewReadDto);
     }
 
     @Transactional
@@ -134,14 +146,17 @@ public class EventService {
     }
 
     public Page<EventPreviewReadDto> findByName(String name, Pageable pageable) {
+//        return eventRepository.findByNameContainingIgnoreCase(name, pageable)
+//                .map(e -> new EventPreviewReadDto(
+//                        e.getId(),
+//                        e.getName(),
+//                        e.getCapacity(),
+//                        e.getJoined(),
+//                        e.getVisibility()
+//                ));
+
         return eventRepository.findByNameContainingIgnoreCase(name, pageable)
-                .map(e -> new EventPreviewReadDto(
-                        e.getId(),
-                        e.getName(),
-                        e.getCapacity(),
-                        e.getJoined(),
-                        e.getVisibility()
-                ));
+            .map(eventMapper::toPreviewReadDto);
     }
 
     @Transactional
@@ -179,5 +194,11 @@ public class EventService {
         }
 
         event.getParticipantIds().remove(user.id());
+    }
+
+    public Page<EventPreviewReadDto> findUpcomingEvents() {
+        Page<Event> upcomingEvents = eventRepository
+                .findUpcomingEvents(LocalDateTime.now(), PageRequest.of(0, 3));
+        return upcomingEvents.map(eventMapper::toPreviewReadDto);
     }
 }

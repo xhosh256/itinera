@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -35,6 +37,11 @@ public class EventRestController {
             @PageableDefault(size = 5, page = 0) Pageable pageable
     ) {
         return eventService.findJoined(username, pageable);
+    }
+
+    @GetMapping("/upcoming")
+    public Page<EventPreviewReadDto> findUpcomingEvents() {
+        return eventService.findUpcomingEvents();
     }
 
     @PostMapping
