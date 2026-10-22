@@ -37,6 +37,8 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:5.0.2")
+	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:5.0.3")
 }
 
 tasks.named('test') {

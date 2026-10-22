@@ -1,5 +1,6 @@
 package cephei.dev.authentication_service.service;
 
+import cephei.dev.authentication_service.client.ProfileClient;
 import cephei.dev.authentication_service.dto.*;
 import cephei.dev.authentication_service.entity.Role;
 import cephei.dev.authentication_service.entity.User;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,18 +31,26 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final ProfileClient profileClient;
 
     @Transactional
     public String register(RegisterRequest registerDto) {
 
         User user = userMapper.toEntity(registerDto);
-        // создание профиля
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
-
         userRepository.save(user);
-        // сохраняем профиль
+
+        ProfileCreateResponse profile = profileClient.create(
+                ProfileCreateRequest.builder()
+                        .userId(user.getId())
+                        .firstname(registerDto.firstname())
+                        .lastname(registerDto.lastname())
+                        .build()
+        );
+
+        System.out.println(profile);
+
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.getRole().getAuthority());
