@@ -23,20 +23,20 @@ public class EventRestController {
 
     private final EventService eventService;
 
-    @GetMapping("/my")
-    public Page<EventPreviewReadDto> findMy(
-            @AuthenticationPrincipal String username,
+    @GetMapping("/created/{userId}")
+    public Page<EventPreviewReadDto> findCreated(
+            @PathVariable Integer userId,
             @PageableDefault(size = 5, page = 0) Pageable pageable
             ) {
-        return eventService.findMy(username, pageable);
+        return eventService.findCreated(userId, pageable);
     }
 
-    @GetMapping("/joined")
+    @GetMapping("/joined/{userId}")
     public Page<EventPreviewReadDto> findJoined(
-            @AuthenticationPrincipal String username,
+            @PathVariable Integer userId,
             @PageableDefault(size = 5, page = 0) Pageable pageable
     ) {
-        return eventService.findJoined(username, pageable);
+        return eventService.findJoined(userId, pageable);
     }
 
     @GetMapping("/upcoming")

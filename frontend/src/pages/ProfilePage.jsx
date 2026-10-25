@@ -1,8 +1,10 @@
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import './ProfilePage.css'
+import LoginPage from "./LoginPage.jsx";
+import EventPreview from "../components/EventPreview.jsx";
 
 const ProfilePage = () => {
 
@@ -12,6 +14,39 @@ const ProfilePage = () => {
     const {userId} = useParams();
 
     const [profile, setProfile] = useState(null);
+    const [events, setEvents] = useState([]);
+    const [activeTab, setActiveTab] = useState("created");
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const url = activeTab === "created" ?
+                    `/api/v1/events/created/${userId}` :
+                    `/api/v1/events/joined/${userId}`;
+
+                const response = await fetch(
+                    `http://localhost:8080${url}`, {
+                        credentials: "include"
+                    }
+                );
+
+                if (response.status === 401) {
+                    setUser(null)
+                    return <LoginPage />
+                }
+
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+
+                const data = await response.json();
+                setEvents(data.content);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchEvents();
+    }, [activeTab, setUser]);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -34,7 +69,6 @@ const ProfilePage = () => {
 
             const profile = await response.json();
             setProfile(profile);
-            console.log(profile);
         }
 
         fetchProfile();
@@ -78,12 +112,34 @@ const ProfilePage = () => {
 
                 <div className="content">
                     <div className="tabs">
-                        <button className="tab">Присоединен(а)</button>
-                        <button className="tab">Созданные</button>
+                        <button
+                            className="tab"
+                            onClick={() => setActiveTab("created")}
+                        >Созданные</button>
+                        <button
+                            className="tab"
+                            onClick={() => setActiveTab("joined")}
+                        >Присоединен(а)</button>
                     </div>
 
                     <div className="events-grid">
-
+                        {events.length > 0 ? (
+                            <>
+                                {events.map(({id, name, capacity, joined, visibility}) => (
+                                    <EventPreview
+                                        key={id}
+                                        id={id}
+                                        name={name}
+                                        capacity={capacity}
+                                        joined={joined}
+                                        visibility={visibility}
+                                    />))}
+                            </>
+                        ) : (
+                            <>
+                                <p>Событий нет(</p>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

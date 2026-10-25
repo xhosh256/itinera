@@ -16,11 +16,12 @@ const MyEventsPage = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
+        if (!user) return;
         const fetchEvents = async () => {
             try {
                 const url = activeTab === "created" ?
-                    "/api/v1/events/my" :
-                    "/api/v1/events/joined";
+                    `/api/v1/events/created/${user.id}` :
+                    `/api/v1/events/joined/${user.id}`;
 
                 const response = await fetch(
                     `http://localhost:8080${url}?page=${page-1}`, {

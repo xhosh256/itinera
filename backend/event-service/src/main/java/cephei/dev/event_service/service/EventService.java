@@ -89,35 +89,14 @@ public class EventService {
         invitationRepository.save(invitation);
     }
 
-    public Page<EventPreviewReadDto> findMy(String username, Pageable pageable) {
+    public Page<EventPreviewReadDto> findCreated(Integer userId, Pageable pageable) {
 
-        UserResponse host = userClient.findByUsername(username);
-//        return eventRepository.findAllByHostId(host.id(), pageable)
-//                .map(e -> new EventPreviewReadDto(
-//                        e.getId(),
-//                        e.getName(),
-//                        e.getCapacity(),
-//                        e.getJoined(),
-//                        e.getVisibility()
-//                ));
-
-        return eventRepository.findAllByHostId(host.id(), pageable)
+        return eventRepository.findAllByHostId(userId, pageable)
                 .map(eventMapper::toPreviewReadDto);
     }
 
-    public Page<EventPreviewReadDto> findJoined(String username, Pageable pageable) {
-
-        UserResponse participant = userClient.findByUsername(username);
-//        return eventRepository.findAllByParticipantIdsContaining(participant.id(), pageable)
-//                .map(e -> new EventPreviewReadDto(
-//                        e.getId(),
-//                        e.getName(),
-//                        e.getCapacity(),
-//                        e.getJoined(),
-//                        e.getVisibility()
-//                ));
-
-        return eventRepository.findAllByParticipantIdsContaining(participant.id(), pageable)
+    public Page<EventPreviewReadDto> findJoined(Integer userId, Pageable pageable) {
+        return eventRepository.findAllByParticipantIdsContaining(userId, pageable)
                 .map(eventMapper::toPreviewReadDto);
     }
 
