@@ -1,6 +1,17 @@
 spring:
   application:
     name: profile-service
+  datasource:
+    url: ${PROFILE_DB_URL}
+    username: ${PROFILE_DB_USERNAME}
+    password: ${PROFILE_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 server:
-  port:
-    8381
+  port: 8381
+jwt:
+  secret: ${SECRET_KEY}
+  expiration: 3600000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6767/eureka/

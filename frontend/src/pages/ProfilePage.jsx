@@ -1,11 +1,42 @@
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const ProfilePage = () => {
 
     const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const {userId} = useParams();
+
+    const [profile, setProfile] = useState({});
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const response = await fetch(`http://localhost:8080/profiles/${userId}`, {
+                credentials: "include",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if(response.status === 401) {
+                setUser(null);
+                return;
+            }
+
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const profile = await response.json();
+            setProfile(profile);
+            console.log(profile);
+        }
+
+        fetchProfile();
+    }, [userId]);
 
     const handleLogout = async () => {
         setUser(null);
@@ -28,9 +59,13 @@ const ProfilePage = () => {
     }
 
     return (
-        <button onClick={handleLogout}>
-            Log out
-        </button>
+        <div>
+            <p>{profile.firstname}</p>
+            <button onClick={handleLogout}>
+                Log out
+            </button>
+        </div>
+
     )
 }
 

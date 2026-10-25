@@ -2,7 +2,6 @@ import {Link} from "react-router-dom";
 import './Header.css'
 import {useContext} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import Input from "./Input.jsx";
 import SearchBar from "./SearchBar.jsx";
 
 const Header = () => {
@@ -30,7 +29,7 @@ const Header = () => {
                 {!isAuthenticated ? (
                     <Link to="/auth/login">Войти</Link>
                 ) : (
-                    <Link to="/profile">Профиль</Link>
+                    <Link to={`/profile/${user.id}`}>Профиль</Link>
                 )}
             </div>
         </header>

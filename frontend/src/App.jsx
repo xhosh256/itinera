@@ -5,13 +5,13 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ExplorePage from "./pages/ExplorePage.jsx";
 import MyEventsPage from "./pages/MyEventsPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
 import CreateEventPage from "./pages/CreateEventPage.jsx";
 import ManageEventPage from "./pages/ManageEventPage.jsx";
 import CreateComponentPage from "./pages/CreateComponentPage.jsx";
 import EditEventPage from "./pages/EditEventPage.jsx";
 import EditComponentPage from "./pages/EditComponentPage.jsx";
 import SearchEventsPage from "./pages/SearchEventsPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 function App() {
       return (
@@ -21,7 +21,7 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/explore" element={<ExplorePage />} />
 
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/profile/:userId" element={<ProfilePage />} />
 
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/register" element={<RegisterPage />} />

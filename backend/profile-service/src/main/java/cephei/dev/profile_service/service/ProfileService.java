@@ -18,8 +18,8 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
 
-    public ProfileReadDto findById(Integer profileId) {
-        return profileRepository.findById(profileId)
+    public ProfileReadDto findByUserId(Integer userId) {
+        return profileRepository.findByUserId(userId)
                 .map(profileMapper::toReadDto)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
     }

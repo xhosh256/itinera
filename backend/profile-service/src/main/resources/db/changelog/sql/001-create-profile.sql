@@ -4,5 +4,5 @@ CREATE TABLE profiles (
     firstname VARCHAR(256) NOT NULL ,
     lastname VARCHAR(256) DEFAULT '',
     birth_date DATE ,
-    bio varchar(512) DEFAULT '',
+    bio varchar(512) DEFAULT ''
 )
