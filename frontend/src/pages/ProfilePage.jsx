@@ -5,7 +5,6 @@ import Header from "../components/Header.jsx";
 import './ProfilePage.css'
 import LoginPage from "./LoginPage.jsx";
 import EventPreview from "../components/EventPreview.jsx";
-import SearchBar from "../components/SearchBar.jsx";
 
 const ProfilePage = () => {
 
@@ -15,6 +14,7 @@ const ProfilePage = () => {
     const {userId} = useParams();
     const [searchUserId, setSearchUserId] = useState(null);
     const [searchUserProfile, setSearchUserProfile] = useState(null);
+    const [tryFetch, setTryFetch] = useState(false);
 
     const [profile, setProfile] = useState(null);
     const [events, setEvents] = useState([]);
@@ -107,8 +107,7 @@ const ProfilePage = () => {
 
         });
 
-        console.log(response.status);
-
+        setTryFetch(true);
         if(response.status === 401) {
             setUser(null);
             return;
@@ -148,14 +147,15 @@ const ProfilePage = () => {
                             <input placeholder="Найти друзей" onChange={(e) => setSearchUserId(e.target.value)} />
                             <button onClick={handleFindUser}>Найти</button>
                             <div>
-                                {(searchUserProfile) ? (
-                                    <h1>{searchUserProfile.firstname} {searchUserProfile.lastname}</h1>
-                                ) : (
+                                {!tryFetch ? (
+                                    <></>
+                                ) : (tryFetch && !searchUserProfile) ? (
                                     <h1>Пользователь не найден</h1>
+                                ) : (
+                                    <Link to={`/profile/${searchUserId}`}>{searchUserProfile.firstname} {searchUserProfile.lastname}</Link>
                                 )}
                             </div>
                         </div>
-                        {}
                     </div>
                 </div>
 

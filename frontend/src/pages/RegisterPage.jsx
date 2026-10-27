@@ -11,6 +11,8 @@ const RegisterPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ const RegisterPage = () => {
                 credentials: "include",
                 method: "POST",
                 headers: {"content-type": "application/json"},
-                body: JSON.stringify({username, password, email})
+                body: JSON.stringify({username, password, email, firstname, lastname}),
             }
         );
 
@@ -54,6 +56,20 @@ const RegisterPage = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     >Элекронная почта</Input>
+
+                    <Input
+                        id="firstname"
+                        type="text"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
+                    >Имя</Input>
+
+                    <Input
+                        id="lastname"
+                        type="text"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                    >Фамилия(Необязательно)</Input>
 
                     <button type="submit" >Зарегестрироваться</button>
                 </form>
