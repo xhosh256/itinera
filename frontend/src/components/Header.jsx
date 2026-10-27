@@ -17,7 +17,7 @@ const Header = () => {
             </div>
 
             <div>
-                <SearchBar>
+                <SearchBar type="events">
                     Найти Событие
                 </SearchBar>
             </div>

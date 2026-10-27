@@ -5,6 +5,7 @@ import Header from "../components/Header.jsx";
 import './ProfilePage.css'
 import LoginPage from "./LoginPage.jsx";
 import EventPreview from "../components/EventPreview.jsx";
+import SearchBar from "../components/SearchBar.jsx";
 
 const ProfilePage = () => {
 
@@ -12,6 +13,8 @@ const ProfilePage = () => {
     const navigate = useNavigate();
 
     const {userId} = useParams();
+    const [searchUserId, setSearchUserId] = useState(null);
+    const [searchUserProfile, setSearchUserProfile] = useState(null);
 
     const [profile, setProfile] = useState(null);
     const [events, setEvents] = useState([]);
@@ -94,6 +97,36 @@ const ProfilePage = () => {
         navigate("/");
     }
 
+    const handleFindUser = async () => {
+        const response = await fetch(`http://localhost:8080/api/v1/profiles/${searchUserId}`, {
+            credentials: "include",
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+
+        });
+
+        console.log(response.status);
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(response.status === 404) {
+            setSearchUserProfile(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        const data = await response.json();
+        setSearchUserProfile(data);
+    }
+
     if(profile === null) {
         return (
             <p>Профиля не существует!</p>
@@ -108,6 +141,22 @@ const ProfilePage = () => {
                     <p className="user-name">{profile.firstname} {profile.lastname}</p>
                     <p className="user_id">User Id: {userId}</p>
                     <p className="user-bio">Обо мне: {profile.bio}</p>
+
+                    <div>
+                        <p>Друзья</p>
+                        <div className="user__searchbar">
+                            <input placeholder="Найти друзей" onChange={(e) => setSearchUserId(e.target.value)} />
+                            <button onClick={handleFindUser}>Найти</button>
+                            <div>
+                                {(searchUserProfile) ? (
+                                    <h1>{searchUserProfile.firstname} {searchUserProfile.lastname}</h1>
+                                ) : (
+                                    <h1>Пользователь не найден</h1>
+                                )}
+                            </div>
+                        </div>
+                        {}
+                    </div>
                 </div>
 
                 <div className="content">
