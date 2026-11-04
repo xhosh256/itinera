@@ -1,6 +1,5 @@
 package cephei.dev.profile_service.service;
 
-import cephei.dev.profile_service.dto.FriendReadDto;
 import cephei.dev.profile_service.dto.ProfileCreateDto;
 import cephei.dev.profile_service.dto.ProfileReadDto;
 import cephei.dev.profile_service.entity.Friendship;
@@ -30,10 +29,7 @@ public class ProfileService {
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
         ProfileReadDto base = profileMapper.toReadDto(profile);
-
-        List<FriendReadDto> friends = new ArrayList<>();
         Set<Integer> friendIds = new HashSet<>();
-
 
         for (Friendship friendship : friendshipRepository.findAllByProfileIdAndStatus(
                 FriendshipStatus.ACCEPTED, profile.getId())
@@ -42,14 +38,7 @@ public class ProfileService {
                     ? friendship.getFriend()
                     : friendship.getUser();
 
-            FriendReadDto friend = FriendReadDto.builder()
-                    .id(friendProfile.getId())
-                    .firstname(friendProfile.getFirstname())
-                    .lastname(friendProfile.getLastname())
-                    .build();
-
-            friends.add(friend);
-            friendIds.add(friend.id());
+            friendIds.add(friendProfile.getId());
         }
         return ProfileReadDto.builder()
                 .id(base.id())
@@ -57,7 +46,6 @@ public class ProfileService {
                 .lastname(base.lastname())
                 .birthDate(base.birthDate())
                 .bio(base.bio())
-                .friends(friends)
                 .friendIds(friendIds)
                 .build();
     }

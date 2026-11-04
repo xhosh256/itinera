@@ -13,6 +13,8 @@ import EditComponentPage from "./pages/EditComponentPage.jsx";
 import SearchEventsPage from "./pages/SearchEventsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FriendRequestsPage from "./pages/FriendRequestsPage.jsx";
+import InviteFriendsToEvent from "./pages/InviteFriendsToEvents.jsx";
+import EventInvites from "./pages/EventInvites.jsx";
 
 function App() {
       return (
@@ -36,6 +38,8 @@ function App() {
                 <Route path="/events/:eventId/components/:componentId/edit" element={<EditComponentPage />} />
 
                 <Route path="/events/search" element={<SearchEventsPage/>}/>
+                <Route path="/events/invites" element={<EventInvites/>}/>
+                <Route path="/events/:eventId/invite" element={<InviteFriendsToEvent/>}/>
 
                 <Route path="/friends/requests" element={<FriendRequestsPage />} />
             </Routes>

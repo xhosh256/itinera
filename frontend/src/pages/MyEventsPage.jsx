@@ -57,6 +57,8 @@ const MyEventsPage = () => {
             <div className="my__events__grid">
                 <div>
                     <div>
+                        <Link to={"/events/invites"}>Приглащения</Link>
+                        <br/>
                         <button
                             onClick={() => {
                                 setActiveTab("created")

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -74,6 +75,13 @@ public class EventService {
     public void invite(Long eventId, Integer invitedUserId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFound("Event not found"));
+
+        Optional<Invitation> maybeInvitation = invitationRepository.findByEventIdAndUserId(eventId, invitedUserId);
+
+        if(maybeInvitation.isPresent()) {
+            throw new InvitationRequestAlreadySent("Request already sent");
+        }
+
         if(event.containsParticipant(invitedUserId))
             throw new AlreadyTakingPartException("User is already taking a part of this event");
 

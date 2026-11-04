@@ -30,4 +30,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
         where f.friend.userId = :myId and f.status = :status
     """)
     List<Friendship> findAllFriendRequests(Integer myId, FriendshipStatus status);
+
+    @Query("""
+        select f from Friendship f 
+        where f.friend.userId = :userId or f.user.userId = :userId
+        and f.status = 'ACCEPTED'
+    """)
+    List<Friendship> findAllFriends(Integer userId);
 }

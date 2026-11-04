@@ -1,5 +1,6 @@
 package cephei.dev.profile_service.api.v1;
 
+import cephei.dev.profile_service.dto.FriendReadDto;
 import cephei.dev.profile_service.dto.FriendshipReadDto;
 import cephei.dev.profile_service.service.FriendshipService;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,10 @@ public class FriendshipRestController {
     public ResponseEntity<Void> declineFriendship(@PathVariable Long friendshipId) {
         friendshipService.decline(friendshipId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/friends/{userId}")
+    public List<FriendReadDto> findAllFriends(@PathVariable Integer userId) {
+        return friendshipService.findAllFriends(userId);
     }
 }

@@ -173,10 +173,9 @@ const ManageEventPage = () => {
     }
 
     return (
-        <div>
+        <div className="manage__event__page">
             <Header />
-
-            <div className="manage__event__page">
+            <div className="manage__event__layout">
                 <div className="manage__event__sidebar">
                     <h1>{event.name}</h1>
                     <p> {event.visibility === 'PUBLIC' ? 'Публичный' : 'Приватный'} ивент </p>
@@ -205,6 +204,13 @@ const ManageEventPage = () => {
 
                     {event.hostId !== user.id && event.participantIds.includes(user.id) && (
                         <button onClick={handleLeave}>Покинуть событие</button>
+                    )}
+
+                    <br/>
+                    <br/>
+
+                    {event.hostId === user.id && (
+                        <Link to={`/events/${event.id}/invite`}>Добавить друзей</Link>
                     )}
                 </div>
 

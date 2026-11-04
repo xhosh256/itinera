@@ -16,7 +16,6 @@ public record ProfileReadDto
                 String lastname,
                 LocalDate birthDate,
                 String bio,
-                List<FriendReadDto> friends,
                 Set<Integer> friendIds
         ){
 }

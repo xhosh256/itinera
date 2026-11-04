@@ -19,9 +19,38 @@ const ProfilePage = () => {
     const [friendRequestPending, setFriendRequestPending] = useState(false);
 
     const [myProfile, setMyProfile] = useState(null);
+    const [myFriends, setMyFriends] = useState(null);
     const [profile, setProfile] = useState(null);
     const [events, setEvents] = useState([]);
     const [activeTab, setActiveTab] = useState("created");
+
+    useEffect(() => {
+        if(!user) return;
+
+        const fetchFriends = async () => {
+            const response = await fetch(`http://localhost:8080/api/v1/friendships/friends/${userId}`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if(response.status === 401) {
+                setUser(null);
+                return;
+            }
+
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const data = await response.json();
+            setMyFriends(data);
+        }
+
+        fetchFriends()
+    }, [user]);
 
     useEffect(() => {
         if(!user) return;
@@ -158,15 +187,17 @@ const ProfilePage = () => {
     }
 
     if(!user) {
-        return (
-            <p>Пользователь не найден</p>
-        )
+        return <LoginPage/>
     }
 
     if(profile === null) {
         return (
             <p>Профиля не существует!</p>
         )
+    }
+
+    if(myFriends === null) {
+        return <h1>Загрузка...</h1>
     }
 
     const handleSendFriendRequest = async () => {
@@ -199,9 +230,8 @@ const ProfilePage = () => {
                             && !myProfile.friendIds.includes(profile.id))
                         && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
                     {friendRequestPending && <p style={{ color: "green" }}>Запрос отправлен</p>}
-                    <p className="user-name">{profile.firstname} {profile.lastname}</p>
-                    <p className="user_id">User Id: {userId}</p>
-                    <p className="user-bio">Обо мне: {profile.bio}</p>
+                    <p>{profile.firstname} {profile.lastname} User Id: {userId}</p>
+                    <p>Обо мне: {profile.bio}</p>
 
                     <div>
                         <h1>Друзья {(Number(userId) === user.id) && <Link to={`/friends/requests`}>Заявки</Link>}</h1>
@@ -227,7 +257,7 @@ const ProfilePage = () => {
                     </div>
 
                     <div>
-                        {profile.friends.map((friend) => (
+                        {myFriends.map((friend) => (
                             <div key={friend.id}>
                                 <p>{friend.firstname} {friend.lastname}</p>
                             </div>

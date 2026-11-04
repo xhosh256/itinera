@@ -18,7 +18,6 @@ import java.util.*;
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {
 
-    @Mapping(target = "friends", ignore = true)
     @Mapping(target = "friendIds", ignore = true)
     ProfileReadDto toReadDto(Profile profile);
 

@@ -1,6 +1,7 @@
 package cephei.dev.profile_service.service;
 
 import cephei.dev.profile_service.client.UserClient;
+import cephei.dev.profile_service.dto.FriendReadDto;
 import cephei.dev.profile_service.dto.FriendshipReadDto;
 import cephei.dev.profile_service.dto.UserResponse;
 import cephei.dev.profile_service.entity.Friendship;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -125,5 +127,27 @@ public class FriendshipService {
         }
 
         friendship.setStatus(FriendshipStatus.DECLINED);
+    }
+
+    public List<FriendReadDto> findAllFriends(Integer userId) {
+        List<Friendship> friends = friendshipRepository.findAllFriends(userId);
+        List<FriendReadDto> friendReadDtoList = new ArrayList<>();
+
+        for(Friendship friendship : friends) {
+            Profile friendProfile = Objects.equals(friendship.getUser().getUserId(), userId)
+                    ? friendship.getFriend()
+                    : friendship.getUser();
+
+            FriendReadDto friend = FriendReadDto.builder()
+                    .id(friendProfile.getId())
+                    .userId(friendProfile.getUserId())
+                    .firstname(friendProfile.getFirstname())
+                    .lastname(friendProfile.getLastname())
+                    .build();
+
+            friendReadDtoList.add(friend);
+        }
+
+        return friendReadDtoList;
     }
 }
