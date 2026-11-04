@@ -10,6 +10,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
+
+    @Query("""
+        select i from Invitation i
+        where i.invitedUserId = :invitedUserId
+        and i.status = 'PENDING'
+    """)
     Page<Invitation> findByInvitedUserId(Integer invitedUserId, Pageable pageable);
 
 
@@ -17,6 +23,7 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
         select i from Invitation i
         where i.event.id = :eventId 
         and i.invitedUserId = :invitedUserId
+        and i.status = 'PENDING'
     """)
     Optional<Invitation> findByEventIdAndUserId(Long eventId, Integer invitedUserId);
 }

@@ -25,7 +25,6 @@ import java.util.Objects;
 public class InvitationService {
 
     private final InvitationRepository invitationRepository;
-    private final InvitationMapper invitationMapper;
     private final UserClient userClient;
 
     public Page<InvitationReadDto> findAll(String username, Pageable pageable) {

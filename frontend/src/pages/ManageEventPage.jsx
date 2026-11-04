@@ -153,6 +153,8 @@ const ManageEventPage = () => {
             ...prev,
             participantIds: prev.participantIds.filter(participantId => participantId !== user.id),
         }));
+
+        navigate("/events");
     }
 
     if(user===null) return <LoginPage />
