@@ -14,9 +14,9 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     @Query("""
         select f from Friendship f
         where f.status = :status and
-        (f.friend = :profile or f.user = :profile)
+        (f.friend.id = :profileId or f.user.id = :profileId)
     """)
-    List<Friendship> findAllByProfileAndStatus(FriendshipStatus status, Profile profile);
+    List<Friendship> findAllByProfileIdAndStatus(FriendshipStatus status, Integer profileId);
 
     @Query("""
         select f from Friendship f
@@ -25,5 +25,9 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     """)
     Optional<Friendship> findFriendshipByFriendIds(Integer userId, Integer friendId);
 
-    Optional<Friendship> findByUser_UserIdAndFriend_UserId(Integer id, Integer friendId);
+    @Query("""
+        select f from Friendship f
+        where f.friend.userId = :myId and f.status = :status
+    """)
+    List<Friendship> findAllFriendRequests(Integer myId, FriendshipStatus status);
 }

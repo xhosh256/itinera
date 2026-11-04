@@ -1,6 +1,7 @@
 package cephei.dev.profile_service.service;
 
 import cephei.dev.profile_service.client.UserClient;
+import cephei.dev.profile_service.dto.FriendshipReadDto;
 import cephei.dev.profile_service.dto.UserResponse;
 import cephei.dev.profile_service.entity.Friendship;
 import cephei.dev.profile_service.entity.FriendshipStatus;
@@ -9,12 +10,16 @@ import cephei.dev.profile_service.exception.AlreadyFriendsException;
 import cephei.dev.profile_service.exception.FriendshipRequestAlreadyPendingException;
 import cephei.dev.profile_service.exception.ProfileNotFoundException;
 import cephei.dev.profile_service.exception.SelfRequestException;
+import cephei.dev.profile_service.mapper.FriendshipMapper;
+import cephei.dev.profile_service.mapper.ProfileMapper;
 import cephei.dev.profile_service.repository.FriendshipRepository;
 import cephei.dev.profile_service.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,18 +31,19 @@ public class FriendshipService {
     private final ProfileRepository profileRepository;
     private final UserClient userClient;
     private final FriendshipRepository friendshipRepository;
+    private final FriendshipMapper friendshipMapper;
+    private final ProfileMapper profileMapper;
 
     @Transactional
     public void sendRequest(String username, Integer friendId) {
         UserResponse userResponse = userClient.findByUsername(username);
 
         if(Objects.equals(userResponse.id(), friendId)) {
-            throw new SelfRequestException("Ypu cant send self friendship request");
+            throw new SelfRequestException("You cant send self friendship request");
         }
 
         Profile user = profileRepository.findByUserId(userResponse.id())
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
-
         Profile friend = profileRepository.findByUserId(friendId)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
@@ -73,5 +79,24 @@ public class FriendshipService {
                 friendship.setStatus(FriendshipStatus.PENDING);
             }
         }
+    }
+
+    @PreAuthorize(
+        "@friendshipAuthorization.doesRequestBelongsToMe(#myId, authentication.name)"
+    )
+    public List<FriendshipReadDto> getAllRequests(Integer myId) {
+        List<Friendship> requests = friendshipRepository
+                .findAllFriendRequests(myId, FriendshipStatus.PENDING);
+
+        return requests.stream().map((friendship) -> {
+            FriendshipReadDto base = friendshipMapper.toReadDto(friendship);
+
+            return FriendshipReadDto.builder()
+                    .id(base.id())
+                    .user(profileMapper.toReadDto(friendship.getUser()))
+                    .friend(profileMapper.toReadDto(friendship.getFriend()))
+                    .status(base.status())
+                    .build();
+        }).toList();
     }
 }

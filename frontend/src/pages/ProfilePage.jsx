@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, Navigate, useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import './ProfilePage.css'
 import LoginPage from "./LoginPage.jsx";
@@ -8,17 +8,49 @@ import EventPreview from "../components/EventPreview.jsx";
 
 const ProfilePage = () => {
 
-    const { setUser } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
+
     const navigate = useNavigate();
 
     const {userId} = useParams();
     const [searchUserId, setSearchUserId] = useState(null);
     const [searchUserProfile, setSearchUserProfile] = useState(null);
     const [tryFetch, setTryFetch] = useState(false);
+    const [friendRequestPending, setFriendRequestPending] = useState(false);
 
+    const [myProfile, setMyProfile] = useState(null);
     const [profile, setProfile] = useState(null);
     const [events, setEvents] = useState([]);
     const [activeTab, setActiveTab] = useState("created");
+
+    useEffect(() => {
+        if(!user) return;
+
+        const fetchMyProfile = async () => {
+            const response = await fetch(`http://localhost:8080/api/v1/profiles/${user.id}`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (response.status === 401) {
+                setUser(null)
+                return <LoginPage />
+            }
+
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const data = await response.json();
+            setMyProfile(data);
+
+        }
+
+        fetchMyProfile();
+    }, [user]);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -49,7 +81,7 @@ const ProfilePage = () => {
             }
         }
         fetchEvents();
-    }, [activeTab, setUser]);
+    }, [activeTab, setUser, userId]);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -78,8 +110,6 @@ const ProfilePage = () => {
     }, [userId]);
 
     const handleLogout = async () => {
-        setUser(null);
-
         const response = await fetch(
             "http://localhost:8080/api/v1/auth/logout", {
                 credentials: "include",
@@ -94,6 +124,7 @@ const ProfilePage = () => {
             console.log("Something went wrong", response.statusText);
         }
 
+        setUser(null);
         navigate("/");
     }
 
@@ -126,10 +157,37 @@ const ProfilePage = () => {
         setSearchUserProfile(data);
     }
 
+    if(!user) {
+        return (
+            <p>Пользователь не найден</p>
+        )
+    }
+
     if(profile === null) {
         return (
             <p>Профиля не существует!</p>
         )
+    }
+
+    const handleSendFriendRequest = async () => {
+        const response = await fetch(`http://localhost:8080/api/v1/friendships/${userId}`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return <LoginPage/>
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        setFriendRequestPending(true);
     }
 
     return (
@@ -137,14 +195,20 @@ const ProfilePage = () => {
             <Header />
             <div className="profile-layout">
                 <div className="sidebar">
+                    {   (myProfile && user) && (Number(userId) !== user.id
+                            && !myProfile.friendIds.includes(profile.id))
+                        && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
+                    {friendRequestPending && <p style={{ color: "green" }}>Запрос отправлен</p>}
                     <p className="user-name">{profile.firstname} {profile.lastname}</p>
                     <p className="user_id">User Id: {userId}</p>
                     <p className="user-bio">Обо мне: {profile.bio}</p>
 
                     <div>
-                        <p>Друзья</p>
+                        <h1>Друзья {(Number(userId) === user.id) && <Link to={`/friends/requests`}>Заявки</Link>}</h1>
+
+                        <p>Найти друзей</p>
                         <div className="user__searchbar">
-                            <input placeholder="Найти друзей" onChange={(e) => setSearchUserId(e.target.value)} />
+                            <input placeholder="Поиск" onChange={(e) => setSearchUserId(e.target.value)} />
                             <button onClick={handleFindUser}>Найти</button>
                             <div>
                                 {!tryFetch ? (
@@ -157,6 +221,20 @@ const ProfilePage = () => {
                             </div>
                         </div>
                     </div>
+
+                    <div>
+                        {profile.friends.map((friend) => (
+                            <div key={friend.id}>
+                                <p>{friend.firstname} {friend.lastname}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {(Number(userId) === user.id) && (
+                        <button className="logout-btn" onClick={handleLogout}>
+                            Log out
+                        </button>
+                    )}
                 </div>
 
                 <div className="content">
@@ -192,10 +270,6 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
-
-            <button className="logout-btn" onClick={handleLogout}>
-                Log out
-            </button>
         </div>
 
     )

@@ -37,10 +37,14 @@ spring:
               uri: lb://event-service
               predicates:
                 - Path=/api/v1/invitations/**
-            - id: profile-service
+            - id: profile-service-profiles
               uri: lb://profile-service
               predicates:
                 - Path=/api/v1/profiles/**
+            - id: profile-service-friendships
+              uri: lb://profile-service
+              predicates:
+                - Path=/api/v1/friendships/**
 jwt:
   secret: ${SECRET_KEY}
   expiration: 3600000

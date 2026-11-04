@@ -62,6 +62,8 @@ body {
 }
 
 .sidebar {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     min-width: 0;
     min-height: 80vh;
@@ -130,7 +132,7 @@ body {
 
 .logout-btn {
     display: block;
-    margin: 24px auto 0;
+    margin: auto auto 0;
     padding: 8px 16px;
     background: transparent;
     border: 1px solid var(--border);
