@@ -23,7 +23,7 @@ const FriendRequestsPage = () => {
 
             if(response.status === 401) {
                 setUser(null);
-                setUser(null);
+                return;
             }
 
             if(!response.ok) {
@@ -41,6 +41,48 @@ const FriendRequestsPage = () => {
         return <LoginPage/>
     }
 
+    const handleAccept = async (e) => {
+        const response = await fetch(`http://localhost:8080/api/v1/friendships/requests/accept/${e.target.value}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        setRequests(prev => prev.filter(r => r.id !== Number(e.target.value)));
+    }
+
+    const handleDecline = async (e) => {
+        const response = await fetch(`http://localhost:8080/api/v1/friendships/requests/decline/${e.target.value}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        setRequests(prev => prev.filter(r => r.id !== Number(e.target.value)));
+    }
+
     return (
         <div>
             <Header />
@@ -51,8 +93,8 @@ const FriendRequestsPage = () => {
                 requests.map(({id, user}) => (
                     <div key={id}>
                         <p>{user.firstname} {user.lastname}</p>
-                        <button>Принять</button>
-                        <button>Отклонить</button>
+                        <button value={id} onClick={handleAccept}>Принять</button>
+                        <button value={id} onClick={handleDecline}>Отклонить</button>
                     </div>
                 ))
             }

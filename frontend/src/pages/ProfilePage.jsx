@@ -206,20 +206,24 @@ const ProfilePage = () => {
                     <div>
                         <h1>Друзья {(Number(userId) === user.id) && <Link to={`/friends/requests`}>Заявки</Link>}</h1>
 
-                        <p>Найти друзей</p>
-                        <div className="user__searchbar">
-                            <input placeholder="Поиск" onChange={(e) => setSearchUserId(e.target.value)} />
-                            <button onClick={handleFindUser}>Найти</button>
-                            <div>
-                                {!tryFetch ? (
-                                    <></>
-                                ) : (tryFetch && !searchUserProfile) ? (
-                                    <h1>Пользователь не найден</h1>
-                                ) : (
-                                    <Link to={`/profile/${searchUserId}`}>{searchUserProfile.firstname} {searchUserProfile.lastname}</Link>
-                                )}
-                            </div>
-                        </div>
+                        {Number(userId) === user.id ? (
+                            <>
+                                <p>Найти друзей</p>
+                                <div className="user__searchbar">
+                                    <input placeholder="Поиск" onChange={(e) => setSearchUserId(e.target.value)} />
+                                    <button onClick={handleFindUser}>Найти</button>
+                                    <div>
+                                        {!tryFetch ? (
+                                            <></>
+                                        ) : (tryFetch && !searchUserProfile) ? (
+                                            <h1>Пользователь не найден</h1>
+                                        ) : (
+                                            <Link to={`/profile/${searchUserId}`}>{searchUserProfile.firstname} {searchUserProfile.lastname}</Link>
+                                        )}
+                                    </div>
+                                </div>
+                            </>
+                        ) : <></>}
                     </div>
 
                     <div>

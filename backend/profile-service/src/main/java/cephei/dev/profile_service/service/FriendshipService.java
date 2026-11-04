@@ -6,10 +6,7 @@ import cephei.dev.profile_service.dto.UserResponse;
 import cephei.dev.profile_service.entity.Friendship;
 import cephei.dev.profile_service.entity.FriendshipStatus;
 import cephei.dev.profile_service.entity.Profile;
-import cephei.dev.profile_service.exception.AlreadyFriendsException;
-import cephei.dev.profile_service.exception.FriendshipRequestAlreadyPendingException;
-import cephei.dev.profile_service.exception.ProfileNotFoundException;
-import cephei.dev.profile_service.exception.SelfRequestException;
+import cephei.dev.profile_service.exception.*;
 import cephei.dev.profile_service.mapper.FriendshipMapper;
 import cephei.dev.profile_service.mapper.ProfileMapper;
 import cephei.dev.profile_service.repository.FriendshipRepository;
@@ -98,5 +95,35 @@ public class FriendshipService {
                     .status(base.status())
                     .build();
         }).toList();
+    }
+
+    @Transactional
+    @PreAuthorize(
+            "@friendshipAuthorization.doesFriendshipBelongsToMe(#friendshipId, authentication.name)"
+    )
+    public void accept(Long friendshipId) {
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(() -> new FriendshipNotFound("Friendship not found"));
+
+        if(friendship.getStatus() != FriendshipStatus.PENDING) {
+            throw new RequestAlreadyProceed("Request already proceed");
+        }
+
+        friendship.setStatus(FriendshipStatus.ACCEPTED);
+    }
+
+    @Transactional
+    @PreAuthorize(
+            "@friendshipAuthorization.doesFriendshipBelongsToMe(#friendshipId, authentication.name)"
+    )
+    public void decline(Long friendshipId) {
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(() -> new FriendshipNotFound("Friendship not found"));
+
+        if(friendship.getStatus() != FriendshipStatus.PENDING) {
+            throw new RequestAlreadyProceed("Request already proceed");
+        }
+
+        friendship.setStatus(FriendshipStatus.DECLINED);
     }
 }

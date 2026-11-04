@@ -27,4 +27,16 @@ public class FriendshipRestController {
     public List<FriendshipReadDto> getAllRequests(@PathVariable Integer myId) {
         return friendshipService.getAllRequests(myId);
     }
+
+    @PostMapping("/requests/accept/{friendshipId}")
+    public ResponseEntity<Void> acceptFriendship(@PathVariable Long friendshipId) {
+        friendshipService.accept(friendshipId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/requests/decline/{friendshipId}")
+    public ResponseEntity<Void> declineFriendship(@PathVariable Long friendshipId) {
+        friendshipService.decline(friendshipId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
