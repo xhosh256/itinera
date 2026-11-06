@@ -15,6 +15,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import FriendRequestsPage from "./pages/FriendRequestsPage.jsx";
 import InviteFriendsToEvent from "./pages/InviteFriendsToEvents.jsx";
 import EventInvitesPage from "./pages/EventInvitesPage.jsx";
+import EditProfilePage from "./pages/EditProfilePage.jsx";
 
 function App() {
       return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/explore" element={<ExplorePage />} />
 
                 <Route path="/profile/:userId" element={<ProfilePage />} />
+                <Route path="/profile/edit/:profileId" element={<EditProfilePage />} />
 
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/register" element={<RegisterPage />} />

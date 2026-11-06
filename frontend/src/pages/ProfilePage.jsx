@@ -226,11 +226,13 @@ const ProfilePage = () => {
             <Header />
             <div className="profile-layout">
                 <div className="sidebar">
+                    {(myProfile && user) && (Number(userId) === user.id) && <Link to={`/profile/edit/${profile.id}`}>Редактировать профиль</Link>}
                     {   (myProfile && user) && (Number(userId) !== user.id
                             && !myProfile.friendIds.includes(profile.id))
                         && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
                     {friendRequestPending && <p style={{ color: "green" }}>Запрос отправлен</p>}
                     <p>{profile.firstname} {profile.lastname} User Id: {userId}</p>
+                    <p>Дата рождения: {profile.birthDate}</p>
                     <p>Обо мне: {profile.bio}</p>
 
                     <div>
