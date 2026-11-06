@@ -50,7 +50,7 @@ const ProfilePage = () => {
         }
 
         fetchFriends()
-    }, [user]);
+    }, [profile]);
 
     useEffect(() => {
         if(!user) return;

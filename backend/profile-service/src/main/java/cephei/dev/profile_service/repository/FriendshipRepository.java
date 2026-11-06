@@ -33,7 +33,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query("""
         select f from Friendship f 
-        where f.friend.userId = :userId or f.user.userId = :userId
+        where (f.friend.userId = :userId or f.user.userId = :userId)
         and f.status = 'ACCEPTED'
     """)
     List<Friendship> findAllFriends(Integer userId);

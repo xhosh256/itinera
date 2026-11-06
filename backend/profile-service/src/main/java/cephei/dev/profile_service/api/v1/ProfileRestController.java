@@ -1,6 +1,7 @@
 package cephei.dev.profile_service.api.v1;
 
 import cephei.dev.profile_service.dto.ProfileCreateDto;
+import cephei.dev.profile_service.dto.ProfileEditDto;
 import cephei.dev.profile_service.dto.ProfileReadDto;
 import cephei.dev.profile_service.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,11 @@ public class ProfileRestController {
     @GetMapping("/{userId}")
     public ResponseEntity<ProfileReadDto> findByUserId(@PathVariable Integer userId) {
         return ResponseEntity.ok(profileService.findByUserId(userId));
+    }
+
+    @PutMapping("/{profileId}")
+    public ResponseEntity<Void> editProfile(@PathVariable Integer profileId, @RequestBody ProfileEditDto profileEditDto) {
+        profileService.editProfile(profileId, profileEditDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

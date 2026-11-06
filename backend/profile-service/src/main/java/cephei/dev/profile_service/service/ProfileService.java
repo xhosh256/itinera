@@ -1,6 +1,7 @@
 package cephei.dev.profile_service.service;
 
 import cephei.dev.profile_service.dto.ProfileCreateDto;
+import cephei.dev.profile_service.dto.ProfileEditDto;
 import cephei.dev.profile_service.dto.ProfileReadDto;
 import cephei.dev.profile_service.entity.Friendship;
 import cephei.dev.profile_service.entity.FriendshipStatus;
@@ -10,6 +11,7 @@ import cephei.dev.profile_service.mapper.ProfileMapper;
 import cephei.dev.profile_service.repository.FriendshipRepository;
 import cephei.dev.profile_service.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +57,19 @@ public class ProfileService {
         Profile profile = profileMapper.toEntity(profileCreateDto);
         profile.setUserId(profileCreateDto.userId());
         return profileMapper.toReadDto(profileRepository.save(profile));
+    }
+
+    @Transactional
+    @PreAuthorize(
+            "@profileAuthorization.isProfileOwner(#profileId, authentication.name)"
+    )
+    public void editProfile(Integer profileId, ProfileEditDto profileEditDto) {
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
+
+        profile.setFirstname(profileEditDto.firstname());
+        profile.setLastname(profileEditDto.lastname());
+        profile.setBirthDate(profileEditDto.birthDate());
+        profile.setBio(profileEditDto.bio());
     }
 }
