@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import EventPreview from "../components/EventPreview.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
+import './ExplorePage.css';
 
 const ExplorePage = () => {
 
@@ -30,33 +31,45 @@ const ExplorePage = () => {
 
             const events = await response.json();
             setUpcomingEvents(events.content);
-            console.log("RENDER: ", events)
         }
 
         fetchUpcomingEvents();
     }, [])
 
     return (
-        <>
+        <div className="explore__page">
             <Header />
-            <div>
-                <h1>Upcoming Events</h1>
-                {upcomingEvents.map(({id, name, capacity, joined, visibility}) => (
-                    <EventPreview
-                        key={id}
-                        id={id}
-                        name={name}
-                        capacity={capacity}
-                        joined={joined}
-                        visibility={visibility}
-                    />
-                ))}
+
+            <div className="explore__page__layout">
+                <div className="upcoming__events__layout">
+                    <h1>Близжайшие события</h1>
+
+                    <div className="upcoming__events__items">
+                        {upcomingEvents.map(({id, name, capacity, joined, visibility}) => (
+                            <EventPreview
+                                key={id}
+                                id={id}
+                                name={name}
+                                capacity={capacity}
+                                joined={joined}
+                                visibility={visibility}
+                            />
+                        ))}
+                    </div>
+
+
+                </div>
+
+                <div className="description__layout">
+                    <h1>Создайте свое первое событие прямо сейчас и приглашайте остальных посетить его!</h1>
+                    <Link to="/events" className="create__event__link">Создать Событие</Link>
+                </div>
+
+                <p className="copyright">© 2026 Itenera</p>
             </div>
-            <div>
-                <h1>Создайте свое первое событие прямо сейчас и приглашайте остальных посетить его!</h1>
-                <Link to="/events">Создать Событие</Link>
-            </div>
-        </>
+
+
+        </div>
     )
 }
 

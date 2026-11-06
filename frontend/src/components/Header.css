@@ -3,9 +3,17 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-
     box-shadow: 0 0 7px black;
     border-radius: 40px;
+}
+
+header > div:first-child,
+header > div:last-child {
+    flex: 1;
+}
+
+header > div:last-child {
+    justify-content: flex-end;
 }
 
 header > div {
