@@ -11,7 +11,7 @@ const EditProfilePage = () => {
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
-    const [birthDate, setBirthDate] = useState(null);
+    const [birthDate, setBirthDate] = useState(new Date());
     const [bio, setBio] = useState("");
 
     const navigate = useNavigate();
