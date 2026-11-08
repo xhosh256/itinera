@@ -3,6 +3,8 @@ package cephei.dev.profile_service.repository;
 import cephei.dev.profile_service.entity.Friendship;
 import cephei.dev.profile_service.entity.FriendshipStatus;
 import cephei.dev.profile_service.entity.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -36,5 +38,5 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
         where (f.friend.userId = :userId or f.user.userId = :userId)
         and f.status = 'ACCEPTED'
     """)
-    List<Friendship> findAllFriends(Integer userId);
+    Page<Friendship> findAllFriends(Integer userId, Pageable pageable);
 }

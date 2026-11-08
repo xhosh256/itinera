@@ -12,6 +12,7 @@ import java.util.Set;
 public record ProfileReadDto
         (
                 Integer id,
+                String username,
                 String firstname,
                 String lastname,
                 LocalDate birthDate,

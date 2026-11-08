@@ -13,6 +13,8 @@ import cephei.dev.profile_service.mapper.ProfileMapper;
 import cephei.dev.profile_service.repository.FriendshipRepository;
 import cephei.dev.profile_service.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,25 +131,22 @@ public class FriendshipService {
         friendship.setStatus(FriendshipStatus.DECLINED);
     }
 
-    public List<FriendReadDto> findAllFriends(Integer userId) {
-        List<Friendship> friends = friendshipRepository.findAllFriends(userId);
-        List<FriendReadDto> friendReadDtoList = new ArrayList<>();
+    public Page<FriendReadDto> findAllFriends(Integer userId, Pageable pageable) {
+        Page<Friendship> friends = friendshipRepository.findAllFriends(userId, pageable);
 
-        for(Friendship friendship : friends) {
+        return friends.map(friendship -> {
             Profile friendProfile = Objects.equals(friendship.getUser().getUserId(), userId)
                     ? friendship.getFriend()
                     : friendship.getUser();
 
-            FriendReadDto friend = FriendReadDto.builder()
+            UserResponse userResponse = userClient.findById(friendProfile.getUserId());
+            return FriendReadDto.builder()
                     .id(friendProfile.getId())
                     .userId(friendProfile.getUserId())
+                    .username(userResponse.username())
                     .firstname(friendProfile.getFirstname())
                     .lastname(friendProfile.getLastname())
                     .build();
-
-            friendReadDtoList.add(friend);
-        }
-
-        return friendReadDtoList;
+        });
     }
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 public record FriendReadDto(
     Integer id,
     Integer userId,
+    String username,
     String firstname,
     String lastname
 

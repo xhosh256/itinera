@@ -18,7 +18,7 @@ public class UserRestController {
 
     private final UserService userService;
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public UserClientResponse findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
@@ -28,5 +28,10 @@ public class UserRestController {
             @AuthenticationPrincipal String username
     ) {
         return userService.authMe(username);
+    }
+
+    @GetMapping("/id/{userId}")
+    public UserClientResponse findById(@PathVariable Integer userId) {
+        return userService.findById(userId);
     }
 }

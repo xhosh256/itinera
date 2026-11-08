@@ -237,7 +237,7 @@ const ProfilePage = () => {
                     <div className="profile__top">
                         <div className="profile__card">
                             <p className="name"><FaUser size={20}/> {profile.firstname} {profile.lastname}</p>
-                            <p className="username">@ИмяПользователя</p>
+                            <p className="username">@{profile.username}</p>
                             <ItineraStamp/>
                         </div>
 
@@ -290,11 +290,11 @@ const ProfilePage = () => {
                                 <Link className="friend__requests" to={`/friends/requests`}>Заявки в друзья</Link>}
 
                             <div className="friend__list">
-                                {myFriends.map((friend) => (
+                                {myFriends.content.map((friend) => (
                                     <div key={friend.id}>
                                         <Link to={`/profile/${friend.userId}`}>
                                             <p className="name">{friend.firstname} {friend.lastname}</p>
-                                            <p className="username">@ИмяПользователя</p>
+                                            <p className="username">@{friend.username}</p>
                                         </Link>
                                     </div>
                                 ))}

@@ -43,4 +43,11 @@ public class UserService implements UserDetailsService {
 
         return userMapper.toAuthMe(user);
     }
+
+    public UserClientResponse findById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return userMapper.toClientResponse(user);
+    }
 }

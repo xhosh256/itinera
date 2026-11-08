@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 )
 public interface UserClient {
 
-    @GetMapping("/api/v1/users/{username}")
+    @GetMapping("/api/v1/users/username/{username}")
     UserResponse findByUsername(@PathVariable String username);
+
+    @GetMapping("/api/v1/users/id/{userId}")
+    UserResponse findById(@PathVariable Integer userId);
 }
