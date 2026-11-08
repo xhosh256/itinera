@@ -1,10 +1,31 @@
 import {Link} from "react-router-dom";
 import './EventPreview.css';
+import Divider from "./Divider.jsx";
 
 const EventPreview = (props) => {
     const {id, name, capacity, joined, visibility} = props;
 
     const progress = (joined/capacity) * 100;
+
+    const rightForm = (count) => {
+        const lastTwo = count % 100;
+        const lastOne = count % 10;
+
+        if(lastTwo >= 11 && lastTwo <= 14) {
+
+            return 'мест';
+        }
+
+        if(lastOne === 1) {
+            return 'место';
+        }
+
+        if(lastOne >= 2 && lastOne <= 4) {
+            return 'места';
+        }
+
+        return 'мест';
+    }
 
     return (
         <div className="event__preview">
@@ -18,7 +39,7 @@ const EventPreview = (props) => {
                 <p>Описаааааааание</p>
             </div>
 
-            <br/>
+            <Divider/>
 
             <div className="event__preview__info">
                 <p>{joined} / {capacity} участников</p>
@@ -28,7 +49,7 @@ const EventPreview = (props) => {
                     style={{width: `${progress}%`}}
                     />
                 </div>
-                <p>Осталось {capacity-joined} мест(а)</p>
+                <p>Осталось {capacity-joined} {rightForm(capacity-joined)}</p>
             </div>
             <Link to={`/events/${id}`} className="event__link">Подробнее</Link>
         </div>

@@ -1,0 +1,26 @@
+:root {
+    /*app*/
+    --primary: #8975F5;
+    --primary-hover: #7258E8;
+
+    --secondary: #3FA5DB;
+    --secondary-hover: #5CB5E2;
+
+    --blue-background: #EAF6FC;
+    --violet-background: #F0EDFF;
+
+    --text: #171923;
+    --text-muted: #737887;
+
+    --border: #E2E8F0;
+
+    /*status*/
+    --success-primary: #DCFCE7;
+    --success-text: #15803D;
+
+    --danger-primary: #FEE2E2;
+    --danger-text: #DC2626;
+
+    --active-primary: #EDE9FE;
+    --active-text: #7C3AED;
+}

@@ -61,8 +61,10 @@ const ExplorePage = () => {
                 </div>
 
                 <div className="description__layout">
-                    <h1>Создайте свое первое событие прямо сейчас и приглашайте остальных посетить его!</h1>
-                    <Link to="/events" className="create__event__link">Создать Событие</Link>
+                    <p className="p1">ITINERA</p>
+                    <p className="p2">Твои планы начинаются здесь</p>
+                    <p className="p3">Создай событие, пригласи друзей и организуй встречу в пару кликов</p>
+                    <Link to="/events" className="create__event__link">+ Создать событие</Link>
                 </div>
 
                 <p className="copyright">© 2026 Itenera</p>

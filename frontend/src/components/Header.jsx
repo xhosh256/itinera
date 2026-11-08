@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import './Header.css'
 import {useContext} from "react";
 import AuthContext from "../context/AuthContext.jsx";
@@ -13,23 +13,23 @@ const Header = () => {
     return (
         <header>
             <div>
-                <Link to="/">Itinera</Link>
+                <Link className="itinera__link" to="/">Itinera</Link>
             </div>
 
             <div>
                 <SearchBar type="events">
-                    Найти Событие
+                    Найти событие...
                 </SearchBar>
             </div>
 
-            <div>
-                <Link to="/events">Мои События</Link>
-                <Link to="/about">About</Link>
+            <div className="right__side__links">
+                <NavLink className="nav-link" to="/events">Мои События</NavLink>
+                <NavLink className="nav-link" to="/about">About</NavLink>
 
                 {!isAuthenticated ? (
-                    <Link to="/auth/login">Войти</Link>
+                    <NavLink className="nav-link" to="/auth/login">Войти</NavLink>
                 ) : (
-                    <Link to={`/profile/${user.id}`}>Профиль</Link>
+                    <NavLink className="nav-link" to={`/profile/${user.id}`}>Профиль</NavLink>
                 )}
             </div>
         </header>

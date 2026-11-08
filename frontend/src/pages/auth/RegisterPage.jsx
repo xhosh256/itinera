@@ -1,8 +1,9 @@
-import Header from "../components/Header.jsx";
+import Header from "../../components/Header.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import Input from "../components/Input.jsx";
+import Input from "../../components/Input.jsx";
 import {useContext, useState} from "react";
-import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../../context/AuthContext.jsx";
+import './RegisterPage.css';
 
 const RegisterPage = () => {
     const {setUser} = useContext(AuthContext);
@@ -32,10 +33,10 @@ const RegisterPage = () => {
     }
 
     return (
-        <div>
+        <div className="register__page">
             <Header />
-            <div>
-                <form onSubmit={handleSubmit}>
+            <div className="register__layout">
+                <form className="register__form" onSubmit={handleSubmit}>
                     <Input
                         id="username"
                         type="text"

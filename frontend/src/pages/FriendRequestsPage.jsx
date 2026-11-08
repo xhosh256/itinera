@@ -1,7 +1,7 @@
 import Header from "../components/Header.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import LoginPage from "./LoginPage.jsx";
+import LoginPage from "./auth/LoginPage.jsx";
 
 const FriendRequestsPage = () => {
 

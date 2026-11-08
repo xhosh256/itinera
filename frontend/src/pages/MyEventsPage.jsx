@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import Header from "../components/Header.jsx";
-import LoginPage from "./LoginPage.jsx";
+import LoginPage from "./auth/LoginPage.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
 import EventPreview from "../components/EventPreview.jsx";

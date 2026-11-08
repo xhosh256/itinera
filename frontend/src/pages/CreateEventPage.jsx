@@ -3,7 +3,7 @@ import Input from "../components/Input.jsx";
 import Select from "../components/Select.jsx";
 import {useContext, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import LoginPage from "./LoginPage.jsx";
+import LoginPage from "./auth/LoginPage.jsx";
 import {Link, useNavigate} from "react-router-dom";
 
 const CreateEventPage = () => {

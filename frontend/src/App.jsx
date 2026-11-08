@@ -1,8 +1,8 @@
 import { Routes, Route, Link } from 'react-router-dom'
 import About from "./pages/About.jsx";
 import MainPage from "./pages/MainPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
+import LoginPage from "./pages/auth/LoginPage.jsx";
+import RegisterPage from "./pages/auth/RegisterPage.jsx";
 import ExplorePage from "./pages/ExplorePage.jsx";
 import MyEventsPage from "./pages/MyEventsPage.jsx";
 import CreateEventPage from "./pages/CreateEventPage.jsx";

@@ -1,5 +1,6 @@
 import {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import './SearchBar.css'
 
 const SearchBar = (props) => {
     const {
@@ -17,7 +18,7 @@ const SearchBar = (props) => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="search__bar__form">
                 <input placeholder={children} onChange={(e) => setName(e.target.value)}/>
                 <button>Найти</button>
             </form>

@@ -3,8 +3,9 @@ import AuthContext from "../context/AuthContext.jsx";
 import {Link, Navigate, useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import './ProfilePage.css'
-import LoginPage from "./LoginPage.jsx";
+import LoginPage from "./auth/LoginPage.jsx";
 import EventPreview from "../components/EventPreview.jsx";
+import Divider from "../components/Divider.jsx";
 
 const ProfilePage = () => {
 
@@ -85,8 +86,8 @@ const ProfilePage = () => {
         const fetchEvents = async () => {
             try {
                 const url = activeTab === "created" ?
-                    `/api/v1/events/created/${userId}` :
-                    `/api/v1/events/joined/${userId}`;
+                    `/api/v1/events/created/${userId}?size=4` :
+                    `/api/v1/events/joined/${userId}?size=4`;
 
                 const response = await fetch(
                     `http://localhost:8080${url}`, {
@@ -232,8 +233,11 @@ const ProfilePage = () => {
                         && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
                     {friendRequestPending && <p style={{ color: "green" }}>Запрос отправлен</p>}
                     <p>{profile.firstname} {profile.lastname} User Id: {userId}</p>
+                    <Divider/>
+
                     <p>Дата рождения: {profile.birthDate}</p>
                     <p>Обо мне: {profile.bio}</p>
+
 
                     <div>
                         <h1>Друзья {(Number(userId) === user.id) && <Link to={`/friends/requests`}>Заявки</Link>}</h1>
