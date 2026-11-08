@@ -4,6 +4,7 @@ import EventPreview from "../components/EventPreview.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
 import './ExplorePage.css';
+import ItineraStamp from "../components/ItineraStamp.jsx";
 
 const ExplorePage = () => {
 
@@ -61,7 +62,7 @@ const ExplorePage = () => {
                 </div>
 
                 <div className="description__layout">
-                    <p className="p1">ITINERA</p>
+                    <ItineraStamp/>
                     <p className="p2">Твои планы начинаются здесь</p>
                     <p className="p3">Создай событие, пригласи друзей и организуй встречу в пару кликов</p>
                     <Link to="/events" className="create__event__link">+ Создать событие</Link>

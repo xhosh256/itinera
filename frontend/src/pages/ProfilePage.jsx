@@ -6,6 +6,12 @@ import './ProfilePage.css'
 import LoginPage from "./auth/LoginPage.jsx";
 import EventPreview from "../components/EventPreview.jsx";
 import Divider from "../components/Divider.jsx";
+import {
+    FaUser,
+    FaGear,
+    FaArrowRightFromBracket
+} from 'react-icons/fa6';
+import ItineraStamp from "../components/ItineraStamp.jsx";
 
 const ProfilePage = () => {
 
@@ -51,7 +57,7 @@ const ProfilePage = () => {
         }
 
         fetchFriends()
-    }, [profile]);
+    }, [userId, user]);
 
     useEffect(() => {
         if(!user) return;
@@ -67,7 +73,7 @@ const ProfilePage = () => {
 
             if (response.status === 401) {
                 setUser(null)
-                return <LoginPage />
+                return;
             }
 
             if (!response.ok) {
@@ -97,7 +103,7 @@ const ProfilePage = () => {
 
                 if (response.status === 401) {
                     setUser(null)
-                    return <LoginPage />
+                    return;
                 }
 
                 if (!response.ok) {
@@ -212,7 +218,7 @@ const ProfilePage = () => {
 
         if(response.status === 401) {
             setUser(null);
-            return <LoginPage/>
+            return;
         }
 
         if(!response.ok) {
@@ -227,66 +233,114 @@ const ProfilePage = () => {
             <Header />
             <div className="profile-layout">
                 <div className="sidebar">
-                    {(myProfile && user) && (Number(userId) === user.id) && <Link to={`/profile/edit/${profile.id}`}>Редактировать профиль</Link>}
-                    {   (myProfile && user) && (Number(userId) !== user.id
-                            && !myProfile.friendIds.includes(profile.id))
-                        && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
-                    {friendRequestPending && <p style={{ color: "green" }}>Запрос отправлен</p>}
-                    <p>{profile.firstname} {profile.lastname} User Id: {userId}</p>
+
+                    <div className="profile__top">
+                        <div className="profile__card">
+                            <p className="name"><FaUser size={20}/> {profile.firstname} {profile.lastname}</p>
+                            <p className="username">@ИмяПользователя</p>
+                            <ItineraStamp/>
+                        </div>
+
+                        {   (myProfile && user) && (Number(userId) !== user.id
+                                && !myProfile.friendIds.includes(profile.id))
+                            && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
+
+                        {friendRequestPending && <p>Запрос отправлен</p>}
+
+                        {(Number(userId) === user.id) && (
+                            <button className="logout-btn" onClick={handleLogout}>
+                                <FaArrowRightFromBracket size={13}/>
+                                <p>Выйти из аккаунта</p>
+                            </button>
+                        )}
+                    </div>
+
+
                     <Divider/>
 
-                    <p>Дата рождения: {profile.birthDate}</p>
-                    <p>Обо мне: {profile.bio}</p>
+                    <div className="profile__info">
+                        <div className="userId">
+                            <p> User Id:</p>
+                            <p> {userId}</p>
+                        </div>
+
+                        <div className="birthdate">
+                            <p>Дата рождения: </p>
+                            <p>{profile.birthDate}</p>
+                        </div>
+
+                        <div className="bio">
+                            <p>Обо мне</p>
+                            <p>{profile.bio}</p>
+                        </div>
+
+                        {(myProfile && user) && (Number(userId) === user.id) &&
+                            <Link className="profile__edit__link" to={`/profile/edit/${profile.id}`}>
+                                Редактировать профиль
+                            </Link>}
+                    </div>
+
+                    <Divider/>
+
+                    <div className="profile__friends">
+                        <div className="friend__layout">
+                            <p style={{fontWeight: "bold", fontSize: "18px"}}>Друзья</p>
+
+                            {(Number(userId) === user.id) &&
+                                <Link className="friend__requests" to={`/friends/requests`}>Заявки в друзья</Link>}
+
+                            <div className="friend__list">
+                                {myFriends.map((friend) => (
+                                    <div key={friend.id}>
+                                        <Link to={`/profile/${friend.userId}`}>
+                                            <p className="name">{friend.firstname} {friend.lastname}</p>
+                                            <p className="username">@ИмяПользователя</p>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
 
-                    <div>
-                        <h1>Друзья {(Number(userId) === user.id) && <Link to={`/friends/requests`}>Заявки</Link>}</h1>
+                        <div>
+                            {Number(userId) === user.id ? (
+                                <div className="profile__find__friends">
+                                    <p style={{fontWeight: "bold", fontSize: "18px"}}>Найти друзей</p>
+                                    <div className="user__searchbar">
+                                        <div className="user__searchbar_input">
+                                            <input placeholder="Введите UserId или @username" onChange={(e) => setSearchUserId(e.target.value)} />
+                                            <button onClick={handleFindUser}>
+                                                Найти
+                                            </button>
+                                        </div>
 
-                        {Number(userId) === user.id ? (
-                            <>
-                                <p>Найти друзей</p>
-                                <div className="user__searchbar">
-                                    <input placeholder="Поиск" onChange={(e) => setSearchUserId(e.target.value)} />
-                                    <button onClick={handleFindUser}>Найти</button>
-                                    <div>
                                         {!tryFetch ? (
                                             <></>
                                         ) : (tryFetch && !searchUserProfile) ? (
                                             <h1>Пользователь не найден</h1>
                                         ) : (
-                                            <Link to={`/profile/${searchUserId}`}>{searchUserProfile.firstname} {searchUserProfile.lastname}</Link>
+                                            <Link className="found__profile" to={`/profile/${searchUserId}`}>{searchUserProfile.firstname} {searchUserProfile.lastname}</Link>
                                         )}
                                     </div>
                                 </div>
-                            </>
-                        ) : <></>}
+                            ) : <></>}
+                        </div>
                     </div>
-
-                    <div>
-                        {myFriends.map((friend) => (
-                            <div key={friend.id}>
-                                <p>{friend.firstname} {friend.lastname}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    {(Number(userId) === user.id) && (
-                        <button className="logout-btn" onClick={handleLogout}>
-                            Log out
-                        </button>
-                    )}
                 </div>
 
                 <div className="content">
-                    <div className="tabs">
-                        <button
-                            className="tab"
-                            onClick={() => setActiveTab("created")}
-                        >Созданные</button>
-                        <button
-                            className="tab"
-                            onClick={() => setActiveTab("joined")}
-                        >Присоединен(а)</button>
+                    <div className="content__header">
+                        <p>События</p>
+                        <div className="tabs">
+                            <button
+                                className={`tab ${activeTab === "created" ? "active" : "disabled"}`}
+                                onClick={() => setActiveTab("created")}
+                            >Созданные</button>
+                            <button
+                                className={`tab ${activeTab === "joined" ? "active" : "disabled"}`}
+                                onClick={() => setActiveTab("joined")}
+                            >Присоединен(а)</button>
+                        </div>
                     </div>
 
                     <div className="events-grid">

@@ -10,7 +10,7 @@
     margin-top: 20px;
     display: flex;
     gap: 20px;
-    min-height: 81vh;
+    align-items: flex-start;
 }
 
 .sidebar {
@@ -19,11 +19,196 @@
     flex: 1;
     min-width: 0;
     padding: 20px;
-    border-radius: 40px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
 }
 
+.profile__card .name {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.profile__card .username {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 10px 0 3px 0;
+
+}
+
+.profile__info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile__info > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.userId p:first-child, .birthdate p:first-child {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.userId p:last-child, .birthdate p:last-child {
+    font-weight: bold;
+}
+
+.profile__info .bio {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile__info .bio p:first-child {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.profile__info .bio p:last-child {
+    color: var(--text-muted);
+    font-size: 14px;
+
+    overflow-wrap: break-word;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.profile__edit__link {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    background-color: var(--primary);
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+
+.profile__edit__link:hover {
+    background-color: var(--primary-hover);
+}
+
+.profile__friends {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.friend__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.friend__requests {
+    text-decoration: none;
+    color: var(--text-muted);
+}
+
+.friend__list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.friend__list .name {
+    font-size: 18px;
+    color: var(--text);
+    font-weight: bold;
+}
+
+.friend__list .username {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.friend__list a {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+    background-color: var(--violet-background);
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.friend__list a:hover {
+    background-color: var(--blue-background);
+}
+
+.profile__find__friends {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user__searchbar_input {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.user__searchbar {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.user__searchbar input {
+    border: none;
+    width: 100%;
+    background: #F1F5F9;
+    padding: 12px;
+    border-radius: 12px;
+
+}
+
+.user__searchbar input::placeholder {
+    color: #94A3B8;
+}
+
+.user__searchbar input:focus {
+    outline: none;
+}
+
+.user__searchbar button {
+    border: none;
+    background: var(--primary);
+    color: white;
+    padding: 10px;
+    transition: 0.2s;
+    border-radius: 12px;
+}
+
+.user__searchbar button:hover {
+    background: var(--primary-hover);
+    cursor: pointer;
+}
+
+.found__profile {
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: var(--blue-background);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    color: var(--text);
+    font-weight: bold;
+}
+
+.found__profile:hover {
+    background-color: var(--violet-background);
+}
 
 .content {
     flex: 2.5;
@@ -31,6 +216,53 @@
     padding: 24px;
     border: 1px solid var(--border);
     box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+}
+
+.content__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.content__header > p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.tabs > button {
+    padding: 7px 10px;
+    border: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 12px;
+}
+
+.tabs > button:hover {
+    cursor: pointer;
+}
+
+.tab.active {
+    background-color: var(--active-primary);
+    color: var(--active-text);
+}
+
+.tab.disabled {
+    background-color: white;
+    box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+    border: 1px solid var(--border);
+}
+
+.tab.disabled:hover {
+    background-color: var(--active-primary);
+    color: var(--active-text);
 }
 
 .events-grid {
@@ -40,7 +272,27 @@
 }
 
 .logout-btn {
-    display: block;
-    margin: auto auto 0;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--danger-primary);
+    border: none;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+.logout-btn:hover {
+    background: var(--danger-hover);
     cursor: pointer;
+}
+
+.logout-btn p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--danger-text);
 }
