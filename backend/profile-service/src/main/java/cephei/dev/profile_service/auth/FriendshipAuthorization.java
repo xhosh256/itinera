@@ -20,6 +20,7 @@ public class FriendshipAuthorization {
     public boolean doesRequestBelongsToMe(Integer myId, String username) {
         UserResponse user = userClient.findByUsername(username);
 
+        System.out.println(user.id() + " " + myId);
         return Objects.equals(user.id(), myId);
     }
 

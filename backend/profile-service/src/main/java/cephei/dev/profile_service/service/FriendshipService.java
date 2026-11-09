@@ -86,6 +86,7 @@ public class FriendshipService {
         "@friendshipAuthorization.doesRequestBelongsToMe(#myId, authentication.name)"
     )
     public List<FriendshipReadDto> getAllRequests(Integer myId) {
+        System.out.println("Im in service");
         List<Friendship> requests = friendshipRepository
                 .findAllFriendRequests(myId, FriendshipStatus.PENDING);
 
