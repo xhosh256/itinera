@@ -1,3 +1,6 @@
+import './Pagination.css'
+import { FaCaretRight, FaCaretLeft } from "react-icons/fa6";
+
 const Pagination = ({page, totalPages, onPageChange}) => {
     if (totalPages <= 1) {
         return null
@@ -9,9 +12,9 @@ const Pagination = ({page, totalPages, onPageChange}) => {
     );
 
     return (
-        <nav>
+        <nav className="pagination">
             <button disabled={page === 1} onClick={() => onPageChange(page - 1)} >
-                ◁
+                <FaCaretLeft size={20} />
             </button>
 
             {pages.map((number) => (
@@ -25,7 +28,7 @@ const Pagination = ({page, totalPages, onPageChange}) => {
             ))}
 
             <button disabled={page===totalPages} onClick={() => onPageChange(page+1)}>
-                ▷
+                <FaCaretRight size={20} />
             </button>
         </nav>
     )

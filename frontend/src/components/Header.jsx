@@ -4,6 +4,7 @@ import {useContext} from "react";
 import AuthContext from "../context/AuthContext.jsx";
 import SearchBar from "./SearchBar.jsx";
 
+
 const Header = () => {
 
     const { user } = useContext(AuthContext);

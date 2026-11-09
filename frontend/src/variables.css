@@ -24,4 +24,8 @@
 
     --active-primary: #EDE9FE;
     --active-text: #7C3AED;
+
+    --disabled-primary: #F1F5F9;
+    --disabled-text: #94A3B8;
+    --disabled-border: #E2E8F0;
 }

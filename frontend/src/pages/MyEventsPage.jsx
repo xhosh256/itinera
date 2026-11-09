@@ -51,7 +51,7 @@ const MyEventsPage = () => {
     if (user === null) return <LoginPage />;
 
     return (
-        <div>
+        <div className="my__events__page">
             <Header />
 
             <div className="my__events__grid">

@@ -8,10 +8,11 @@ import EventPreview from "../components/EventPreview.jsx";
 import Divider from "../components/Divider.jsx";
 import {
     FaUser,
-    FaGear,
-    FaArrowRightFromBracket
+    FaArrowRightFromBracket,
+    FaMagnifyingGlass
 } from 'react-icons/fa6';
 import ItineraStamp from "../components/ItineraStamp.jsx";
+import Pagination from "../components/Pagination.jsx";
 
 const ProfilePage = () => {
 
@@ -30,6 +31,10 @@ const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
     const [events, setEvents] = useState([]);
     const [activeTab, setActiveTab] = useState("created");
+
+    const [eventsPage, setEventsPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
 
     useEffect(() => {
         if(!user) return;
@@ -92,8 +97,8 @@ const ProfilePage = () => {
         const fetchEvents = async () => {
             try {
                 const url = activeTab === "created" ?
-                    `/api/v1/events/created/${userId}?size=4` :
-                    `/api/v1/events/joined/${userId}?size=4`;
+                    `/api/v1/events/created/${userId}?size=4&page=${eventsPage-1}` :
+                    `/api/v1/events/joined/${userId}?size=4&page=${eventsPage-1}`;
 
                 const response = await fetch(
                     `http://localhost:8080${url}`, {
@@ -112,12 +117,13 @@ const ProfilePage = () => {
 
                 const data = await response.json();
                 setEvents(data.content);
+                setTotalPages(data.totalPages);
             } catch (error) {
                 console.error(error);
             }
         }
         fetchEvents();
-    }, [activeTab, setUser, userId]);
+    }, [activeTab, setUser, userId, eventsPage]);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -310,7 +316,7 @@ const ProfilePage = () => {
                                         <div className="user__searchbar_input">
                                             <input placeholder="Введите UserId или @username" onChange={(e) => setSearchUserId(e.target.value)} />
                                             <button onClick={handleFindUser}>
-                                                Найти
+                                                <FaMagnifyingGlass size={20}/>
                                             </button>
                                         </div>
 
@@ -334,28 +340,43 @@ const ProfilePage = () => {
                         <div className="tabs">
                             <button
                                 className={`tab ${activeTab === "created" ? "active" : "disabled"}`}
-                                onClick={() => setActiveTab("created")}
+                                onClick={() => {
+                                    setActiveTab("created");
+                                    setEventsPage(1);
+                                }}
                             >Созданные</button>
                             <button
                                 className={`tab ${activeTab === "joined" ? "active" : "disabled"}`}
-                                onClick={() => setActiveTab("joined")}
+                                onClick={() => {
+                                    setActiveTab("joined");
+                                    setEventsPage(1);
+                                }}
                             >Присоединен(а)</button>
                         </div>
                     </div>
 
-                    <div className="events-grid">
+                    <div>
                         {events.length > 0 ? (
                             <>
-                                {events.map(({id, name, capacity, joined, visibility}) => (
-                                    <EventPreview
-                                        key={id}
-                                        id={id}
-                                        name={name}
-                                        capacity={capacity}
-                                        joined={joined}
-                                        visibility={visibility}
-                                    />))}
+                                <div className='events-grid'>
+                                    {events.map(({id, name, capacity, joined, visibility}) => (
+                                        <EventPreview
+                                            key={id}
+                                            id={id}
+                                            name={name}
+                                            capacity={capacity}
+                                            joined={joined}
+                                            visibility={visibility}
+                                        />))}
+                                </div>
+
+                                <Pagination
+                                    page={eventsPage}
+                                    totalPages={totalPages}
+                                    onPageChange={setEventsPage}
+                                />
                             </>
+
                         ) : (
                             <>
                                 <p>Событий нет(</p>
