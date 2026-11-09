@@ -1,3 +1,19 @@
 .about__page {
     padding: 20px 20px 30px;
 }
+
+.about__page__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.about__info {
+    
+}
+
+.opportunities__info {
+    display: flex;
+    flex-direction: row;
+}

@@ -1,9 +1,11 @@
 import {Link} from "react-router-dom";
 import Header from "../components/Header.jsx";
+import './WelcomePage.css'
+import ItineraStamp from "../components/ItineraStamp.jsx";
 
 const WelcomePage = () => {
     return (
-        <div>
+        <div className="welcome-page">
             <Header />
             <p>
                 Присоединяйтесь к событиям, вечиринкам или поездкам.

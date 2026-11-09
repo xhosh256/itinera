@@ -244,7 +244,7 @@ const ProfilePage = () => {
                         <div className="profile__card">
                             <p className="name"><FaUser size={20}/> {profile.firstname} {profile.lastname}</p>
                             <p className="username">@{profile.username}</p>
-                            <ItineraStamp/>
+                            <ItineraStamp>ITENERA</ItineraStamp>
                         </div>
 
                         {   (myProfile && user) && (Number(userId) !== user.id

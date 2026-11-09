@@ -62,7 +62,7 @@ const ExplorePage = () => {
                 </div>
 
                 <div className="description__layout">
-                    <ItineraStamp/>
+                    <ItineraStamp>ITINERA</ItineraStamp>
                     <p className="p2">Твои планы начинаются здесь</p>
                     <p className="p3">Создай событие, пригласи друзей и организуй встречу в пару кликов</p>
                     <Link to="/events" className="create__event__link">+ Создать событие</Link>

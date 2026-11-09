@@ -1,8 +1,8 @@
 import './ItineraStamp.css'
 
-const ItineraStamp = () => {
+const ItineraStamp = ({children}) => {
     return (
-        <p className="itinera__stamp">ITINERA</p>
+        <p className="itinera__stamp">{children}</p>
     )
 }
 
