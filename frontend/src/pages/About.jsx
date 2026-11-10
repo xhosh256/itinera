@@ -1,7 +1,14 @@
 import Header from "../components/Header.jsx";
 import './About.css'
 import {Link} from "react-router-dom";
+import { FaArrowRightLong } from "react-icons/fa6";
 import ItineraStamp from "../components/ItineraStamp.jsx";
+import ImgAbout from "../assets/images/about/about-itinera-pic.avif";
+import ImgMission from "../assets/images/about/itinera-mission-pic.avif";
+import ImgOpp1 from "../assets/images/about/our-opportunities-1.avif";
+import ImgOpp2 from "../assets/images/about/our-opportunities-2.avif";
+import ImgOpp3 from "../assets/images/about/our-opportunities-3.avif";
+import ImgOpp4 from "../assets/images/about/our-opportunities-4.avif";
 
 const About = () => {
 
@@ -10,70 +17,70 @@ const About = () => {
             <Header />
             <div className="about__page__layout">
                 <div className="about__info">
-                    <ItineraStamp>ПРО ITINERA</ItineraStamp>
-                    <p>Любое событие начинается с плана</p>
-                    <p>Itinera &#8212; платформа для удобной организации общих событий</p>
-                    <Link to="/explore">Исследовать</Link>
+                    <div className="about__info__text">
+                        <ItineraStamp>ПРО ITINERA</ItineraStamp>
+                        <p className="about__itinera__header">Любое событие начинается с плана</p>
+                        <p className="about__itinera__description">Itinera &#8212; платформа для удобной организации общих событий</p>
+                        <Link to="/explore" className="about__itinera__explore__link"><p>Исследовать</p> <FaArrowRightLong size={15}/></Link>
+                    </div>
+                    <img src={ImgAbout} alt="about-itinera"/>
                 </div>
 
-                <div>
-                    <ItineraStamp>НАША МИССИЯ</ItineraStamp>
-                    <p>Itinera была создана для того чтобы упростить организацию, планирование и продумывание ивентов, вместо того, чтобы договариваться о чем то в чатах, просто пригласите друзей в событие и отправляйтесь в путь</p>
+                <div className="our__mission__layout">
+                    <div className="our__mission__layout__text">
+                        <ItineraStamp>НАША МИССИЯ</ItineraStamp>
+                        <p className="our__mission__header">Упрощать планирование совместных событий и сблизжать людей</p>
+                        <p className="our__mission__description">Itinera была создана для того чтобы упростить организацию, планирование и продумывание ивентов, вместо того, чтобы договариваться о чем то в чатах, просто пригласите друзей в событие и отправляйтесь в путь</p>
+                    </div>
+                    <img src={ImgMission} alt="out-mission"/>
                 </div>
 
-                <div>
+                <div style={{display: "flex", gap: "10px", flexDirection: "column"}}>
                     <ItineraStamp>ВОЗМОЖНОСТИ ПРИЛОЖЕНИЯ</ItineraStamp>
 
                     <div className="opportunities__info">
-                        <div>
-                            <p>Создавать события</p>
-                            <p>Планируйте поездки, встречи и другие активности</p>
+                        <div className="opportunities-block">
+                            <img src={ImgOpp1}/>
+                            <div>
+                                <p>Создавать события</p>
+                                <p>Планируйте поездки, встречи и другие активности</p>
+                            </div>
+
                         </div>
 
-                        <div>
-                            <p>Приглашайте друзей</p>
-                            <p>Находите дрезей и приглашайте их в свои события</p>
+                        <div className="opportunities-block">
+                            <img src={ImgOpp2}/>
+                            <div>
+                                <p>Приглашайте друзей</p>
+                                <p>Находите дрезей и приглашайте их в свои события</p>
+                            </div>
+
                         </div>
 
-                        <div>
-                            <p>Планируйте совместно</p>
-                            <p>Придумывайте идеи и добавляйте их в событий</p>
+                        <div className="opportunities-block">
+                            <img src={ImgOpp3}/>
+                            <div>
+                                <p>Планируйте вместе</p>
+                                <p>Придумывайте идеи и добавляйте их в событий</p>
+                            </div>
+
                         </div>
 
-                        <div>
-                            <p>Познавайте новое</p>
-                            <p>Находите события которые вас интересуют и принимайте участие</p>
+                        <div className="opportunities-block">
+                            <img src={ImgOpp4}/>
+                            <div>
+                                <p>Познавайте новое</p>
+                                <p>Находите события которые вас интересуют и принимайте участие</p>
+                            </div>
                         </div>
                     </div>
 
 
                 </div>
 
-                <div>
-                    <ItineraStamp>КАК ЭТО РАБОТАЕТ</ItineraStamp>
-                    <div>
-                        <p>1</p>
-                        <p>Создайте событие</p>
-                        <p>Настройте событие как вам требуется</p>
-                    </div>
-
-                    <div>
-                        <p>2</p>
-                        <p>Приглашайте друзей</p>
-                        <p>Отправляйте приглашения и собирайте всех вместе</p>
-                    </div>
-
-                    <div>
-                        <p>3</p>
-                        <p>Сделайте это вместе</p>
-                        <p>Подготовьтесь к событию и проведите время в хорошей компании</p>
-                    </div>
-
-                </div>
-
-                <div>
-                    <p>Начните свое путешествие вместе с Itinera</p>
-                    <p>Собирайте друзей, планируйте события и воплатите свои идеи в реальность</p>
+                <div className="get__started__layout">
+                    <p className="get__started__header">Начните свое путешествие вместе с Itinera</p>
+                    <p className="get__started__description">Собирайте друзей, планируйте события и воплатите свои идеи в реальность</p>
                     <Link to="/auth/register">Начать путь в Itinera</Link>
                 </div>
             </div>
