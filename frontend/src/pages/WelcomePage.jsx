@@ -2,43 +2,30 @@ import {Link} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import './WelcomePage.css'
 import ItineraStamp from "../components/ItineraStamp.jsx";
+import ImgMainPage from "../assets/images/main/main-page.avif";
 
 const WelcomePage = () => {
     return (
         <div className="welcome-page">
             <Header />
-            <p>
-                Присоединяйтесь к событиям, вечиринкам или поездкам.
-                Проводите время в веселой компании, отдыхайте и планируйте события
-                вместе с Itinera
-            </p>
 
-            <div>
-                <p>
-                    Создайте аккаунт в Itinera прямо сейчас и
-                    начните свое путишествие вместе с нами
-                </p>
-                <Link to="/auth/register">Регистрация</Link>
-            </div>
+            <div className="welcome__page__layout">
+                <div className="welcome__page__header__wrapper">
+                    <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
+                        <div className="welcome__page__text">
+                            <ItineraStamp>ВАШИ СОБЫТИЯ НАЧИНАЮТСЯ ЗДЕСЬ</ItineraStamp>
+                            <p className="welcome__page__header">Меньше планирования, больше впечатлений</p>
+                            <p className="welcome-page__header__description">Собирайтесь вместе с друзьями либо с единомышленниками и планируйте события вместе</p>
+                        </div>
 
-            <div>
-                <p>
-                    Хотите иметь представление как устроена Itinera?
-                    Мы предоставляем возможность нашим пользователям изучить
-                    интерфейс перед тем как они зарегестрируются, для того чтобы
-                    у них была полная картина того с чем они работают
-                </p>
-                <Link to="/explore">Исследовать</Link>
-            </div>
+                        <div className="welcome__page__links">
+                            <Link className="welcome__page__explore__link" to="/explore">Найти события</Link>
+                            <Link className="welcome__page__create__link" to="/events">Создать событие</Link>
+                        </div>
+                    </div>
 
-            <div>
-                <h1>О нас</h1>
-                <p>
-                    Itinera - начинающая компания которая помогает людям грамотно,
-                    удобно и быстро планировать все свои намечающиеся события.
-                    Начиная от обычных дружеских походов, заканчивая целыми
-                    мероприятиями для сотен, а то и тысяч человек
-                </p>
+                    <img src={ImgMainPage} alt='main-page'/>
+                </div>
             </div>
         </div>
     )

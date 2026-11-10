@@ -1,3 +1,73 @@
 .welcome-page {
     padding: 20px 20px 30px;
 }
+
+.welcome__page__layout {
+    margin-top: 20px;
+}
+
+.welcome__page__header__wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.welcome__page__header {
+    font-weight: bold;
+    font-size: 48px;
+    color: var(--text);
+}
+
+.welcome-page__header__description {
+    font-size: 20px;
+    color: var(--text-muted);
+}
+
+.welcome__page__text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.welcome__page__links {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.welcome__page__explore__link,
+.welcome__page__create__link
+{
+    text-decoration: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 20px;
+    transition: 0.2s ease;
+}
+
+.welcome__page__explore__link {
+    color: white;
+    background: var(--primary);
+}
+
+.welcome__page__explore__link:hover {
+    background: var(--primary-hover);
+}
+
+.welcome__page__create__link {
+    color: var(--text);
+    border: 1px solid var(--primary);
+
+}
+
+.welcome__page__create__link:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.welcome__page__layout img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: bottom;
+    border-radius: 20px;
+}

@@ -9,6 +9,7 @@ import ImgOpp1 from "../assets/images/about/our-opportunities-1.avif";
 import ImgOpp2 from "../assets/images/about/our-opportunities-2.avif";
 import ImgOpp3 from "../assets/images/about/our-opportunities-3.avif";
 import ImgOpp4 from "../assets/images/about/our-opportunities-4.avif";
+import Divider from "../components/Divider.jsx";
 
 const About = () => {
 
@@ -27,12 +28,12 @@ const About = () => {
                 </div>
 
                 <div className="our__mission__layout">
+                    <img src={ImgMission} alt="out-mission"/>
                     <div className="our__mission__layout__text">
                         <ItineraStamp>НАША МИССИЯ</ItineraStamp>
                         <p className="our__mission__header">Упрощать планирование совместных событий и сблизжать людей</p>
                         <p className="our__mission__description">Itinera была создана для того чтобы упростить организацию, планирование и продумывание ивентов, вместо того, чтобы договариваться о чем то в чатах, просто пригласите друзей в событие и отправляйтесь в путь</p>
                     </div>
-                    <img src={ImgMission} alt="out-mission"/>
                 </div>
 
                 <div style={{display: "flex", gap: "10px", flexDirection: "column"}}>
@@ -78,11 +79,17 @@ const About = () => {
 
                 </div>
 
-                <div className="get__started__layout">
-                    <p className="get__started__header">Начните свое путешествие вместе с Itinera</p>
-                    <p className="get__started__description">Собирайте друзей, планируйте события и воплатите свои идеи в реальность</p>
-                    <Link to="/auth/register">Начать путь в Itinera</Link>
+                <div className="get__started__wrapper">
+                    <div className="get__started__layout">
+                        <p className="get__started__header">Начните свое путешествие вместе с Itinera</p>
+                        <p className="get__started__description">Собирайте друзей, планируйте события и воплатите свои идеи в реальность</p>
+                        <Link to="/auth/register">Начать путь в Itinera</Link>
+                    </div>
                 </div>
+
+                <Divider/>
+
+                <p className="copyright">© 2026 Itenera</p>
             </div>
         </div>
     )
