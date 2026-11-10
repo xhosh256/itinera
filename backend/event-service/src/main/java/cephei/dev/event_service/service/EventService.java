@@ -98,14 +98,37 @@ public class EventService {
     }
 
     public Page<EventPreviewReadDto> findCreated(Integer userId, Pageable pageable) {
+        Page<Event> base = eventRepository.findAllByHostId(userId, pageable);
 
-        return eventRepository.findAllByHostId(userId, pageable)
-                .map(eventMapper::toPreviewReadDto);
+        return base.map(e -> {
+            UserResponse host = userClient.findById(e.getHostId());
+
+            return EventPreviewReadDto.builder()
+                    .id(e.getId())
+                    .hostUsername(host.username())
+                    .name(e.getName())
+                    .capacity(e.getCapacity())
+                    .joined(e.getJoined())
+                    .visibility(e.getVisibility())
+                    .build();
+        });
     }
 
     public Page<EventPreviewReadDto> findJoined(Integer userId, Pageable pageable) {
-        return eventRepository.findAllByParticipantIdsContaining(userId, pageable)
-                .map(eventMapper::toPreviewReadDto);
+        Page<Event> base = eventRepository.findAllByParticipantIdsContaining(userId, pageable);
+
+        return base.map(e -> {
+            UserResponse host = userClient.findById(e.getHostId());
+
+            return EventPreviewReadDto.builder()
+                    .id(e.getId())
+                    .hostUsername(host.username())
+                    .name(e.getName())
+                    .capacity(e.getCapacity())
+                    .joined(e.getJoined())
+                    .visibility(e.getVisibility())
+                    .build();
+        });
     }
 
     @Transactional
@@ -133,17 +156,21 @@ public class EventService {
     }
 
     public Page<EventPreviewReadDto> findByName(String name, Pageable pageable) {
-//        return eventRepository.findByNameContainingIgnoreCase(name, pageable)
-//                .map(e -> new EventPreviewReadDto(
-//                        e.getId(),
-//                        e.getName(),
-//                        e.getCapacity(),
-//                        e.getJoined(),
-//                        e.getVisibility()
-//                ));
+        Page<Event> base = eventRepository.findByNameContainingIgnoreCase(name, pageable);
 
-        return eventRepository.findByNameContainingIgnoreCase(name, pageable)
-            .map(eventMapper::toPreviewReadDto);
+
+        return base.map(e -> {
+            UserResponse host = userClient.findById(e.getHostId());
+
+            return EventPreviewReadDto.builder()
+                    .id(e.getId())
+                    .hostUsername(host.username())
+                    .name(e.getName())
+                    .capacity(e.getCapacity())
+                    .joined(e.getJoined())
+                    .visibility(e.getVisibility())
+                    .build();
+        });
     }
 
     @Transactional
@@ -186,6 +213,17 @@ public class EventService {
     public Page<EventPreviewReadDto> findUpcomingEvents() {
         Page<Event> upcomingEvents = eventRepository
                 .findUpcomingEvents(LocalDateTime.now(), PageRequest.of(0, 3));
-        return upcomingEvents.map(eventMapper::toPreviewReadDto);
+        return upcomingEvents.map(e -> {
+            UserResponse host = userClient.findById(e.getHostId());
+
+            return EventPreviewReadDto.builder()
+                    .id(e.getId())
+                    .hostUsername(host.username())
+                    .name(e.getName())
+                    .capacity(e.getCapacity())
+                    .joined(e.getJoined())
+                    .visibility(e.getVisibility())
+                    .build();
+        });
     }
 }

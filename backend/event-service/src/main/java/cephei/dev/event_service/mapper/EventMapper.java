@@ -16,6 +16,7 @@ public interface EventMapper {
     default EventPreviewReadDto toPreviewReadDto(Event e) {
         return new EventPreviewReadDto(
                 e.getId(),
+                "undefined",
                 e.getName(),
                 e.getCapacity(),
                 e.getJoined(),

@@ -365,7 +365,7 @@ const ProfilePage = () => {
                         {events.length > 0 ? (
                             <>
                                 <div className='events-grid'>
-                                    {events.map(({id, name, capacity, joined, visibility}) => (
+                                    {events.map(({id, name, capacity, joined, visibility, hostUsername}) => (
                                         <EventPreview
                                             key={id}
                                             id={id}
@@ -373,6 +373,7 @@ const ProfilePage = () => {
                                             capacity={capacity}
                                             joined={joined}
                                             visibility={visibility}
+                                            hostUsername={hostUsername}
                                         />))}
                                 </div>
 

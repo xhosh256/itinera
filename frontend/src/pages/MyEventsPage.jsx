@@ -77,7 +77,7 @@ const MyEventsPage = () => {
                     <div className="events__block">
                         {events.length > 0 ? (
                             <>
-                                {events.map(({id, name, capacity, joined, visibility}) => (
+                                {events.map(({id, name, capacity, joined, visibility, hostUsername}) => (
                                     <EventPreview
                                         key={id}
                                         id={id}
@@ -85,6 +85,7 @@ const MyEventsPage = () => {
                                         capacity={capacity}
                                         joined={joined}
                                         visibility={visibility}
+                                        hostUsername={hostUsername}
                                     />))}
 
                                 <Link to="/events/create">Создать новое Событие</Link>

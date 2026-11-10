@@ -3,7 +3,7 @@ import './EventPreview.css';
 import Divider from "./Divider.jsx";
 
 const EventPreview = (props) => {
-    const {id, name, capacity, joined, visibility} = props;
+    const {id, name, capacity, joined, visibility, hostUsername} = props;
 
     const progress = (joined/capacity) * 100;
 
@@ -31,7 +31,7 @@ const EventPreview = (props) => {
         <div className="event__preview">
             <div className="event__preview__header">
                 <p className={`event__preview__visibility ${visibility.toLowerCase()}`}>{visibility}</p>
-                <p>Организатор: </p>
+                <p>Организатор: @{hostUsername}</p>
             </div>
 
             <div className="event__preview__body">
