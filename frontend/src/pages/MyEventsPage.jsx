@@ -46,7 +46,7 @@ const MyEventsPage = () => {
             }
         }
         fetchEvents();
-    }, [activeTab, page, setUser]);
+    }, [activeTab, page, setUser, user]);
 
     if (user === null) return <LoginPage />;
 
