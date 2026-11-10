@@ -196,14 +196,25 @@
 }
 
 .found__profile {
-    margin-top: 20px;
     text-decoration: none;
     background-color: var(--blue-background);
     padding: 10px 20px;
-    border-radius: 12px;
+    border-radius: 6px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.found__profile p:first-child {
     font-size: 18px;
     color: var(--text);
     font-weight: bold;
+}
+
+.found__profile p:last-child {
+    color: var(--text-muted);
+    font-size: 14px;
 }
 
 .found__profile:hover {
@@ -295,4 +306,27 @@
     font-size: 14px;
     font-weight: bold;
     color: var(--danger-text);
+}
+
+.send__friend__request__button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--success-primary);
+    border: none;
+    border-radius: 12px;
+    transition: 0.2s;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--success-text);
+}
+
+.send__friend__request__button:hover {
+    background: var(--success-hover);
+    cursor: pointer;
 }

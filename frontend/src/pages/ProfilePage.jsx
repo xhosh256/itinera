@@ -13,6 +13,7 @@ import {
 } from 'react-icons/fa6';
 import ItineraStamp from "../components/ItineraStamp.jsx";
 import Pagination from "../components/Pagination.jsx";
+import ErrorStamp from "../components/ErrorStamp.jsx";
 
 const ProfilePage = () => {
 
@@ -247,9 +248,11 @@ const ProfilePage = () => {
                             <ItineraStamp>ITENERA</ItineraStamp>
                         </div>
 
-                        {   (myProfile && user) && (Number(userId) !== user.id
+                        {(myProfile && user) && (Number(userId) !== user.id
                                 && !myProfile.friendIds.includes(profile.id))
-                            && <button onClick={handleSendFriendRequest}>Добавить в друзья</button>}
+                            && <button className="send__friend__request__button" onClick={handleSendFriendRequest}>
+                                + Добавить в друзья
+                        </button>}
 
                         {friendRequestPending && <p>Запрос отправлен</p>}
 
@@ -323,9 +326,12 @@ const ProfilePage = () => {
                                         {!tryFetch ? (
                                             <></>
                                         ) : (tryFetch && !searchUserProfile) ? (
-                                            <h1>Пользователь не найден</h1>
+                                            <ErrorStamp>Пользователь не найден</ErrorStamp>
                                         ) : (
-                                            <Link className="found__profile" to={`/profile/${searchUserId}`}>{searchUserProfile.firstname} {searchUserProfile.lastname}</Link>
+                                            <Link className="found__profile" to={`/profile/${searchUserId}`}>
+                                                <p>{searchUserProfile.firstname} {searchUserProfile.lastname}</p>
+                                                <p>@{searchUserProfile.username}</p>
+                                            </Link>
                                         )}
                                     </div>
                                 </div>
