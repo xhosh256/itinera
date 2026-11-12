@@ -1,6 +1,9 @@
 import {Link} from "react-router-dom";
 import './EventPreview.css';
 import Divider from "./Divider.jsx";
+import { FaUserGroup } from "react-icons/fa6";
+import { FaCalendarDay } from "react-icons/fa6";
+import { FaLocationDot } from "react-icons/fa6";
 
 const EventPreview = (props) => {
     const {id, name, capacity, joined, visibility, hostUsername} = props;
@@ -42,7 +45,9 @@ const EventPreview = (props) => {
             <Divider/>
 
             <div className="event__preview__info">
-                <p>{joined} / {capacity} участников</p>
+                <p><FaLocationDot size={15}/> локаия типр</p>
+                <p><FaCalendarDay size={15}/> дата типо </p>
+                <p> <FaUserGroup size={15}/> {joined} / {capacity} участников</p>
                 <div className="progress-bar">
                     <div
                     className="progress-fill"

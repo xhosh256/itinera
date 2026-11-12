@@ -23,6 +23,12 @@ p {
     align-items: center;
 }
 
+.event__preview__info > p {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 .event__preview__visibility {
     color: white;
     font-size: 12px;

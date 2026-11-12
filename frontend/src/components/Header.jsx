@@ -24,13 +24,13 @@ const Header = () => {
             </div>
 
             <div className="right__side__links">
-                <NavLink className="nav-link" to="/events">Мои События</NavLink>
-                <NavLink className="nav-link" to="/about">About</NavLink>
+                <NavLink className="header-nav-link" to="/events">Мои События</NavLink>
+                <NavLink className="header-nav-link" to="/about">About</NavLink>
 
                 {!isAuthenticated ? (
-                    <NavLink className="nav-link" to="/auth/login">Войти</NavLink>
+                    <NavLink className="header-nav-link" to="/auth/login">Войти</NavLink>
                 ) : (
-                    <NavLink className="nav-link" to={`/profile/${user.id}`}>Профиль</NavLink>
+                    <NavLink className="header-nav-link" to={`/profile/${user.id}`}>Профиль</NavLink>
                 )}
             </div>
         </header>
