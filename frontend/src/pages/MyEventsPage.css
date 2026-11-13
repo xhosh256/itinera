@@ -48,8 +48,14 @@
 
 .my__events__page__layout {
     flex: 6;
-
+    display: flex;
 }
+
+
+.my__events__grid {
+    padding: 20px;
+}
+
 .my__events__page__header {
     padding: 0 20px;
     display: flex;
@@ -149,6 +155,11 @@
     padding: 10px;
     align-self: center;
     border-radius: 6px;
+    transition: 0.2s ease;
+}
+
+.upcoming__explore__link:hover {
+    background: var(--primary-hover);
 }
 
 .my__events__page__header__upcoming__event {
@@ -159,4 +170,151 @@
 
 .my__events__page__subinfo {
     flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.my__events__page__pending__invitations {
+    background: var(--blue-background);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.my__events__page__pending__invitations p:first-child {
+    color: var(--text);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.my__events__page__pending__invitations__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.my__events__page__pending__invitations__info__text p:first-child {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.my__events__page__pending__invitations__info__text p:last-child {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.my__events__page__pending__invitations__info a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    background: var(--primary);
+    padding: 10px;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 7px;
+}
+.my__events__page__pending__invitations__info a:hover {
+    background: var(--primary-hover);
+}
+
+.my__events__header {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.my__events__header__text > p {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.my__events__header__searchbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+    padding: 0 10px;
+    border-radius: 10px;
+}
+
+.my__events__header__searchbar > input {
+    border: none;
+    width: 100%;
+    padding: 10px;
+}
+
+.my__events__header__searchbar > input:focus {
+    outline: none;
+}
+
+.my__events__page__upcoming__this__week {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 12px;
+    gap: 20px;
+}
+
+.my__events__page__upcoming__this__week p:first-child {
+    color: var(--text);
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+
+}
+
+.my__events__page__upcoming__this__week__events__list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.my__events__header__tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+}
+.my__events__header__tabs button {
+    background: none;
+    border: 1px solid var(--primary);
+    border-radius: 30px;
+    padding: 7px;
+    transition: 0.2s ease;
+    font-weight: bold;
+}
+
+.my__events__header__tabs button:hover {
+    background: var(--secondary);
+    border: 1px solid var(--secondary);
+    cursor: pointer;
+    color: white;
+}
+
+.my__events__header__tabs button.active {
+    background: var(--primary);
+    color: white;
+}
+
+.my__events__grid {
+    display: flex;
+    flex-direction: column;
+
 }

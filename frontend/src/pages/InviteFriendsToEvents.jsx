@@ -37,7 +37,7 @@ const InviteFriendsToEvent = () => {
             }
 
             const data = await response.json();
-            setFriends(data);
+            setFriends(data.content);
         }
 
         fetchFriends();

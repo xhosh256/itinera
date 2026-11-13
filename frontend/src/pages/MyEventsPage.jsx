@@ -3,13 +3,15 @@ import Header from "../components/Header.jsx";
 import LoginPage from "./auth/LoginPage.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
-import EventPreview from "../components/EventPreview.jsx";
 import './MyEventsPage.css';
-import Pagination from "../components/Pagination.jsx";
-import {FaMagnifyingGlass, FaUserGroup} from "react-icons/fa6";
+import { FaUserGroup} from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
-import ItineraStamp from "../components/ItineraStamp.jsx";
+import { SlMagnifier } from "react-icons/sl";
+import { SlEnvolope } from "react-icons/sl";
+import { FaArrowRightLong } from "react-icons/fa6";
+import EventPreview from "../components/EventPreview.jsx";
+import Pagination from "../components/Pagination.jsx";
 
 const MyEventsPage = () => {
     const { user, setUser } = useContext(AuthContext);
@@ -71,7 +73,7 @@ const MyEventsPage = () => {
 
 
                 <div className="my__events__page__layout">
-                    <div>
+                    <div style={{flex: 6}}>
                         <div className="my__events__page__header">
                             <div className="my__events__page__header__text">
                                 <p>Мои события</p>
@@ -118,95 +120,103 @@ const MyEventsPage = () => {
 
                         <div className="my__events__layout">
                             <div className="my__events__header">
-                                <div>
+                                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                                     <div className="my__events__header__text">
-                                        Мои события
+                                        <p>Список событий</p>
                                     </div>
 
                                     <div className="my__events__header__tabs">
-
+                                        <button
+                                            onClick={() => {
+                                                setActiveTab("created")
+                                                setPage(1)
+                                            }}
+                                            className={activeTab === "created" ? "active" : ""}
+                                        >Создал(а)</button>
+                                        <button
+                                            onClick={() => {
+                                                setActiveTab("joined")
+                                                setPage(1)
+                                            }}
+                                            className={activeTab === "joined" ? "active" : ""}
+                                        >Вступил(а)</button>
                                     </div>
                                 </div>
 
                                 <div className="my__events__header__searchbar">
-                                    <FaMagnifyingGlass size={20} />
-                                    <input type="text"/>
+                                    <SlMagnifier  style={{ color: "gray" }} size={15} />
+                                    <input placeholder="Название события" type="text"/>
                                 </div>
                             </div>
 
                             <div className="my__events__grid">
+                                {events.length > 0 ? (
+                                    <div>
+                                        {events.map(({id, name, capacity, joined, visibility, hostUsername}) => (
+                                            <EventPreview
+                                                key={id}
+                                                id={id}
+                                                name={name}
+                                                capacity={capacity}
+                                                joined={joined}
+                                                visibility={visibility}
+                                                hostUsername={hostUsername}
+                                            />))}
 
+                                        <Link to="/events/create">Создать новое Событие</Link>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <h1>Создайте свое первое событие прямо сейчас!</h1>
+                                        <Link to="/events/create">Создать Событие</Link>
+                                    </div>
+                                )}
+
+                                <Pagination
+                                    page={page}
+                                    totalPages={totalPages}
+                                    onPageChange={setPage}
+                                />
                             </div>
                         </div>
                     </div>
 
+                    <div className="my__events__page__subinfo">
+                        <div className="my__events__page__pending__invitations">
+                            <p> <SlEnvolope style={{color: "var(--active-text)"}} size={20}/> Приглашения</p>
+                            <div className="my__events__page__pending__invitations__info">
+                                <div className="my__events__page__pending__invitations__info__text">
+                                    <p>0</p>
+                                    <p>Ждут Вашего ответа</p>
+                                </div>
+                                <Link to={"/events/invites"}> Приглащения <FaArrowRightLong size={15}/> </Link>
+                            </div>
+                        </div>
 
-                </div>
+                        <div className="my__events__page__upcoming__this__week">
+                            <p> <FaCalendarDays style={{color: "var(--active-text)"}} size={20} /> События этой недели</p>
+                            <div className="my__events__page__upcoming__this__week__events__list">
+                                <div>
+                                    <p>Event 1</p>
+                                    <p>1 day later</p>
+                                </div>
 
-                <div className="my__events__page__subinfo">
-                    <div className="my__events__page__pending__invitations">
-                        123
-                    </div>
+                                <div>
+                                    <p>Event 2</p>
+                                    <p>1 day later</p>
+                                </div>
 
-                    <div className="my__events__page__upcoming__this__week">
-
+                                <div>
+                                    <p>Event 3</p>
+                                    <p>1 day later</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            {/*<div className="my__events__grid">*/}
-            {/*    <div>*/}
-            {/*        <div>*/}
-            {/*            <Link to={"/events/invites"}>Приглащения</Link>*/}
-            {/*            <br/>*/}
-            {/*            <button*/}
-            {/*                onClick={() => {*/}
-            {/*                    setActiveTab("created")*/}
-            {/*                    setPage(1)*/}
-            {/*                }}*/}
-            {/*                className={activeTab === "created" ? "active" : ""}*/}
-            {/*            >Созданные мной</button>*/}
-            {/*            <button*/}
-            {/*                onClick={() => {*/}
-            {/*                    setActiveTab("joined")*/}
-            {/*                    setPage(1)*/}
-            {/*                }}*/}
-            {/*                className={activeTab === "joined" ? "active" : ""}*/}
-            {/*            >Принимаю участие</button>*/}
-            {/*        </div>*/}
-            {/*        <div className="events__block">*/}
-            {/*            {events.length > 0 ? (*/}
-            {/*                <>*/}
-            {/*                    {events.map(({id, name, capacity, joined, visibility, hostUsername}) => (*/}
-            {/*                        <EventPreview*/}
-            {/*                            key={id}*/}
-            {/*                            id={id}*/}
-            {/*                            name={name}*/}
-            {/*                            capacity={capacity}*/}
-            {/*                            joined={joined}*/}
-            {/*                            visibility={visibility}*/}
-            {/*                            hostUsername={hostUsername}*/}
-            {/*                        />))}*/}
-
-            {/*                    <Link to="/events/create">Создать новое Событие</Link>*/}
-            {/*                </>*/}
-            {/*            ) : (*/}
-            {/*                <>*/}
-            {/*                    <h1>Создайте свое первое событие прямо сейчас!</h1>*/}
-            {/*                    <Link to="/events/create">Создать Событие</Link>*/}
-            {/*                </>*/}
-            {/*            )}*/}
-
-            {/*            <Pagination*/}
-            {/*                page={page}*/}
-            {/*                totalPages={totalPages}*/}
-            {/*                onPageChange={setPage}*/}
-            {/*            />*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </div>
-    );
+    )
 }
 
 export default MyEventsPage;
