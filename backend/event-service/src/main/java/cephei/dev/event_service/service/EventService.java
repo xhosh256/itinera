@@ -99,15 +99,16 @@ public class EventService {
 
         return base.map(e -> {
             UserResponse host = userClient.findById(e.getHostId());
+            return eventMapper.toPreviewReadDto(e, host.username());
 
-            return EventPreviewReadDto.builder()
-                    .id(e.getId())
-                    .hostUsername(host.username())
-                    .name(e.getName())
-                    .capacity(e.getCapacity())
-                    .joined(e.getJoined())
-                    .visibility(e.getVisibility())
-                    .build();
+//            return EventPreviewReadDto.builder()
+//                    .id(e.getId())
+//                    .hostUsername(host.username())
+//                    .name(e.getName())
+//                    .capacity(e.getCapacity())
+//                    .joined(e.getJoined())
+//                    .visibility(e.getVisibility())
+//                    .build();
         });
     }
 
@@ -116,15 +117,17 @@ public class EventService {
 
         return base.map(e -> {
             UserResponse host = userClient.findById(e.getHostId());
+            return eventMapper.toPreviewReadDto(e, host.username());
 
-            return EventPreviewReadDto.builder()
-                    .id(e.getId())
-                    .hostUsername(host.username())
-                    .name(e.getName())
-                    .capacity(e.getCapacity())
-                    .joined(e.getJoined())
-                    .visibility(e.getVisibility())
-                    .build();
+
+//            return EventPreviewReadDto.builder()
+//                    .id(e.getId())
+//                    .hostUsername(host.username())
+//                    .name(e.getName())
+//                    .capacity(e.getCapacity())
+//                    .joined(e.getJoined())
+//                    .visibility(e.getVisibility())
+//                    .build();
         });
     }
 
@@ -158,15 +161,16 @@ public class EventService {
 
         return base.map(e -> {
             UserResponse host = userClient.findById(e.getHostId());
+            return eventMapper.toPreviewReadDto(e, host.username());
 
-            return EventPreviewReadDto.builder()
-                    .id(e.getId())
-                    .hostUsername(host.username())
-                    .name(e.getName())
-                    .capacity(e.getCapacity())
-                    .joined(e.getJoined())
-                    .visibility(e.getVisibility())
-                    .build();
+//            return EventPreviewReadDto.builder()
+//                    .id(e.getId())
+//                    .hostUsername(host.username())
+//                    .name(e.getName())
+//                    .capacity(e.getCapacity())
+//                    .joined(e.getJoined())
+//                    .visibility(e.getVisibility())
+//                    .build();
         });
     }
 
@@ -212,15 +216,15 @@ public class EventService {
                 .findUpcomingEvents(LocalDateTime.now(), PageRequest.of(0, 3));
         return upcomingEvents.map(e -> {
             UserResponse host = userClient.findById(e.getHostId());
-
-            return EventPreviewReadDto.builder()
-                    .id(e.getId())
-                    .hostUsername(host.username())
-                    .name(e.getName())
-                    .capacity(e.getCapacity())
-                    .joined(e.getJoined())
-                    .visibility(e.getVisibility())
-                    .build();
+            return eventMapper.toPreviewReadDto(e, host.username());
+//            return EventPreviewReadDto.builder()
+//                    .id(e.getId())
+//                    .hostUsername(host.username())
+//                    .name(e.getName())
+//                    .capacity(e.getCapacity())
+//                    .joined(e.getJoined())
+//                    .visibility(e.getVisibility())
+//                    .build();
         });
     }
 
@@ -237,14 +241,15 @@ public class EventService {
         dashboard.setWeeklyEvents(eventRepository.getWeeklyEvents(
                 user.id(), LocalDateTime.now(), LocalDateTime.now().plusWeeks(1), PageRequest.of(0, 5)
         ).stream().map(e -> {
-            return new EventPreviewReadDto(
-                    e.getId(),
-                    "undefined",
-                    e.getName(),
-                    e.getCapacity(),
-                    e.getJoined(),
-                    e.getVisibility()
-            );
+            return eventMapper.toPreviewReadDto(e, null);
+//            return new EventPreviewReadDto(
+//                    e.getId(),
+//                    "undefined",
+//                    e.getName(),
+//                    e.getCapacity(),
+//                    e.getJoined(),
+//                    e.getVisibility()
+//            );
         }).toList());
 
         Event nextEvent = eventRepository.getNextEvent(
@@ -252,14 +257,16 @@ public class EventService {
         ).stream().findFirst().orElse(null);
 
         if(nextEvent != null) {
-            dashboard.setNextEvent(new EventPreviewReadDto(
-                    nextEvent.getId(),
-                    "undefined",
-                    nextEvent.getName(),
-                    nextEvent.getCapacity(),
-                    nextEvent.getJoined(),
-                    nextEvent.getVisibility()
-            ));
+//            dashboard.setNextEvent(new EventPreviewReadDto(
+//                    nextEvent.getId(),
+//                    "undefined",
+//                    nextEvent.getName(),
+//                    nextEvent.getCapacity(),
+//                    nextEvent.getJoined(),
+//                    nextEvent.getVisibility()
+//            ));
+
+            dashboard.setNextEvent(eventMapper.toPreviewReadDto(nextEvent, null));
         } else dashboard.setNextEvent(null);
 
         return dashboard;

@@ -26,16 +26,20 @@ public class InvitationService {
 
     private final InvitationRepository invitationRepository;
     private final UserClient userClient;
+    private final InvitationMapper invitationMapper;
 
     public Page<InvitationReadDto> findAll(String username, Pageable pageable) {
         UserResponse user = userClient.findByUsername(username);
+//        return invitationRepository.findByInvitedUserId(user.id(), pageable)
+//                .map(invitation -> new InvitationReadDto(
+//                        invitation.getId(),
+//                        invitation.getEvent().getName(),
+//                        invitation.getEvent().getVisibility(),
+//                        invitation.getStatus()
+//                ));
+
         return invitationRepository.findByInvitedUserId(user.id(), pageable)
-                .map(invitation -> new InvitationReadDto(
-                        invitation.getId(),
-                        invitation.getEvent().getName(),
-                        invitation.getEvent().getVisibility(),
-                        invitation.getStatus()
-                ));
+                .map(invitationMapper::toReadDto);
 
     }
 

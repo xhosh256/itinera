@@ -1,8 +1,11 @@
 package cephei.dev.profile_service.repository;
 
 import aj.org.objectweb.asm.commons.Remapper;
+import cephei.dev.profile_service.dto.ProfilePreviewReadDto;
 import cephei.dev.profile_service.entity.Profile;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 

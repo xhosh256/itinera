@@ -2,6 +2,7 @@ package cephei.dev.profile_service.api.v1;
 
 import cephei.dev.profile_service.dto.ProfileCreateDto;
 import cephei.dev.profile_service.dto.ProfileEditDto;
+import cephei.dev.profile_service.dto.ProfilePreviewReadDto;
 import cephei.dev.profile_service.dto.ProfileReadDto;
 import cephei.dev.profile_service.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +36,11 @@ public class ProfileRestController {
         profileService.editProfile(profileId, profileEditDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @GetMapping("/search/{usernameOrId}")
+    public ProfilePreviewReadDto search(@PathVariable String usernameOrId) {
+        return profileService.search(usernameOrId);
+    }
+
+
 }

@@ -13,10 +13,10 @@ public interface EventMapper {
 
     EventReadDto toReadDto(Event event);
 
-    default EventPreviewReadDto toPreviewReadDto(Event e) {
+    default EventPreviewReadDto toPreviewReadDto(Event e, String username) {
         return new EventPreviewReadDto(
                 e.getId(),
-                "undefined",
+                username,
                 e.getName(),
                 e.getCapacity(),
                 e.getJoined(),

@@ -86,7 +86,6 @@ public class FriendshipService {
         "@friendshipAuthorization.doesRequestBelongsToMe(#myId, authentication.name)"
     )
     public List<FriendshipReadDto> getAllRequests(Integer myId) {
-        System.out.println("Im in service");
         List<Friendship> requests = friendshipRepository
                 .findAllFriendRequests(myId, FriendshipStatus.PENDING);
 
@@ -95,8 +94,8 @@ public class FriendshipService {
 
             return FriendshipReadDto.builder()
                     .id(base.id())
-                    .user(profileMapper.toReadDto(friendship.getUser()))
-                    .friend(profileMapper.toReadDto(friendship.getFriend()))
+                    .user(profileMapper.toReadDto(friendship.getUser(), null, null))
+                    .friend(profileMapper.toReadDto(friendship.getFriend(), null, null))
                     .status(base.status())
                     .build();
         }).toList();
@@ -141,13 +140,15 @@ public class FriendshipService {
                     : friendship.getUser();
 
             UserResponse userResponse = userClient.findById(friendProfile.getUserId());
-            return FriendReadDto.builder()
-                    .id(friendProfile.getId())
-                    .userId(friendProfile.getUserId())
-                    .username(userResponse.username())
-                    .firstname(friendProfile.getFirstname())
-                    .lastname(friendProfile.getLastname())
-                    .build();
+//            FriendReadDto base = profileMapper.toFriendReadDto(friendProfile);
+            return profileMapper.toFriendReadDto(friendProfile, userResponse.username());
+//            return FriendReadDto.builder()
+//                    .id(base.id())
+//                    .userId(base.userId())
+//                    .username(userResponse.username())
+//                    .firstname(base.firstname())
+//                    .lastname(base.lastname())
+//                    .build();
         });
     }
 }

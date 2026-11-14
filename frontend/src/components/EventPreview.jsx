@@ -34,7 +34,7 @@ const EventPreview = (props) => {
         <div className="event__preview">
             <div className="event__preview__header">
                 <p className={`event__preview__visibility ${visibility.toLowerCase()}`}>{visibility}</p>
-                <p>Организатор: @{hostUsername}</p>
+                <p>Организатор: <span style={{color: "var(--text-muted)"}}>@{hostUsername}</span></p>
             </div>
 
             <div className="event__preview__body">

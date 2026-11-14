@@ -172,7 +172,7 @@ const ProfilePage = () => {
     }
 
     const handleFindUser = async () => {
-        const response = await fetch(`http://localhost:8080/api/v1/profiles/${searchUserId}`, {
+        const response = await fetch(`http://localhost:8080/api/v1/profiles/search/${searchUserId}`, {
             credentials: "include",
             method: "GET",
             headers: {
@@ -327,7 +327,7 @@ const ProfilePage = () => {
                                         ) : (tryFetch && !searchUserProfile) ? (
                                             <ErrorStamp>Пользователь не найден</ErrorStamp>
                                         ) : (
-                                            <Link className="found__profile" to={`/profile/${searchUserId}`}>
+                                            <Link className="found__profile" to={`/profile/${searchUserProfile.userId}`}>
                                                 <p>{searchUserProfile.firstname} {searchUserProfile.lastname}</p>
                                                 <p>@{searchUserProfile.username}</p>
                                             </Link>
