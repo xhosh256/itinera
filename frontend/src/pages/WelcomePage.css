@@ -4,6 +4,9 @@
 
 .welcome__page__layout {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .welcome__page__header__wrapper {
@@ -70,4 +73,45 @@
     object-fit: cover;
     object-position: bottom;
     border-radius: 20px;
+}
+
+.welcome__page__auth__layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    align-items: center;
+    gap: 20px;
+}
+
+.welcome__page__auth__layout__text {
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.welcome__page__auth__layout__text p:first-child {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.welcome__page__auth__layout__text p:last-child {
+    font-size: 16px;
+    color: var(--text-muted);
+}
+
+.welcome__page__auth__layout__register__link {
+    text-decoration: none;
+    color: white;
+    background: var(--primary);
+    padding: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 12px;
+    transition: 0.2s ease;
+}
+
+.welcome__page__auth__layout__register__link:hover {
+    background: var(--primary-hover);
 }

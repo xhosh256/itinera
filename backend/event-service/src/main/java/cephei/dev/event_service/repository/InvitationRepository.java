@@ -26,4 +26,9 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
         and i.status = 'PENDING'
     """)
     Optional<Invitation> findByEventIdAndUserId(Long eventId, Integer invitedUserId);
+
+    @Query("""
+        select count(*) from Invitation inv where (inv.invitedUserId = :id and inv.status = 'PENDING')
+    """)
+    Long getPending(Integer id);
 }

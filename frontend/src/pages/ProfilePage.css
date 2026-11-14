@@ -224,9 +224,8 @@
 .content {
     flex: 2.5;
     min-width: 0;
-    padding: 24px;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+    /*border: 1px solid var(--border);*/
+    /*box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);*/
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -238,7 +237,7 @@
     align-items: baseline;
 }
 .content__header > p {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
 }
 

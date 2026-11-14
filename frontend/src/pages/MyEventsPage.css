@@ -56,6 +56,21 @@
     padding: 20px;
 }
 
+.my__events__page__header__create__event__link {
+    text-decoration: none;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 12px;
+    transition: 0.2s ease;
+}
+
+.my__events__page__header__create__event__link:hover {
+    background: var(--primary-hover);
+}
+
 .my__events__page__header {
     padding: 0 20px;
     display: flex;
@@ -286,6 +301,10 @@
     gap: 15px;
 }
 
+.my__events__page__upcoming__this__week__events__list > div p:last-child {
+    color: var(--text-muted);
+}
+
 .my__events__header__tabs {
     display: flex;
     flex-direction: row;
@@ -302,8 +321,8 @@
 }
 
 .my__events__header__tabs button:hover {
-    background: var(--secondary);
-    border: 1px solid var(--secondary);
+    background: var(--primary);
+    border: 1px solid var(--primary);
     cursor: pointer;
     color: white;
 }

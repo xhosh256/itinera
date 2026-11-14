@@ -26,6 +26,15 @@ const WelcomePage = () => {
 
                     <img src={ImgMainPage} alt='main-page'/>
                 </div>
+
+                <div className="welcome__page__auth__layout">
+                    <div className="welcome__page__auth__layout__text">
+                        <p>Присоединяйтесь к нам прямо сейчас</p>
+                        <p>Вы получите незабываемые впечатления</p>
+                    </div>
+
+                    <Link className="welcome__page__auth__layout__register__link" to="/auth/register">Зарегестрироваться</Link>
+                </div>
             </div>
         </div>
     )

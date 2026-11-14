@@ -39,7 +39,6 @@ const EventPreview = (props) => {
 
             <div className="event__preview__body">
                 <p>{name}</p>
-                <p>Описаааааааание</p>
             </div>
 
             <Divider/>

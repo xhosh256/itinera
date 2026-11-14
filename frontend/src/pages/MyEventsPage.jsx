@@ -21,6 +21,8 @@ const MyEventsPage = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
+    const [dashboard, setDashboard] = useState(null);
+
     useEffect(() => {
         if (!user) return;
         const fetchEvents = async () => {
@@ -37,7 +39,7 @@ const MyEventsPage = () => {
 
                 if (response.status === 401) {
                     setUser(null)
-                    return <LoginPage />
+                    return null;
                 }
 
                 if (!response.ok) {
@@ -54,7 +56,36 @@ const MyEventsPage = () => {
         fetchEvents();
     }, [activeTab, page, setUser, user]);
 
+    useEffect(() => {
+        if(!user) return;
+
+        const fetchDashboard = async () => {
+            const response = await fetch("http://localhost:8080/api/v1/events/dashboard", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            if(response.status === 401) {
+                setUser(null)
+                return;
+            }
+
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const data = await response.json();
+            setDashboard(data);
+        }
+
+        fetchDashboard();
+    }, [user]);
+
     if (user === null) return <LoginPage />;
+    if(dashboard === null) return <p>Загружаем статистику</p>;
 
     return (
         <div className="my__events__page">
@@ -75,15 +106,20 @@ const MyEventsPage = () => {
                 <div className="my__events__page__layout">
                     <div style={{flex: 6}}>
                         <div className="my__events__page__header">
-                            <div className="my__events__page__header__text">
-                                <p>Мои события</p>
-                                <p>Управляйте своими событиями</p>
+                            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                <div className="my__events__page__header__text">
+                                    <p>Мои события</p>
+                                    <p>Управляйте своими событиями</p>
+                                </div>
+
+                                <Link className="my__events__page__header__create__event__link" to="/events/create">Создать событие +</Link>
                             </div>
+
                             <div className="my__events__page__header__info">
                                 <div>
                                     <FaCalendarDays size={25} />
                                     <div>
-                                        <p>0</p>
+                                        <p>{dashboard.totalEvents}</p>
                                         <p>Всего событий</p>
                                     </div>
                                 </div>
@@ -91,31 +127,34 @@ const MyEventsPage = () => {
                                 <div>
                                     <FaUserGroup size={25} />
                                     <div>
-                                        <p>0</p>
+                                        <p>{dashboard.totalHostedEvents}</p>
                                         <p>Организованны мой</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/*Показывать только если есть события*/}
-                            <div className="my__events__page__header__upcoming__event">
-                                <div className="my__events__page__header__upcoming__event__left">
-                                    <div className="my__events__page__header__upcoming__event__info__header">
-                                        <p>Ваше следующее событие</p>
-                                        <p>Название события</p>
+                            {dashboard.nextEvent && (
+                                <div className="my__events__page__header__upcoming__event">
+                                    <div className="my__events__page__header__upcoming__event__left">
+                                        <div className="my__events__page__header__upcoming__event__info__header">
+                                            <p>Ваше следующее событие</p>
+                                            <p>{dashboard.nextEvent.name}</p>
+                                        </div>
+
+                                        <div className="my__events__page__header__upcoming__event__info">
+                                            <p><FaCalendarDays size={15} /> дата</p>
+                                            <p><FaUserGroup size={15} /> {dashboard.nextEvent.joined} участников</p>
+                                        </div>
                                     </div>
 
-                                    <div className="my__events__page__header__upcoming__event__info">
-                                        <p><FaCalendarDays size={15} /> дата</p>
-                                        <p><FaUserGroup size={15} /> 0 участников</p>
+                                    <div className="my__events__page__header__upcoming__event__right">
+                                        <p>Осталось 3 дня</p>
+                                        <Link className="upcoming__explore__link" to={`/events/${dashboard.nextEvent.id}`}>Подробнее</Link>
                                     </div>
                                 </div>
+                            )}
 
-                                <div className="my__events__page__header__upcoming__event__right">
-                                    <p>Осталось 3 дня</p>
-                                    <Link className="upcoming__explore__link" to="/events/1">Подробнее</Link>
-                                </div>
-                            </div>
                         </div>
 
                         <div className="my__events__layout">
@@ -162,8 +201,6 @@ const MyEventsPage = () => {
                                                 visibility={visibility}
                                                 hostUsername={hostUsername}
                                             />))}
-
-                                        <Link to="/events/create">Создать новое Событие</Link>
                                     </div>
                                 ) : (
                                     <div>
@@ -186,7 +223,7 @@ const MyEventsPage = () => {
                             <p> <SlEnvolope style={{color: "var(--active-text)"}} size={20}/> Приглашения</p>
                             <div className="my__events__page__pending__invitations__info">
                                 <div className="my__events__page__pending__invitations__info__text">
-                                    <p>0</p>
+                                    <p>{dashboard.pendingInvitations}</p>
                                     <p>Ждут Вашего ответа</p>
                                 </div>
                                 <Link to={"/events/invites"}> Приглащения <FaArrowRightLong size={15}/> </Link>
@@ -196,20 +233,12 @@ const MyEventsPage = () => {
                         <div className="my__events__page__upcoming__this__week">
                             <p> <FaCalendarDays style={{color: "var(--active-text)"}} size={20} /> События этой недели</p>
                             <div className="my__events__page__upcoming__this__week__events__list">
-                                <div>
-                                    <p>Event 1</p>
-                                    <p>1 day later</p>
-                                </div>
-
-                                <div>
-                                    <p>Event 2</p>
-                                    <p>1 day later</p>
-                                </div>
-
-                                <div>
-                                    <p>Event 3</p>
-                                    <p>1 day later</p>
-                                </div>
+                                {dashboard.weeklyEvents.map(event => (
+                                    <div>
+                                        <p>{event.name}</p>
+                                        <p>1 day later</p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

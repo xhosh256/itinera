@@ -4,9 +4,7 @@ import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.*;
 import cephei.dev.event_service.entity.*;
 import cephei.dev.event_service.exception.*;
-import cephei.dev.event_service.mapper.EventComponentMapper;
 import cephei.dev.event_service.mapper.EventMapper;
-import cephei.dev.event_service.repository.EventComponentRepository;
 import cephei.dev.event_service.repository.EventRepository;
 import cephei.dev.event_service.repository.InvitationRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -225,5 +222,46 @@ public class EventService {
                     .visibility(e.getVisibility())
                     .build();
         });
+    }
+
+    public MyEventsDashboard getStats(String username) {
+        UserResponse user = userClient.findByUsername(username);
+
+        MyEventsStatistics statistics = eventRepository.getTotal(user.id());
+
+        MyEventsDashboard dashboard = new MyEventsDashboard();
+        dashboard.setTotalEvents(statistics.getTotalEvents());
+        dashboard.setTotalHostedEvents(statistics.getTotalHostedEvents());
+
+        dashboard.setPendingInvitations(invitationRepository.getPending(user.id()));
+        dashboard.setWeeklyEvents(eventRepository.getWeeklyEvents(
+                user.id(), LocalDateTime.now(), LocalDateTime.now().plusWeeks(1), PageRequest.of(0, 5)
+        ).stream().map(e -> {
+            return new EventPreviewReadDto(
+                    e.getId(),
+                    "undefined",
+                    e.getName(),
+                    e.getCapacity(),
+                    e.getJoined(),
+                    e.getVisibility()
+            );
+        }).toList());
+
+        Event nextEvent = eventRepository.getNextEvent(
+                LocalDateTime.now(), user.id(), PageRequest.of(0, 3)
+        ).stream().findFirst().orElse(null);
+
+        if(nextEvent != null) {
+            dashboard.setNextEvent(new EventPreviewReadDto(
+                    nextEvent.getId(),
+                    "undefined",
+                    nextEvent.getName(),
+                    nextEvent.getCapacity(),
+                    nextEvent.getJoined(),
+                    nextEvent.getVisibility()
+            ));
+        } else dashboard.setNextEvent(null);
+
+        return dashboard;
     }
 }

@@ -23,6 +23,11 @@ public class EventRestController {
 
     private final EventService eventService;
 
+    @GetMapping("/dashboard")
+    public MyEventsDashboard getStats(@AuthenticationPrincipal String username) {
+        return eventService.getStats(username);
+    }
+
     @GetMapping("/created/{userId}")
     public Page<EventPreviewReadDto> findCreated(
             @PathVariable Integer userId,
