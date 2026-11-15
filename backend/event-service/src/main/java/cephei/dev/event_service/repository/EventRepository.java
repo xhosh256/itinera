@@ -55,4 +55,16 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         order by MIN(ec.startTime) asc
     """)
     List<Event> getNextEvent(LocalDateTime now, Integer id, Pageable pageable);
+
+    @Query("""
+        select e from Event e
+        where e.name like concat('%', :name, '%') and e.hostId = :userId
+    """)
+    Page<Event> findMyCreatedByName(Integer userId, String name, Pageable pageable);
+
+    @Query("""
+        select e from Event e
+        where :id member of e.participantIds and e.name like concat('%', :name, '%')
+        """)
+    Page<Event> findMyJoinedByName(Integer id, String name, Pageable pageable);
 }

@@ -21,18 +21,24 @@ const MyEventsPage = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
+    const [searchQuery, setSearchQuery] = useState("");
+    const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
     const [dashboard, setDashboard] = useState(null);
 
     useEffect(() => {
         if (!user) return;
         const fetchEvents = async () => {
             try {
-                const url = activeTab === "created" ?
-                    `/api/v1/events/created/${user.id}` :
-                    `/api/v1/events/joined/${user.id}`;
 
+                const isSearching = appliedSearchQuery.trim().length > 0;
+
+                const path = isSearching
+                    ? `my/search/${activeTab}`
+                    : activeTab === "created" ?
+                        `created/${user.id}` :
+                        `joined/${user.id}`;
                 const response = await fetch(
-                    `http://localhost:8080${url}?page=${page-1}`, {
+                    `http://localhost:8080/api/v1/events/${path}?${isSearching ? `name=${appliedSearchQuery.trim()}&` : ""}page=${page-1}`, {
                         credentials: "include"
                     }
                 );
@@ -54,7 +60,7 @@ const MyEventsPage = () => {
             }
         }
         fetchEvents();
-    }, [activeTab, page, setUser, user]);
+    }, [activeTab, page, setUser, user, appliedSearchQuery]);
 
     useEffect(() => {
         if(!user) return;
@@ -83,6 +89,37 @@ const MyEventsPage = () => {
 
         fetchDashboard();
     }, [user]);
+
+    const handleKeyDown = (event) => {
+        if(event.key === "Enter") {
+            setPage(1);
+            setAppliedSearchQuery(searchQuery);
+        }
+    }
+
+    const handleSearch = async () => {
+        const path = activeTab === "created" ? "created" : "joined"
+        const response = await fetch(`http://localhost:8080/api/v1/events/my/search/${path}?name=${appliedSearchQuery.trim()}&page=${page-1}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        });
+
+        if(response.status === 401) {
+            setUser(null)
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        const data = await response.json();
+        setEvents(data.content);
+        setTotalPages(data.totalPages);
+    }
 
     if (user === null) return <LoginPage />;
     if(dashboard === null) return <p>Загружаем статистику</p>;
@@ -184,7 +221,13 @@ const MyEventsPage = () => {
 
                                 <div className="my__events__header__searchbar">
                                     <SlMagnifier  style={{ color: "gray" }} size={15} />
-                                    <input placeholder="Название события" type="text"/>
+                                    <input
+                                        value={searchQuery}
+                                        onKeyDown={handleKeyDown}
+                                        onChange={(e) => {setSearchQuery(e.target.value)}}
+                                        placeholder="Название события"
+                                        type="text"
+                                    />
                                 </div>
                             </div>
 
@@ -234,7 +277,7 @@ const MyEventsPage = () => {
                             <p> <FaCalendarDays style={{color: "var(--active-text)"}} size={20} /> События этой недели</p>
                             <div className="my__events__page__upcoming__this__week__events__list">
                                 {dashboard.weeklyEvents.map(event => (
-                                    <div>
+                                    <div key={event.id}>
                                         <p>{event.name}</p>
                                         <p>1 day later</p>
                                     </div>

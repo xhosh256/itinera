@@ -271,4 +271,23 @@ public class EventService {
 
         return dashboard;
     }
+
+    public Page<EventPreviewReadDto> findMyCreatedByName(String username, String name, Pageable pageable) {
+        UserResponse host = userClient.findByUsername(username);
+
+        Page<Event> events = eventRepository.findMyCreatedByName(host.id(), name, pageable);
+
+        return events.map(e -> eventMapper.toPreviewReadDto(e, username));
+    }
+
+    public Page<EventPreviewReadDto> findMyJoinedByName(String username, String name, Pageable pageable) {
+        UserResponse user = userClient.findByUsername(username);
+
+        Page<Event> events = eventRepository.findMyJoinedByName(user.id(), name, pageable);
+        return events.map(e -> {
+            UserResponse host = userClient.findById(e.getHostId());
+
+            return eventMapper.toPreviewReadDto(e, host.username());
+        });
+    }
 }

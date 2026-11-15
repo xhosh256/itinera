@@ -73,6 +73,24 @@ public class EventRestController {
         return eventService.findByName(name, pageable);
     }
 
+    @GetMapping("/my/search/created")
+    public Page<EventPreviewReadDto> findMyCreatedEvents(
+            @PageableDefault(size = 5, page = 0) Pageable pageable,
+            @RequestParam("name") String name,
+            @AuthenticationPrincipal String username
+    ) {
+        return eventService.findMyCreatedByName(username, name, pageable);
+    }
+
+    @GetMapping("/my/search/joined")
+    public Page<EventPreviewReadDto> findMyJoinedEvents(
+            @PageableDefault(size = 5, page = 0) Pageable pageable,
+            @RequestParam("name") String name,
+            @AuthenticationPrincipal String username
+    ) {
+        return eventService.findMyJoinedByName(username, name, pageable);
+    }
+
     @PostMapping("/{eventId}/joins")
     public ResponseEntity<Void> join(
             @AuthenticationPrincipal String username,
