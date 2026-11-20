@@ -53,6 +53,8 @@ const SearchEventsPage = () => {
                         joined={event.joined}
                         visibility={event.visibility}
                         hostUsername={event.hostUsername}
+                        address={event.address}
+                        startTime={event.startTime}
                     />
                 ))}
             </div>

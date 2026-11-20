@@ -46,7 +46,7 @@ const ExplorePage = () => {
                     <h1>Близжайшие события</h1>
 
                     <div className="upcoming__events__items">
-                        {upcomingEvents.map(({id, name, capacity, joined, visibility, hostUsername}) => (
+                        {upcomingEvents.map(({id, name, capacity, joined, visibility, hostUsername, address, startTime}) => (
                             <EventPreview
                                 key={id}
                                 id={id}
@@ -55,6 +55,8 @@ const ExplorePage = () => {
                                 joined={joined}
                                 visibility={visibility}
                                 hostUsername={hostUsername}
+                                address={address}
+                                startTime={startTime}
                             />
                         ))}
                     </div>

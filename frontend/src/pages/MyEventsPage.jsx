@@ -4,7 +4,7 @@ import LoginPage from "./auth/LoginPage.jsx";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext.jsx";
 import './MyEventsPage.css';
-import { FaUserGroup} from "react-icons/fa6";
+import {FaCalendarDay, FaUserGroup} from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
 import { SlMagnifier } from "react-icons/sl";
@@ -14,6 +14,8 @@ import EventPreview from "../components/EventPreview.jsx";
 import Pagination from "../components/Pagination.jsx";
 
 const MyEventsPage = () => {
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
     const { user, setUser } = useContext(AuthContext);
     const [activeTab, setActiveTab] = useState( "created");
     const [events, setEvents] = useState([]);
@@ -24,6 +26,26 @@ const MyEventsPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
     const [dashboard, setDashboard] = useState(null);
+
+    const daysForm = (count) => {
+        const lastTwo = count % 100;
+        const lastOne = count % 10;
+
+        if(lastTwo >= 11 && lastTwo <= 14) {
+
+            return `Осталось ${count} дней`;
+        }
+
+        if(lastOne === 1) {
+            return `Остался ${count} день`;
+        }
+
+        if(lastOne >= 2 && lastOne <= 4) {
+            return `Осталось ${count} дня`;
+        }
+
+        return `Осталось ${count} дней`;
+    }
 
     useEffect(() => {
         if (!user) return;
@@ -123,6 +145,7 @@ const MyEventsPage = () => {
 
     if (user === null) return <LoginPage />;
     if(dashboard === null) return <p>Загружаем статистику</p>;
+    const nearestDaysLeft = Math.ceil((new Date(dashboard.nextEvent.startTime) - Date.now())/MS_PER_DAY)
 
     return (
         <div className="my__events__page">
@@ -180,13 +203,19 @@ const MyEventsPage = () => {
                                         </div>
 
                                         <div className="my__events__page__header__upcoming__event__info">
-                                            <p><FaCalendarDays size={15} /> дата</p>
+                                            {dashboard.nextEvent.startTime && <p><FaCalendarDay size={15}/> {new Date(dashboard.nextEvent.startTime).toLocaleString('ru-RU', {
+                                                day: '2-digit',
+                                                month: 'long',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })} </p>}
                                             <p><FaUserGroup size={15} /> {dashboard.nextEvent.joined} участников</p>
                                         </div>
                                     </div>
 
                                     <div className="my__events__page__header__upcoming__event__right">
-                                        <p>Осталось 3 дня</p>
+                                        <p>{daysForm(nearestDaysLeft)}</p>
                                         <Link className="upcoming__explore__link" to={`/events/${dashboard.nextEvent.id}`}>Подробнее</Link>
                                     </div>
                                 </div>
@@ -234,7 +263,7 @@ const MyEventsPage = () => {
                             <div className="my__events__grid">
                                 {events.length > 0 ? (
                                     <div>
-                                        {events.map(({id, name, capacity, joined, visibility, hostUsername}) => (
+                                        {events.map(({id, name, capacity, joined, visibility, hostUsername, address, startTime}) => (
                                             <EventPreview
                                                 key={id}
                                                 id={id}
@@ -243,6 +272,8 @@ const MyEventsPage = () => {
                                                 joined={joined}
                                                 visibility={visibility}
                                                 hostUsername={hostUsername}
+                                                address={address}
+                                                startTime={startTime}
                                             />))}
                                     </div>
                                 ) : (

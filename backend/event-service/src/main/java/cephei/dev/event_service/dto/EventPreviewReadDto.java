@@ -3,6 +3,8 @@ package cephei.dev.event_service.dto;
 import cephei.dev.event_service.entity.Visibility;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record EventPreviewReadDto(
         Long id,
@@ -10,6 +12,9 @@ public record EventPreviewReadDto(
         String name,
         Integer capacity,
         Integer joined,
-        Visibility visibility
+        Visibility visibility,
+
+        String address,
+        LocalDateTime startTime
 ) {
 }

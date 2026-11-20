@@ -6,7 +6,7 @@ import { FaCalendarDay } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
 
 const EventPreview = (props) => {
-    const {id, name, capacity, joined, visibility, hostUsername} = props;
+    const {id, name, capacity, joined, visibility, hostUsername, address, startTime} = props;
 
     const progress = (joined/capacity) * 100;
 
@@ -44,8 +44,14 @@ const EventPreview = (props) => {
             <Divider/>
 
             <div className="event__preview__info">
-                <p><FaLocationDot size={15}/> локаия типр</p>
-                <p><FaCalendarDay size={15}/> дата типо </p>
+                {address && <p><FaLocationDot size={15}/> {address} </p>}
+                {startTime && <p><FaCalendarDay size={15}/> {new Date(startTime).toLocaleString('ru-RU', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })} </p>}
                 <p> <FaUserGroup size={15}/> {joined} / {capacity} участников</p>
                 <div className="progress-bar">
                     <div
