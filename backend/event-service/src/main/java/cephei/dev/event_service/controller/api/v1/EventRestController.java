@@ -23,7 +23,7 @@ public class EventRestController {
 
     private final EventService eventService;
 
-    @GetMapping("/dashboard")
+    @GetMapping("/stats/dashboard")
     public MyEventsDashboard getStats(@AuthenticationPrincipal String username) {
         return eventService.getStats(username);
     }

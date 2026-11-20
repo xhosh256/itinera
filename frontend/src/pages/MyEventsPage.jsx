@@ -66,7 +66,7 @@ const MyEventsPage = () => {
         if(!user) return;
 
         const fetchDashboard = async () => {
-            const response = await fetch("http://localhost:8080/api/v1/events/dashboard", {
+            const response = await fetch("http://localhost:8080/api/v1/events/stats/dashboard", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
