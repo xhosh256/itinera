@@ -268,13 +268,13 @@ const ProfilePage = () => {
 
                     <div className="profile__info">
                         <div className="userId">
-                            <p> User Id:</p>
-                            <p> {userId}</p>
+                            <p>User Id:</p>
+                            <p>{userId}</p>
                         </div>
 
                         <div className="birthdate">
                             <p>Дата рождения: </p>
-                            <p>{profile.birthDate}</p>
+                            {profile.birthDate ? (<p>{new Date(profile.birthDate).toLocaleDateString('ru-RU')}</p>) : <p>-</p>}
                         </div>
 
                         <div className="bio">

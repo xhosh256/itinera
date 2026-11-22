@@ -161,9 +161,12 @@ const EventInvitesPage = () => {
                         <div className="events__invite__page__outcoming__items">
                             {invitations.length >= 1 ? invitations.map((invitation) => (
                                 <div key={invitation.id} className="events__invite__outcoming">
-                                    <div className="events__invite__outcoming__header">
-                                        <p>{invitation.eventName}</p>
-                                        <p className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
+                                    <div className="events__invite__outcoming__info">
+                                        <div className="events__invite__outcoming__header">
+                                            <p>{invitation.eventName}</p>
+                                            <p className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
+                                        </div>
+                                        <p className="events__invite__outcoming__username">Пригласил(а) @{invitation.username}</p>
                                     </div>
                                     {invitation.status === 'PENDING' && (
                                         <button onClick={() => handleCancelInvitation(invitation.id)}>Отменить приглашение</button>

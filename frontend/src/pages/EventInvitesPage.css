@@ -69,7 +69,7 @@
     max-width: 600px;
     min-width: 200px;
     border: 1px solid var(--border);
-    padding: 10px;
+    padding: 12px 16px;
     border-radius: 12px;
     box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
 }
@@ -120,22 +120,98 @@
 
 .events__invite__buttons > button:first-child {
     border: none;
-    background: var(--primary);
-    color: white;
+    /*border: 1px solid var(--success-text);*/
+    background: var(--success-primary);
+    color: var(--success-text);
 }
 
 .events__invite__buttons > button:first-child:hover {
-    background: var(--primary-hover);
+    background: var(--success-hover);
 }
 
 .events__invite__buttons > button:last-child {
-    border: 1px solid var(--primary);
-    background: white;
-    color: var(--primary);
+    border: none;
+    /*border: 1px solid var(--danger-text);*/
+    background: var(--danger-primary);
+    color: var(--danger-text);
 }
 
 .events__invite__buttons > button:last-child:hover {
-    background: var(--primary);
-    color: white;
+    background: var(--danger-hover);
 }
 
+.events__invite__page__outcoming__items {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.events__invite__outcoming {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 600px;
+    min-width: 200px;
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+    min-height: 90px;
+}
+
+.events__invite__outcoming__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.events__invite__outcoming__header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.events__invite__outcoming__header > p:first-child {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.events__invite__outcoming__header > p:last-child {
+    color: white;
+    font-size: 12px;
+    padding: 3px 7px;
+    border-radius: 20px;
+    width: fit-content ;
+}
+
+.events__invite__outcoming__header > p:last-child.public {
+    background: var(--success-primary);
+    color: var(--success-text);
+}
+
+.events__invite__outcoming__header > p:last-child.private {
+    background: var(--danger-primary);
+    color: var(--danger-text);
+}
+
+.events__invite__outcoming__username {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.events__invite__outcoming > button {
+    align-self: end;
+    padding: 7px 10px;
+    font-weight: bold;
+    border: none;
+    background: var(--danger-primary);
+    color: var(--danger-text);
+    border-radius: 12px;
+    transition: 0.2s ease;
+}
+
+.events__invite__outcoming > button:hover {
+    background: var(--danger-hover);
+    cursor: pointer;
+}
