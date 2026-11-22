@@ -145,7 +145,7 @@ const MyEventsPage = () => {
 
     if (user === null) return <LoginPage />;
     if(dashboard === null) return <p>Загружаем статистику</p>;
-    const nearestDaysLeft = Math.ceil((new Date(dashboard.nextEvent.startTime) - Date.now())/MS_PER_DAY)
+    const nearestDaysLeft = dashboard.nextEvent && Math.ceil((new Date(dashboard.nextEvent.startTime) - Date.now())/MS_PER_DAY)
 
     return (
         <div className="my__events__page">
