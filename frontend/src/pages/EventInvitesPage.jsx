@@ -18,7 +18,8 @@ const EventInvitesPage = () => {
         if(!user) return;
 
         const fetchInvitations = async () => {
-            const response = await fetch(`http://localhost:8080/api/v1/invitations?page=${page-1}`, {
+            const request = tab === "incoming" ? "/api/v1/invitations" : "/api/v1/invitations/outcoming";
+            const response = await fetch(`http://localhost:8080${request}?page=${page-1}`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
@@ -38,10 +39,11 @@ const EventInvitesPage = () => {
             const data = await response.json();
             setInvitations(data.content);
             setTotalPages(data.totalPages);
+            console.log(data.content);
         }
 
         fetchInvitations();
-    }, [user, page])
+    }, [user, page, tab])
 
     if(!user) {
         return <h1>Пользователь не найден</h1>
@@ -89,6 +91,27 @@ const EventInvitesPage = () => {
         setInvitations(prev => prev.filter(item => item.id !== id));
     }
 
+    const handleCancelInvitation = async (deleteId) => {
+        const response = await fetch(`http://localhost:8080/api/v1/invitations/${deleteId}`, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+
+        if(response.status === 401) {
+            setUser(null);
+            return;
+        }
+
+        if(!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        setInvitations(prev => prev.filter(item => item.id !== deleteId));
+    }
+
     return (
         <div className="events__invite__page">
             <Header/>
@@ -96,43 +119,63 @@ const EventInvitesPage = () => {
                 <div className="events__invite__sidebar">
                     <button
                         className={tab === "incoming" ? "active" : ""}
-                        onClick={() => setTab("incoming")}>Входящие</button>
+                        onClick={() => {
+                            setTab("incoming");
+                            setPage(1);
+                        }}>Входящие</button>
                     <button
                         className={tab === "outcoming" ? "active" : ""}
-                        onClick={() => setTab("outcoming")}>Исходящие</button>
+                        onClick={() => {
+                            setTab("outcoming")
+                            setPage(1);
+                        }}>Исходящие</button>
                 </div>
 
                 <div className="events__invite__page__content">
                     <h1>Приглашения</h1>
                     {tab === "incoming" ? (
-                        <div>
-                            <div className="events__invite__page__items">
-                                {invitations.length >= 1 ? invitations.map((invitation) => (
-                                    <div key={invitation.id} className="events__invite">
-                                        <div className="events__invite__header">
-                                            <p>{invitation.eventName}</p>
-                                            <p className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
-                                        </div>
-                                        {invitation.status === 'PENDING' && (
-                                            <div className="events__invite__buttons">
-                                                <button onClick={() => handleAccept(invitation.id)}>Принять</button>
-                                                <button onClick={() => handleDecline(invitation.id)}>Отклонить</button>
-                                            </div>
-                                        )}
+                        <div className="events__invite__page__items">
+                            {invitations.length >= 1 ? invitations.map((invitation) => (
+                                <div key={invitation.id} className="events__invite">
+                                    <div className="events__invite__header">
+                                        <p>{invitation.eventName}</p>
+                                        <p className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
                                     </div>
-                                )) : <p>Приглашений пока что нет)</p>}
+                                    {invitation.status === 'PENDING' && (
+                                        <div className="events__invite__buttons">
+                                            <button onClick={() => handleAccept(invitation.id)}>Принять</button>
+                                            <button onClick={() => handleDecline(invitation.id)}>Отклонить</button>
+                                        </div>
+                                    )}
+                                </div>
+                            )) : <p>Приглашений пока что нет)</p>}
 
-                                <Pagination
-                                    page={page}
-                                    totalPages={totalPages}
-                                    onPageChange={setPage}
-                                />
-                            </div>
+                            <Pagination
+                                page={page}
+                                totalPages={totalPages}
+                                onPageChange={setPage}
+                            />
                         </div>
 
                     ) : (
-                        <div>
-                            Нету
+                        <div className="events__invite__page__outcoming__items">
+                            {invitations.length >= 1 ? invitations.map((invitation) => (
+                                <div key={invitation.id} className="events__invite__outcoming">
+                                    <div className="events__invite__outcoming__header">
+                                        <p>{invitation.eventName}</p>
+                                        <p className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
+                                    </div>
+                                    {invitation.status === 'PENDING' && (
+                                        <button onClick={() => handleCancelInvitation(invitation.id)}>Отменить приглашение</button>
+                                    )}
+                                </div>
+                            )) : <p>Приглашений пока что нет)</p>}
+
+                            <Pagination
+                                page={page}
+                                totalPages={totalPages}
+                                onPageChange={setPage}
+                            />
                         </div>
                     )}
 

@@ -22,4 +22,12 @@ public class InvitationAuthorization {
 
         return invitation.getInvitedUserId().equals(invitedUser.id());
     }
+
+    public boolean isInviter(Long invitationId, String inviterUsername) {
+        Invitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(() -> new InvitationNotFoundException("Invitation not found"));
+        UserResponse inviter = userClient.findByUsername(inviterUsername);
+
+        return invitation.getEvent().getHostId().equals(inviter.id());
+    }
 }

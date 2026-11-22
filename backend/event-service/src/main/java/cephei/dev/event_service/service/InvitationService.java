@@ -2,6 +2,7 @@ package cephei.dev.event_service.service;
 
 import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.InvitationReadDto;
+import cephei.dev.event_service.dto.OutcomingInvitationReadDto;
 import cephei.dev.event_service.dto.UserResponse;
 import cephei.dev.event_service.entity.Invitation;
 import cephei.dev.event_service.entity.InvitationStatus;
@@ -76,5 +77,26 @@ public class InvitationService {
         }
 
         invitation.setStatus(InvitationStatus.DECLINED);
+    }
+
+    public Page<OutcomingInvitationReadDto> findAllOutcoming(String username, Pageable pageable) {
+        UserResponse host = userClient.findByUsername(username);
+
+        Page<Invitation> invitations = invitationRepository.findAllOutcoming(host.id(), pageable);
+        return invitations.map((i) -> {
+            UserResponse invitedUser = userClient.findById(i.getInvitedUserId());
+
+            return invitationMapper.toInvitationReadDto(i, invitedUser.username());
+        });
+    }
+
+    @Transactional
+    @PreAuthorize(
+            "@invitationAuthorization.isInviter(#deleteId, authentication.name)"
+    )
+    public void delete(Long deleteId) {
+        Invitation invitation = invitationRepository
+                .findById(deleteId).orElseThrow(() -> new InvitationNotFoundException("Inbitation not found"));
+        invitationRepository.delete(invitation);
     }
 }

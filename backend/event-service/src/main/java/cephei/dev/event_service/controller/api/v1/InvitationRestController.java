@@ -1,6 +1,7 @@
 package cephei.dev.event_service.controller.api.v1;
 
 import cephei.dev.event_service.dto.InvitationReadDto;
+import cephei.dev.event_service.dto.OutcomingInvitationReadDto;
 import cephei.dev.event_service.service.InvitationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,14 @@ public class InvitationRestController {
         return invitationService.findAll(username, pageable);
     }
 
+    @GetMapping("/outcoming")
+    public Page<OutcomingInvitationReadDto> findOutcoming(
+            @AuthenticationPrincipal String username,
+            @PageableDefault(size = 3, page = 0) Pageable pageable
+    ) {
+        return invitationService.findAllOutcoming(username, pageable);
+    }
+
     @PostMapping("/{invitationId}/accept")
     public ResponseEntity<Void> accept(
             @PathVariable Long invitationId
@@ -39,5 +48,12 @@ public class InvitationRestController {
     ) {
         invitationService.decline(invitationId);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{deleteId}")
+    public void cancelInvitation(
+            @PathVariable Long deleteId
+    ) {
+        invitationService.delete(deleteId);
     }
 }
