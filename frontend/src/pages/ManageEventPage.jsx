@@ -5,12 +5,14 @@ import AuthContext from "../context/AuthContext.jsx";
 import LoginPage from "./auth/LoginPage.jsx";
 import './ManageEventPage.css'
 import EventComponent from "../components/EventComponent.jsx";
+import InviteFriendsModalWindow from "../components/InviteFriendsModalWindow.jsx";
 
 const ManageEventPage = () => {
     const { id } = useParams();
     const {user, setUser} = useContext(AuthContext);
 
     const [event, setEvent] = useState(null);
+    const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -212,7 +214,8 @@ const ManageEventPage = () => {
                     <br/>
 
                     {event.hostId === user.id && (
-                        <Link to={`/events/${event.id}/invite`}>Добавить друзей</Link>
+                        <button onClick={() => setIsInviteModalOpen(true)}>Добавить друзей</button>
+                        // <Link to={`/events/${event.id}/invite`}></Link>
                     )}
                 </div>
 
@@ -243,6 +246,14 @@ const ManageEventPage = () => {
                     Here will be user chat ;)
                 </div>
             </div>
+
+            {isInviteModalOpen && (
+                <InviteFriendsModalWindow
+                    eventId={event.id}
+                    eventName={event.name}
+                    onClose={() => setIsInviteModalOpen(false)}
+                />
+            )}
         </div>
     )
 }

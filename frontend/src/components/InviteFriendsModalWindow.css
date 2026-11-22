@@ -1,0 +1,31 @@
+.invite__friends__modal__window {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 15, 25, 0.55);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: start;
+
+    z-index: 1000;
+}
+
+.invite__friends__modal__window__close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+}
+
+.invite__friends__modal__window__close:hover {
+    cursor: pointer;
+}
+
+.invite__friends__modal__window__content {
+    background: white;
+    padding: 10px 20px;
+    position: relative;
+    border-radius: 12px;
+}

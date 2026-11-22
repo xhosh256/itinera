@@ -1,0 +1,118 @@
+import {useContext, useEffect, useState} from "react";
+import AuthContext from "../context/AuthContext.jsx";
+import {useNavigate} from "react-router-dom";
+import LoginPage from "../pages/auth/LoginPage.jsx";
+import './InviteFriendsModalWindow.css';
+import { CgCloseR } from "react-icons/cg";
+
+const InviteFriendsModalWindow = (props) => {
+    const {
+        eventId,
+        eventName,
+        onClose,
+    } = props;
+
+    const {user, setUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const [friends, setFriends] = useState([]);
+    const [selected, setSelected] = useState([]);
+
+    useEffect(() => {
+        if(!user) return;
+
+        const fetchFriends = async () => {
+            const response = await fetch(`http://localhost:8080/api/v1/friendships/friends/${user.id}?size=10`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if(response.status === 401) {
+                setUser(null);
+                return;
+            }
+
+            if(!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const data = await response.json();
+            setFriends(data.content);
+        }
+
+        fetchFriends();
+    }, [user]);
+
+    const handleSelect = (e) => {
+        const value = Number(e.target.value);
+        console.log(value);
+
+        setSelected(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (selected.length === 0) return;
+
+        const responses = await Promise.all(
+            selected.map(id =>
+                fetch(`http://localhost:8080/api/v1/events/${eventId}/invitations/${id}`, {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+            )
+        );
+
+        if (responses.some(response => response.status === 401)) {
+            setUser(null);
+            return;
+        }
+
+        if (responses.some(response => !response.ok)) {
+            throw new Error('Не удалось отправить некоторые приглашения');
+        }
+
+        navigate(`/events/${eventId}`);
+    }
+
+    if(!user) return <LoginPage/>
+
+    return (
+        <div className="invite__friends__modal__window">
+            <div className="invite__friends__modal__window__content">
+                <CgCloseR size="20" onClick={onClose} className={"invite__friends__modal__window__close"} />
+
+                <div>
+                    <p>Пригласить друзей</p>
+                    <p>Выберите друзей которых хотите пригласить в событие {eventName}</p>
+                </div>
+
+                <div>
+                    <input type="text" placeholder="Поиск друзей по имени"/>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    {friends.length > 0 ? (
+                        friends.map((friend) => (
+                            <div key={friend.id}>
+                                <p>{friend.firstname} {friend.lastname}</p>
+                                <input
+                                    value={friend.userId}
+                                    type="checkbox"
+                                    onChange={handleSelect}
+                                    checked={selected.includes(friend.userId)}
+                                />
+                            </div>
+                        ))
+                    ) : (<div>У вас нет друзей :(</div>)}
+                    <button>Пригласить</button>
+                </form>
+            </div>
+            </div>
+
+    )
+}
+
+export default InviteFriendsModalWindow;

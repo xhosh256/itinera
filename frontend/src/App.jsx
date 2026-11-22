@@ -13,7 +13,6 @@ import EditComponentPage from "./pages/EditComponentPage.jsx";
 import SearchEventsPage from "./pages/SearchEventsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FriendRequestsPage from "./pages/FriendRequestsPage.jsx";
-import InviteFriendsToEvent from "./pages/InviteFriendsToEvents.jsx";
 import EventInvitesPage from "./pages/EventInvitesPage.jsx";
 import EditProfilePage from "./pages/EditProfilePage.jsx";
 
@@ -41,7 +40,6 @@ function App() {
 
                 <Route path="/events/search" element={<SearchEventsPage/>}/>
                 <Route path="/events/invites" element={<EventInvitesPage/>}/>
-                <Route path="/events/:eventId/invite" element={<InviteFriendsToEvent/>}/>
 
                 <Route path="/friends/requests" element={<FriendRequestsPage />} />
             </Routes>
