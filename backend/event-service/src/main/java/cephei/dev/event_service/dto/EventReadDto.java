@@ -9,10 +9,12 @@ import java.util.Set;
 public record EventReadDto (
         Long id,
         Integer hostId,
+        String hostUsername,
         String name,
         Integer capacity,
         Visibility visibility,
         List<EventComponentReadDto> components,
-        Set<Integer> participantIds
+        Set<Integer> participantIds,
+        List<ParticipantPreview> participantPreviews
 ) {
 }

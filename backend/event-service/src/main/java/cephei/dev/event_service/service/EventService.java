@@ -1,5 +1,6 @@
 package cephei.dev.event_service.service;
 
+import cephei.dev.event_service.client.ProfileClient;
 import cephei.dev.event_service.client.UserClient;
 import cephei.dev.event_service.dto.*;
 import cephei.dev.event_service.entity.*;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,6 +31,7 @@ public class EventService {
     private final EventMapper eventMapper;
     private final EventRepository eventRepository;
     private final InvitationRepository invitationRepository;
+    private final ProfileClient profileClient;
 
     @Transactional
     public EventReadDto create(String username, EventCreateRequest eventCreateRequest) {
@@ -35,7 +39,8 @@ public class EventService {
         Event event = eventMapper.toEntity(eventCreateRequest);
         event.setHostId(user.id());
         event.getParticipantIds().add(user.id());
-        return eventMapper.toReadDto(eventRepository.save(event));
+        ParticipantPreview host = profileClient.findByUserId(user.id());
+        return eventMapper.toReadDto(eventRepository.save(event), username, List.of(host));
     }
 
     @PreAuthorize(
@@ -45,7 +50,14 @@ public class EventService {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFound("Event not found"));
 
-        return eventMapper.toReadDto(event);
+        UserResponse hostUser = userClient.findById(event.getHostId());
+
+        List<ParticipantPreview> participantPreviews = new ArrayList<>();
+        for(Integer i : event.getParticipantIds()) {
+            participantPreviews.add(profileClient.findByUserId(i));
+        }
+
+        return eventMapper.toReadDto(event, hostUser.username(), participantPreviews);
     }
 
     @Transactional

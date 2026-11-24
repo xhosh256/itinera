@@ -6,6 +6,9 @@ import LoginPage from "./auth/LoginPage.jsx";
 import './ManageEventPage.css'
 import EventComponent from "../components/EventComponent.jsx";
 import InviteFriendsModalWindow from "../components/InviteFriendsModalWindow.jsx";
+import Divider from "../components/Divider.jsx";
+import {FaCircleCheck , FaUserGroup} from "react-icons/fa6";
+import { BsBox } from "react-icons/bs";
 
 const ManageEventPage = () => {
     const { id } = useParams();
@@ -181,45 +184,76 @@ const ManageEventPage = () => {
             <Header />
             <div className="manage__event__layout">
                 <div className="manage__event__sidebar">
-                    <h1>{event.name}</h1>
-                    <p> {event.visibility === 'PUBLIC' ? 'Публичный' : 'Приватный'} ивент </p>
-                    {event.participantIds.includes(user.id) ?
-                        <p>Вы учавствуете</p> :
-                        <button onClick={handleJoin} >Учавствовать</button>
-                    }
-                    <p>Список участников</p>
-                    <div>
-                        {event.participantIds.map((id) => (
-                            <div>
-                                <p key={id}>Пользователь {id} {id === event.hostId && <span>- ХОСТ</span>}</p>
-                                {user.id === event.hostId
-                                    && id !== event.hostId
-                                    && <button onClick={() => handleKick(id)}>Выгнать</button>}
-                            </div>
-                        ))}
+                    <div className="manage__event__sidebar__header">
+                        <div className="manage__event__sidebar__header__info">
+                            <p>{event.name}</p>
+                            <p className={event.visibility === 'PUBLIC' ? "public" : "private"}>{event.visibility}</p>
+                        </div>
+                        <p>Хост: @{event.hostUsername}</p>
                     </div>
 
-                    {event.hostId === user.id && (
-                        <>
-                            <Link to={`/events/${event.id}/edit`}>Редактировать событие</Link>
-                            <button onClick={handleDeleteEvent}>Удалить Событие</button>
-                        </>
-                    )}
+                    <Divider/>
+
+                    <div className="manage__event__sidebar__info">
+                        {event.participantIds.includes(user.id) ?
+                            <p className="you__take__a__part"> <FaCircleCheck/> Вы учавствуете </p> :
+                            <button onClick={handleJoin} >Учавствовать</button>
+                        }
+
+                        <div className="manage__event__sidebar__participants">
+                            <div className="manage__event__sidebar__participants__info">
+                                <p> <FaUserGroup/> Участники</p>
+                                <p>{event.participantIds.length} / {event.capacity}</p>
+                            </div>
+                            <div className="manage__event__sidebar__participants__items">
+                                {event.participantPreviews.map((profile) => (
+                                    <div className="manage__event__sidebar__participants__item">
+                                        <p>{profile.firstname} {profile.lastname}</p>
+                                        <p>@{profile.username}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <Divider/>
+
+                    <div className="manage__event__sidebar__buttons">
+                        {event.hostId === user.id && (
+                            <button
+                                className="manage__event__sidebar__add__friends__button"
+                                onClick={() => setIsInviteModalOpen(true)}>Добавить друзей</button>
+                        )}
+
+                        {event.hostId === user.id && (
+                            <div className="manage__event__sidebar__update__buttons">
+                                <Link className="manage__event__sidebar__edit_btn" to={`/events/${event.id}/edit`}>Редактировать</Link>
+                                <button className="manage__event__sidebar__delete_btn" onClick={handleDeleteEvent}>Удалить</button>
+                            </div>
+                        )}
+                    </div>
 
                     {event.hostId !== user.id && event.participantIds.includes(user.id) && (
                         <button onClick={handleLeave}>Покинуть событие</button>
                     )}
 
-                    <br/>
-                    <br/>
 
-                    {event.hostId === user.id && (
-                        <button onClick={() => setIsInviteModalOpen(true)}>Добавить друзей</button>
-                        // <Link to={`/events/${event.id}/invite`}></Link>
-                    )}
                 </div>
 
                 <div className="manage__event__components">
+                    <div className="manage__event__components__header">
+                        <div className="manage__event__components__header__text">
+                            <p>Компоненты события</p>
+                            <p>Организовывайте расписание своих событий в удобном формате</p>
+                        </div>
+
+                        {event.hostId === user.id && (
+                            <Link className="manage__event__components__header__add__btn" to={`/events/${event.id}/components/create`}>+ Добавить</Link>
+                        )}
+                    </div>
+
+                    <Divider/>
+
                     {event.components.length !== 0 ? event.components.map(({id, startTime, endTime, description, address}) => (
                         <EventComponent
                             key={id}
@@ -231,14 +265,21 @@ const ManageEventPage = () => {
                             address={address}
                             onDeleted={handleComponentDeleted}
                         />
-                    )) : (<h1>У этого события нет компонент</h1>)}
-
-                    {event.hostId === user.id ? (
-                        <>
-                            <h1>Создайте первый компонент события!</h1>
+                    )) : (
+                        <div className="manage__event__components__empty__page">
+                            <BsBox className="manage__event__components__empty__page__icon" size={50}/>
+                            <p>Пока что здесь пусто</p>
+                            <p>Добавьте первый компонент, чтобы вместе со всеми спланировать все детали</p>
                             <Link to={`/events/${event.id}/components/create`}>Создать компонент</Link>
-                        </>
-                    ) : (<></>)}
+                        </div>
+                    )}
+
+                    {/*{event.hostId === user.id ? (*/}
+                    {/*    <>*/}
+                    {/*        <h1>Создайте первый компонент события!</h1>*/}
+                    {/*        <Link to={`/events/${event.id}/components/create`}>Создать компонент</Link>*/}
+                    {/*    </>*/}
+                    {/*) : (<></>)}*/}
                 </div>
 
 
