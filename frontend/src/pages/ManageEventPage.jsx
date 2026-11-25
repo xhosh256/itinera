@@ -268,9 +268,18 @@ const ManageEventPage = () => {
                     )) : (
                         <div className="manage__event__components__empty__page">
                             <BsBox className="manage__event__components__empty__page__icon" size={50}/>
-                            <p>Пока что здесь пусто</p>
-                            <p>Добавьте первый компонент, чтобы вместе со всеми спланировать все детали</p>
-                            <Link to={`/events/${event.id}/components/create`}>Создать компонент</Link>
+                            <p style={{fontSize: "24px", fontWeight: "bold"}}>Пока что здесь пусто</p>
+
+                            {user.id === event.hostId && (
+                                <>
+                                    <p style={{fontSize: "16px", color: "var(--text-muted)"}}>Добавьте первый компонент, чтобы вместе со всеми спланировать все детали</p>
+                                    <Link
+                                        className="manage__event__components__empty__page__add__btn"
+                                        style={{marginTop: "10px", fontSize: "20px"}}
+                                        to={`/events/${event.id}/components/create`}> + Создать компонент</Link>
+                                </>
+
+                            )}
                         </div>
                     )}
 

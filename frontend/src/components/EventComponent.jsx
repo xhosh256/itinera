@@ -45,30 +45,39 @@ const EventComponent = (props) => {
     }
 
     return (
-        <div className="event__component">
-            <p>{start.toLocaleString('ru-RU', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })} — {end.toLocaleString('ru-RU', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })}</p>
+        <div className="event__component__item">
+            <div style={{display: "flex", justifyContent: "space-between", flexDirection: "column"}}>
+                <div>
+                    <p className="time">{start.toLocaleString('ru-RU', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })} — {end.toLocaleString('ru-RU', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</p>
 
-            <p>О событии: {description}</p>
-            <p>Место: {address}</p>
+                    <p className="address">Место: {address}</p>
+                </div>
 
-            {user.id === event.hostId && (
-                <>
-                    <Link to={`/events/${event.id}/components/${componentId}/edit`}>Редактировать Компонент</Link>
-                    <button onClick={handleDelete}>Удалить Компонент</button>
-                </>
-            )}
+
+                <p className="description">Описание: {description}</p>
+            </div>
+            <div className="event__component__manage__btns">
+                {user.id === event.hostId && (
+                    <>
+                        <Link className="edit_btn" to={`/events/${event.id}/components/${componentId}/edit`}>Редактировать</Link>
+                        <button className="delete_btn" onClick={handleDelete}>Удалить</button>
+                    </>
+                )}
+            </div>
+
+
         </div>
     )
 }

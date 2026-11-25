@@ -1,5 +1,58 @@
-.event__component {
+.event__component__item {
+    display: flex;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px 20px;
+}
+
+.event__component__manage__btns {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    gap: 5px;
+}
+
+.event__component__manage__btns .edit_btn,
+.event__component__manage__btns .delete_btn {
+    padding: 10px;
+    border-radius: 7px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.2s ease;
+}
+
+.event__component__manage__btns .edit_btn {
+    text-decoration: none;
+    color: white;
+    background: var(--primary);
+
+
+}
+
+.event__component__manage__btns .edit_btn:hover {
+    background: var(--primary-hover);
+    cursor: pointer;
+}
+
+.event__component__manage__btns .delete_btn {
+    color: var(--danger-text);
+    border: 1px solid var(--danger-text);
+    background: var(--danger-primary);
+}
+
+.event__component__manage__btns .delete_btn:hover {
+    background: var(--danger-text);
+    color: white;
+    cursor: pointer;
+}
+
+.event__component__item .time {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.event__component__item .description {
+    margin-top: 10px;
+    color: var(--text-muted);
 }
