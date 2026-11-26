@@ -20,14 +20,16 @@
     font-weight: bold;
     font-size: 16px;
     transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
 }
 
 .event__component__manage__btns .edit_btn {
     text-decoration: none;
     color: white;
     background: var(--primary);
-
-
 }
 
 .event__component__manage__btns .edit_btn:hover {

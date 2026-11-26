@@ -44,17 +44,7 @@ public class ProfileService {
         }
 
         UserResponse user = userClient.findById(userId);
-//        ProfileReadDto base = profileMapper.toReadDto(profile);
         return profileMapper.toReadDto(profile, user.username(), friendIds);
-//        return ProfileReadDto.builder()
-//                .id(base.id())
-//                .username(user.username())
-//                .firstname(base.firstname())
-//                .lastname(base.lastname())
-//                .birthDate(base.birthDate())
-//                .bio(base.bio())
-//                .friendIds(friendIds)
-//                .build();
     }
 
     @Transactional

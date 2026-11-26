@@ -2,6 +2,8 @@ import './EventComponent.css'
 import {Link, useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import AuthContext from "../context/AuthContext.jsx";
+import { BsFillPencilFill } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
 
 const EventComponent = (props) => {
     const {
@@ -71,8 +73,8 @@ const EventComponent = (props) => {
             <div className="event__component__manage__btns">
                 {user.id === event.hostId && (
                     <>
-                        <Link className="edit_btn" to={`/events/${event.id}/components/${componentId}/edit`}>Редактировать</Link>
-                        <button className="delete_btn" onClick={handleDelete}>Удалить</button>
+                        <Link className="edit_btn" to={`/events/${event.id}/components/${componentId}/edit`}> <BsFillPencilFill/> Редактировать</Link>
+                        <button className="delete_btn" onClick={handleDelete}> <BsFillTrashFill/> Удалить</button>
                     </>
                 )}
             </div>

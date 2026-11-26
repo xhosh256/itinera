@@ -106,9 +106,51 @@
 }
 
 .manage__event__sidebar__participants__item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 5px;
+}
+
+.manage__event__sidebar__participants__kick__button {
+    flex: 1;
+    border: 1px solid var(--danger-text);
+    background: var(--danger-hover);
+    color: var(--danger-text);
+    border-radius: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.manage__event__sidebar__participants__kick__button:hover {
+    background: var(--danger-text);
+    color: white;
+}
+
+.manage__event__sidebar__participants__item__link {
     background: var(--violet-background);
     padding: 10px;
     border-radius: 10px;
+
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    justify-content: space-between;
+    flex: 9;
+}
+
+.manage__event__sidebar__participants__item__info > p:first-child {
+    color: var(--text);
+}
+
+.manage__event__sidebar__participants__item__info > p:last-child {
+    color: var(--text-muted);
+    font-size: 14px;
 }
 
 .manage__event__sidebar__add__friends__button {
@@ -144,6 +186,10 @@
     font-weight: bold;
     border-radius: 7px;
     transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
 }
 
 .manage__event__sidebar__edit_btn:hover {
@@ -158,6 +204,10 @@
     color: var(--danger-text);
     border-radius: 7px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
     transition: 0.2s ease;
 }
 
@@ -172,6 +222,25 @@
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
+}
+
+.manage__event__sidebar__leave_btn {
+    border: 1px solid var(--danger-text);
+    background: var(--danger-primary);
+    color: var(--danger-text);
+    border-radius: 12px;
+    padding: 10px;
+    width: fit-content;
+    font-size: 12px;
+    font-weight: bold;
+    align-self: center;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.manage__event__sidebar__leave_btn:hover {
+    background: var(--danger-text);
+    color: white;
 }
 
 .manage__event__components {

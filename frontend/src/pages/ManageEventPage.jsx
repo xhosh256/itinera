@@ -9,6 +9,8 @@ import InviteFriendsModalWindow from "../components/InviteFriendsModalWindow.jsx
 import Divider from "../components/Divider.jsx";
 import {FaCircleCheck , FaUserGroup} from "react-icons/fa6";
 import { BsBox } from "react-icons/bs";
+import { BsFillPencilFill } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
 
 const ManageEventPage = () => {
     const { id } = useParams();
@@ -112,7 +114,7 @@ const ManageEventPage = () => {
         }))
     }
 
-    const handleKick = async (deleteId) => {
+    const handleKick = async (deleteId, e) => {
         const response = await fetch(`http://localhost:8080/api/v1/events/${event.id}/kicks/${deleteId}`, {
             credentials: "include",
             method: "DELETE",
@@ -133,6 +135,7 @@ const ManageEventPage = () => {
         setEvent(prev => ({
             ...prev,
             participantIds: prev.participantIds.filter(participantId => participantId !== deleteId),
+            participantPreviews: prev.participantPreviews.filter(preview => preview.userId !== deleteId)
         }));
     }
 
@@ -157,6 +160,7 @@ const ManageEventPage = () => {
         setEvent(prev => ({
             ...prev,
             participantIds: prev.participantIds.filter(participantId => participantId !== user.id),
+            participantPreviews: prev.participantPreviews.filter(preview => preview.userId !== user.id)
         }));
 
         navigate("/events");
@@ -187,7 +191,7 @@ const ManageEventPage = () => {
                     <div className="manage__event__sidebar__header">
                         <div className="manage__event__sidebar__header__info">
                             <p>{event.name}</p>
-                            <p className={event.visibility === 'PUBLIC' ? "public" : "private"}>{event.visibility}</p>
+                            <p style={{height: "fit-content"}} className={event.visibility === 'PUBLIC' ? "public" : "private"}>{event.visibility}</p>
                         </div>
                         <p>Хост: @{event.hostUsername}</p>
                     </div>
@@ -208,9 +212,23 @@ const ManageEventPage = () => {
                             <div className="manage__event__sidebar__participants__items">
                                 {event.participantPreviews.map((profile) => (
                                     <div className="manage__event__sidebar__participants__item">
-                                        <p>{profile.firstname} {profile.lastname}</p>
-                                        <p>@{profile.username}</p>
+                                        <Link
+                                            className="manage__event__sidebar__participants__item__link"
+                                            to={`/profile/${profile.userId}`}
+                                        >
+                                            <div className="manage__event__sidebar__participants__item__info">
+                                                <p>{profile.firstname} {profile.lastname}</p>
+                                                <p>@{profile.username}</p>
+                                            </div>
+
+                                        </Link>
+                                        {(user.id === event.hostId && user.id !== profile.userId) && (<button
+                                            className="manage__event__sidebar__participants__kick__button"
+                                            onClick={(e) => handleKick(profile.userId, e)}
+                                        >Выгнать</button>)}
                                     </div>
+
+
                                 ))}
                             </div>
                         </div>
@@ -227,14 +245,14 @@ const ManageEventPage = () => {
 
                         {event.hostId === user.id && (
                             <div className="manage__event__sidebar__update__buttons">
-                                <Link className="manage__event__sidebar__edit_btn" to={`/events/${event.id}/edit`}>Редактировать</Link>
-                                <button className="manage__event__sidebar__delete_btn" onClick={handleDeleteEvent}>Удалить</button>
+                                <Link className="manage__event__sidebar__edit_btn" to={`/events/${event.id}/edit`}> <BsFillPencilFill/> Редактировать</Link>
+                                <button className="manage__event__sidebar__delete_btn" onClick={handleDeleteEvent}> <BsFillTrashFill/> Удалить</button>
                             </div>
                         )}
                     </div>
 
                     {event.hostId !== user.id && event.participantIds.includes(user.id) && (
-                        <button onClick={handleLeave}>Покинуть событие</button>
+                        <button className="manage__event__sidebar__leave_btn" onClick={handleLeave}>Покинуть событие</button>
                     )}
 
 

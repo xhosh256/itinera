@@ -23,6 +23,7 @@ public interface ProfileMapper {
     default ProfileReadDto toReadDto(Profile profile, String username, Set<Integer> friendIds) {
         return new ProfileReadDto(
                 profile.getId(),
+                profile.getUserId(),
                 username,
                 profile.getFirstname(),
                 profile.getLastname(),

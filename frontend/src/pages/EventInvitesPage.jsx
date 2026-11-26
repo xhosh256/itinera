@@ -139,7 +139,7 @@ const EventInvitesPage = () => {
                                 <div key={invitation.id} className="events__invite">
                                     <div className="events__invite__header">
                                         <p>{invitation.eventName}</p>
-                                        <p className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
+                                        <p style={{width: "fit-content"}} className={invitation.visibility === 'PUBLIC' ? 'public' : 'private'}>{invitation.visibility}</p>
                                     </div>
                                     {invitation.status === 'PENDING' && (
                                         <div className="events__invite__buttons">
