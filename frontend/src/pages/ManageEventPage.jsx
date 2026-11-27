@@ -11,6 +11,7 @@ import {FaCircleCheck , FaUserGroup} from "react-icons/fa6";
 import { BsBox } from "react-icons/bs";
 import { BsFillPencilFill } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
+import { FiSend } from "react-icons/fi";
 
 const ManageEventPage = () => {
     const { id } = useParams();
@@ -300,18 +301,22 @@ const ManageEventPage = () => {
                             )}
                         </div>
                     )}
-
-                    {/*{event.hostId === user.id ? (*/}
-                    {/*    <>*/}
-                    {/*        <h1>Создайте первый компонент события!</h1>*/}
-                    {/*        <Link to={`/events/${event.id}/components/create`}>Создать компонент</Link>*/}
-                    {/*    </>*/}
-                    {/*) : (<></>)}*/}
                 </div>
 
 
                 <div className="manage__event__chat">
-                    Here will be user chat ;)
+                    <div className="manage__event__chat__header">
+                        <p>Чат события</p>
+                        <p>Общайтесь с участниками</p>
+                        <Divider />
+                    </div>
+
+                    <div className="manage__event__chat__form">
+                        <input className="manage__event__chat__input" type="text" placeholder="Написать сообщение..."/>
+                        <button className="manage__event__chat__send__button"><FiSend size={25}/></button>
+                    </div>
+
+
                 </div>
             </div>
 

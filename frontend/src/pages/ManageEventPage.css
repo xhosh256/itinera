@@ -306,8 +306,66 @@
 
 .manage__event__chat {
     flex: 1;
-    min-width: 0;
-    box-shadow: 0 0 7px black;
-    border-radius: 40px;
+    min-width: 0;;
+    display: flex;
+    flex-direction: column;
     padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+    justify-content: space-between;
+}
+
+.manage__event__chat__header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.manage__event__chat__header > p:first-of-type {
+    color: var(--text);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.manage__event__chat__header > p:last-of-type {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.manage__event__chat__form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 5px;
+}
+
+.manage__event__chat__input {
+    padding: 10px;
+    flex: 1;
+    border-radius: 500px;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 8px rgba(15, 23, 42, 0.04);
+}
+
+.manage__event__chat__input:focus {
+    outline: none;
+}
+
+.manage__event__chat__send__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.manage__event__chat__send__button svg {
+    transform: translate(-1px, 1px);
 }
